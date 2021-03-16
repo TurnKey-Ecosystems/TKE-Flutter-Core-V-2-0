@@ -1,0 +1,65 @@
+import '../Utilities/TFC_Event.dart';
+import 'package:flutter/foundation.dart';
+import 'TFC_Attribute.dart';
+import 'TFC_ItemUtilities.dart';
+import 'TFC_ItemInstances.dart';
+
+abstract class TFC_Item {
+  String _itemID;
+  String get itemID {
+    return _itemID;
+  }
+
+  String get itemType;
+  List<TFC_Attribute> _attributes = List();
+  String get fileName {
+    return TFC_ItemUtilities.generateFileName(itemID);
+  }
+
+  TFC_Event onAttributesChanged = TFC_Event();
+
+  @mustCallSuper
+  TFC_Item() {
+    _itemID = TFC_ItemInstances.locallyCreateNewItem(itemType);
+    TFC_ItemInstances.loadItemInstance(itemID);
+    _initialize();
+  }
+
+  @mustCallSuper
+  TFC_Item.fromItemID(String givenItemID) {
+    _itemID = givenItemID;
+    TFC_ItemInstances.loadItemInstance(itemID);
+    _initialize();
+  }
+
+  void _initialize() {
+    TFC_AttributeSetupDataFromItemInstance attributeSetupDataFromItemInstance =
+        TFC_AttributeSetupDataFromItemInstance(_itemID, itemType, _attributes);
+    initializeAttributes(attributeSetupDataFromItemInstance);
+    for (TFC_Attribute attribute in _attributes) {
+      attribute.addOnAfterSetListener(tempTrackable);
+    }
+  }
+
+  void tempTrackable() {
+    onAttributesChanged.trigger();
+  }
+  //Saved Items can not  be > 400KB
+
+  void initializeAttributes(
+      TFC_AttributeSetupDataFromItemInstance
+          attributeSetupDataFromItemInstance);
+
+  @mustCallSuper
+  void delete() {
+    TFC_ItemInstances.deleteItem(itemID);
+  }
+
+  @override
+  int get hashCode => itemID.hashCode;
+
+  @override
+  bool operator ==(dynamic other) {
+    return other is TFC_Item && other.itemID == itemID;
+  }
+}
