@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:tke_delete_37_flutter_jn2z/TKE-Flutter-Core/Utilities/TFC_ColorExtension.dart';
+import '../Utilities/TFC_ColorExtension.dart';
 
 import '../UI/TFC_LogInMaterialApp.dart';
 import '../UI/TFC_PostLogInMaterialApp.dart';
