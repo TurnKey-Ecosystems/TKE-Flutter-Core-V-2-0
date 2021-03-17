@@ -1,7 +1,7 @@
-/*import 'dart:convert';
+import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:html' as DartHTML;
-import 'package:dataplate/TKE-Flutter-Core/Utilities/TFC_Utilities.dart';
+import '../Utilities/TFC_Utilities.dart';
 
 import '../AppManagment/TFC_FlutterApp.dart';
 import '../APIs/TFC_IDeviceStorageAPI.dart';
@@ -37,13 +37,15 @@ class TFC_WebStorageAPI extends TFC_IDeviceStorageAPI {
 
   // Write Functions
   @override
-  void writeFileAsBytes(String fileName, Uint8List contents, FileLocation fileLocation) {
+  void writeFileAsBytes(
+      String fileName, Uint8List contents, FileLocation fileLocation) {
     String contentsAsString = base64.encode(contents);
     writeFileAsString(fileName, contentsAsString, fileLocation);
   }
 
   @override
-  void writeFileAsString(String fileName, String contents, FileLocation fileLocation) {
+  void writeFileAsString(
+      String fileName, String contents, FileLocation fileLocation) {
     String filePath = _getFileLocationPrefix(fileLocation) + fileName;
     _webStorage[filePath] = contents;
   }
@@ -59,22 +61,29 @@ class TFC_WebStorageAPI extends TFC_IDeviceStorageAPI {
       final files = uploadInput.files;
       if (files.length == 1) {
         final file = files[0];
-        DartHTML.FileReader reader =  DartHTML.FileReader();
+        DartHTML.FileReader reader = DartHTML.FileReader();
 
-        reader.onLoadEnd.listen((e) { uploadedImageBytes = reader.result; });
+        reader.onLoadEnd.listen((e) {
+          uploadedImageBytes = reader.result;
+        });
 
         reader.readAsArrayBuffer(file);
       }
     });
-    await TFC_Utilities.when(() { return uploadedImageBytes != null; });
+    await TFC_Utilities.when(() {
+      return uploadedImageBytes != null;
+    });
     return uploadedImageBytes;
   }
 
   // Utility Functions
   @override
   String exportAllFiles() {
-    String exportFileName = TFC_FlutterApp.appName.toLowerCase().replaceAll(" ", "_") + "_all_files.zip";
-    String exportFilePath = _getFileLocationPrefix(FileLocation.EXPORT) + exportFileName;
+    String exportFileName =
+        TFC_FlutterApp.appName.toLowerCase().replaceAll(" ", "_") +
+            "_all_files.zip";
+    String exportFilePath =
+        _getFileLocationPrefix(FileLocation.EXPORT) + exportFileName;
     _webStorage[exportFilePath] = "";
     return exportFilePath;
   }
@@ -106,8 +115,8 @@ class TFC_WebStorageAPI extends TFC_IDeviceStorageAPI {
     } else if (fileLocation == FileLocation.EXPORT) {
       fileLocationAsString = "export";
     } else {
-      throw("TFC_WebStorageAPI._getFileLocationPrefix() does not support $fileLocation!");
+      throw ("TFC_WebStorageAPI._getFileLocationPrefix() does not support $fileLocation!");
     }
     return fileLocationAsString + "/";
   }
-}*/
+}

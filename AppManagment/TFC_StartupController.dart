@@ -78,9 +78,9 @@ class TFC_StartupController {
     }*/
 
     // Set up the database sync controller
-    await TFC_SyncController.setupDatabaseSyncController(
+    /*await TFC_SyncController.setupDatabaseSyncController(
         clientSettings["clientID"], itemTypesInThisApp,
-        shouldStartSync: shouldStartSync);
+        shouldStartSync: shouldStartSync);*/
 
     // Actually start the app
     TFC_FlutterApp.homePage = homePageBuilder();

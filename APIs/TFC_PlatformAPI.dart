@@ -10,7 +10,7 @@ abstract class TFC_PlatformAPI {
 
   static Future<void> setupPlatformAPI() async {
     if (kIsWeb) {
-      //platformAPI = TFC_WebAPI();
+      platformAPI = TFC_WebAPI();
     } else if (Platform.isIOS || Platform.isAndroid) {
       platformAPI = TFC_MobileAPI();
     }

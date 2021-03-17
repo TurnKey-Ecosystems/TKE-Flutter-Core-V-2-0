@@ -1,4 +1,4 @@
-/*import '../APIs/TFC_IShareAPI.dart';
+import '../APIs/TFC_IShareAPI.dart';
 import 'dart:html' as DartHTML;
 
 class TFC_WebShareAPI extends TFC_IShareAPI {
@@ -9,4 +9,4 @@ class TFC_WebShareAPI extends TFC_IShareAPI {
       "text": body,
     });
   }
-}*/
+}
