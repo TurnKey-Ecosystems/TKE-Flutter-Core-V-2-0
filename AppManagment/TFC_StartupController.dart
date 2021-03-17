@@ -24,10 +24,10 @@ class TFC_StartupController {
     @required String appName,
     @required Color colorPrimary,
     @required String appLoadingLogoAssetPath,
-    @required String appBarLogoAssetPath,
     @required Set<String> itemTypesInThisApp,
     @required TFC_Page Function() homePageBuilder,
     @required TFC_Page Function() settingsPageBuilder,
+    String appBarLogoAssetPath,
     bool shouldStartSync = true,
   }) async {
     // Render splash screen & setup UI base properties

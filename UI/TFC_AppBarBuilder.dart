@@ -1,5 +1,6 @@
 import '../AppManagment/TFC_FlutterApp.dart';
 import 'TFC_AppStyle.dart';
+import 'TFC_CustomWidgets.dart';
 import 'package:flutter/material.dart';
 
 class TFC_AppBarBuilder {
@@ -13,13 +14,15 @@ class TFC_AppBarBuilder {
 
   static AppBar _buildAppBar(
       BuildContext context, bool shouldShowSettingsButton) {
-    return AppBar(
-      backgroundColor: TFC_AppStyle.colorPrimary,
-      centerTitle: true,
-      iconTheme: IconThemeData(
+    Widget title;
+    Widget flexibleSpace;
+
+    if (TFC_AppStyle.appBarLogoAssetPath == null) {
+      title = TFC_Text.heading(
+        TFC_FlutterApp.appName,
         color: TFC_AppStyle.COLOR_BACKGROUND,
-      ),
-      flexibleSpace: PreferredSize(
+      );
+      flexibleSpace = PreferredSize(
         preferredSize:
             Size.fromHeight(TFC_AppStyle.instance.m2UnitsToFlutterUnits(6)),
         child: Container(
@@ -42,10 +45,45 @@ class TFC_AppBarBuilder {
             ],
           ),
         ),
-      ),
-      title: Container(
+      );
+    } else {
+      title = Container(
         height: 0,
+      );
+      flexibleSpace = PreferredSize(
+        preferredSize:
+            Size.fromHeight(TFC_AppStyle.instance.m2UnitsToFlutterUnits(6)),
+        child: Container(
+          alignment: Alignment.center,
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: TFC_AppStyle.instance.m2UnitsToFlutterUnits(1.85),
+              ),
+              Stack(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    height: TFC_AppStyle.instance.m2UnitsToFlutterUnits(4),
+                    child: Image.asset(TFC_AppStyle.appBarLogoAssetPath),
+                  ),
+                  _getSettingsButton(context, shouldShowSettingsButton),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return AppBar(
+      backgroundColor: TFC_AppStyle.colorPrimary,
+      centerTitle: true,
+      iconTheme: IconThemeData(
+        color: TFC_AppStyle.COLOR_BACKGROUND,
       ),
+      flexibleSpace: flexibleSpace,
+      title: title,
       bottom: PreferredSize(
         preferredSize:
             Size.fromHeight(TFC_AppStyle.instance.m2UnitsToFlutterUnits(1.25)),
