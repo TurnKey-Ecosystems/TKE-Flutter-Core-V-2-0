@@ -73,13 +73,15 @@ class TFC_SplashScreen extends TFC_ReloadableWidget {
         "Download in Progress",
         color: TFC_AppStyle.colorPrimary,
       );
-    } else {
+    } else if (TFC_AppStyle.appLoadingLogoAssetPath != null) {
       return TFC_LoadingPage.image(
         TFC_AppStyle.appLoadingLogoAssetPath,
         //"Loading " + TFC_FlutterApp.appName + "...",
         TFC_FlutterApp.appName,
         color: TFC_AppStyle.colorPrimary,
       );
+    } else {
+      return Container();
     }
   }
 

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:tke_delete_37_flutter_jn2z/TKE-Flutter-Core/Utilities/TFC_ColorExtension.dart';
+
 import '../UI/TFC_LogInMaterialApp.dart';
 import '../UI/TFC_PostLogInMaterialApp.dart';
 import 'package:flutter/foundation.dart';
@@ -21,20 +23,25 @@ class TFC_StartupController {
   static final TFC_Event onTFCStartupComplete = TFC_Event();
 
   static void runStartup({
-    @required String appName,
-    @required Color colorPrimary,
-    @required String appLoadingLogoAssetPath,
-    @required Set<String> itemTypesInThisApp,
+    @required String appConfigPath,
     @required TFC_Page Function() homePageBuilder,
     @required TFC_Page Function() settingsPageBuilder,
-    String appBarLogoAssetPath,
     bool shouldStartSync = true,
   }) async {
+    // We have to have a flutter app running before we can access assets where our app config file resides
+    TFC_FlutterApp.appName = "";
+    TFC_AppStyle.colorPrimary = Color(0xffffffff);
+    TFC_AppStyle.appLoadingLogoAssetPath = null;
+    TFC_AppStyle.appBarLogoAssetPath = null;
+    runApp(TFC_StartupMaterialApp());
+
     // Render splash screen & setup UI base properties
-    TFC_FlutterApp.appName = appName;
-    TFC_AppStyle.colorPrimary = colorPrimary;
-    TFC_AppStyle.appLoadingLogoAssetPath = appLoadingLogoAssetPath;
-    TFC_AppStyle.appBarLogoAssetPath = appBarLogoAssetPath;
+    final Map<String, dynamic> appConfig =
+        jsonDecode(await rootBundle.loadString(appConfigPath));
+    TFC_FlutterApp.appName = appConfig["appName"];
+    TFC_AppStyle.colorPrimary = HexColor.fromHex(appConfig["primaryColor"]);
+    TFC_AppStyle.appLoadingLogoAssetPath = appConfig["appLoadingLogoAssetPath"];
+    TFC_AppStyle.appBarLogoAssetPath = appConfig["appBarLogoAssetPath"];
     runApp(TFC_StartupMaterialApp());
 
     // We delay to let the app logo load
