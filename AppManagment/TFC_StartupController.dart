@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dataplate/TKE-Flutter-Core/UI/TFC_LogInMaterialApp.dart';
-import 'package:dataplate/TKE-Flutter-Core/UI/TFC_PostLogInMaterialApp.dart';
+import '../UI/TFC_LogInMaterialApp.dart';
+import '../UI/TFC_PostLogInMaterialApp.dart';
 import 'package:flutter/foundation.dart';
-
 import '../APIs/TFC_PlatformAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:device_info/device_info.dart';

@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:dataplate/TKE-Flutter-Core/APIs/TFC_IDeviceStorageAPI.dart';
-import 'package:dataplate/TKE-Flutter-Core/APIs/TFC_WebAPI.dart';
+import '../APIs/TFC_IDeviceStorageAPI.dart';
+import '../APIs/TFC_WebAPI.dart';
 import 'TFC_IShareAPI.dart';
 import 'TFC_MobileAPI.dart';
-
 
 abstract class TFC_PlatformAPI {
   static TFC_PlatformAPI platformAPI;

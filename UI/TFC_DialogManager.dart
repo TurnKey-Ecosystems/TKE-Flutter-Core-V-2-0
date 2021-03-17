@@ -31,71 +31,72 @@ class TFC_DialogManager {
     @required String button2Text,
     void Function() onButton2,
   }) {
-    Widget dialog = SimpleDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-            Radius.circular(0.25 * TFC_AppStyle.instance.pageMargins)),
-      ),
-      backgroundColor: TFC_AppStyle.COLOR_BACKGROUND,
-      contentPadding: EdgeInsets.all(0.75 * TFC_AppStyle.instance.pageMargins),
-      children: [
-        content,
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FlatButton(
-              child: TFC_Text.body(
-                button1Text,
-                color: TFC_AppStyle.colorPrimary,
-              ),
-              color: TFC_AppStyle.COLOR_BACKGROUND,
-              hoverColor: TFC_Utilities.blendColors(
-                  TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                  color1Weight: 0.125),
-              highlightColor: TFC_Utilities.blendColors(
-                  TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                  color1Weight: 0.25),
-              splashColor: TFC_Utilities.blendColors(
-                  TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                  color1Weight: 0.25),
-              onPressed: () {
-                if (onButton1 != null) {
-                  onButton1();
-                }
-              },
-            ),
-            Container(
-              width: 0.125 * TFC_AppStyle.instance.pageMargins,
-            ),
-            FlatButton(
-              child: TFC_Text.body(
-                button2Text,
-                color: TFC_AppStyle.colorPrimary,
-              ),
-              color: TFC_AppStyle.COLOR_BACKGROUND,
-              hoverColor: TFC_Utilities.blendColors(
-                  TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                  color1Weight: 0.125),
-              highlightColor: TFC_Utilities.blendColors(
-                  TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                  color1Weight: 0.25),
-              splashColor: TFC_Utilities.blendColors(
-                  TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                  color1Weight: 0.25),
-              onPressed: () {
-                if (onButton2 != null) {
-                  onButton2();
-                }
-              },
-            ),
-          ],
-        ),
-      ],
-    );
-
     showDialog(
       context: context,
-      child: dialog,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+                Radius.circular(0.25 * TFC_AppStyle.instance.pageMargins)),
+          ),
+          backgroundColor: TFC_AppStyle.COLOR_BACKGROUND,
+          contentPadding:
+              EdgeInsets.all(0.75 * TFC_AppStyle.instance.pageMargins),
+          children: [
+            content,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FlatButton(
+                  child: TFC_Text.body(
+                    button1Text,
+                    color: TFC_AppStyle.colorPrimary,
+                  ),
+                  color: TFC_AppStyle.COLOR_BACKGROUND,
+                  hoverColor: TFC_Utilities.blendColors(
+                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
+                      color1Weight: 0.125),
+                  highlightColor: TFC_Utilities.blendColors(
+                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
+                      color1Weight: 0.25),
+                  splashColor: TFC_Utilities.blendColors(
+                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
+                      color1Weight: 0.25),
+                  onPressed: () {
+                    if (onButton1 != null) {
+                      onButton1();
+                    }
+                  },
+                ),
+                Container(
+                  width: 0.125 * TFC_AppStyle.instance.pageMargins,
+                ),
+                FlatButton(
+                  child: TFC_Text.body(
+                    button2Text,
+                    color: TFC_AppStyle.colorPrimary,
+                  ),
+                  color: TFC_AppStyle.COLOR_BACKGROUND,
+                  hoverColor: TFC_Utilities.blendColors(
+                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
+                      color1Weight: 0.125),
+                  highlightColor: TFC_Utilities.blendColors(
+                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
+                      color1Weight: 0.25),
+                  splashColor: TFC_Utilities.blendColors(
+                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
+                      color1Weight: 0.25),
+                  onPressed: () {
+                    if (onButton2 != null) {
+                      onButton2();
+                    }
+                  },
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
