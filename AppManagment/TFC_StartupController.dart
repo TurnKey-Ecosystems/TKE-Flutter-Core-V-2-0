@@ -60,8 +60,8 @@ class TFC_StartupController {
         TFC_FlutterApp.deviceID.value = iosInfo.identifierForVendor;
       }
     }
-    final Map<String, dynamic> clientSettings =
-        jsonDecode(await rootBundle.loadString("assets/data.json"));
+    /*final Map<String, dynamic> clientSettings =
+        jsonDecode(await rootBundle.loadString("assets/data.json"));*/
 
     /*TFC_AutoSavingProperty<String> isLoggedIn =
         TFC_AutoSavingProperty("false", "isLoggedIn");

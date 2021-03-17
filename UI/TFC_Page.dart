@@ -10,7 +10,7 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
   final IconData icon;
   final String loadingMessage;
   final bool Function() getShouldShowPage;
-  final AppBar Function(BuildContext) _appBarBuilder;
+  final PreferredSizeWidget Function(BuildContext) _appBarBuilder;
   final double pageMargins;
   final double childPadding;
   final double preferredChildHeight;
@@ -26,7 +26,7 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     @required this.icon,
     @required this.loadingMessage,
     @required this.getShouldShowPage,
-    AppBar Function(BuildContext) appBarBuilder =
+    PreferredSizeWidget Function(BuildContext) appBarBuilder =
         TFC_AppBarBuilder.buildDefaultAppBar,
     double pageMargins = -1,
     double childPadding = -1,
@@ -72,7 +72,7 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
       TFC_Utilities.when(getShouldShowPage).then((value) {
         reload();
       });
-    } 
+    }
 
     return Scaffold(
       appBar: _appBarBuilder(context),
