@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'TFC_CustomWidgets.dart';
+import 'TFC_ReloadableWidget.dart';
 import 'TFC_AppStyle.dart';
 import 'TFC_InputFields.dart';
-import 'TFC_PaddedColumn.dart';
 import '../APIs/TFC_WebExclusiveAPI.dart';
 
 class TFC_LogInMaterialApp extends StatelessWidget {
   static String correctPasscode;
   static String passcodeAttempt = "";
-  static bool get passcodeIsCorrect {
-    return passcodeAttempt.toLowerCase() == correctPasscode.toLowerCase();
+  static String failedPasscodeAttempt = null;
+  static bool passcodeIsCorrect = false;
+  static updatePasscodeIsCorrect() {
+    if (TFC_LogInMaterialApp.passcodeAttempt ==
+        TFC_LogInMaterialApp.correctPasscode) {
+      TFC_LogInMaterialApp.passcodeIsCorrect = true;
+    } else {
+      failedPasscodeAttempt = passcodeAttempt;
+      TFC_LogInMaterialApp.passcodeIsCorrect = false;
+    }
+  }
+
+  static getTextFieldColor() {
+    if (passcodeAttempt == failedPasscodeAttempt) {
+      return TFC_AppStyle.COLOR_ERROR;
+    } else {
+      return TFC_AppStyle.COLOR_HINT;
+    }
   }
 
   TFC_LogInMaterialApp(String correctPasscode) {
@@ -28,22 +45,90 @@ class TFC_LogInMaterialApp extends StatelessWidget {
   }
 }
 
-class _TFC_LogInScaffold extends StatelessWidget {
+class _TFC_LogInScaffold extends TFC_ReloadableWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget buildWidget(BuildContext context) {
+    final double internalWidth = TFC_AppStyle.instance.internalPageWidth -
+        (2.0 * TFC_AppStyle.instance.pageMargins);
+    final double textFieldWidth = 0.6 * internalWidth;
+    final double submitButtonWidth = internalWidth - textFieldWidth;
+    final double submitButtonHeight = (2.0 * TFC_AppStyle.instance.pageMargins);
+
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.all(4 * TFC_AppStyle.instance.pageMargins),
-        child: TFC_TextField(
-          hintText: "Enter Passcode",
-          getSourceValue: () {
-            return TFC_LogInMaterialApp.passcodeAttempt;
-          },
-          setSourceValue: (String newValue) {
-            TFC_LogInMaterialApp.passcodeAttempt = newValue;
-          },
-        ),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+            width: internalWidth + (2.0 * TFC_AppStyle.instance.pageMargins),
+            height:
+                submitButtonHeight + (2.0 * TFC_AppStyle.instance.pageMargins),
+            //margin: EdgeInsets.all(1.0 * TFC_AppStyle.instance.pageMargins),
+            decoration: BoxDecoration(
+              border: Border.all(
+                  color: TFC_LogInMaterialApp.getTextFieldColor(),
+                  width: 0.0625 * TFC_AppStyle.instance.pageMargins),
+              borderRadius: BorderRadius.all(
+                  Radius.circular(0.25 * TFC_AppStyle.instance.pageMargins)),
+            ),
+            alignment: Alignment.center,
+            child: Container(
+              height: submitButtonHeight +
+                  (2.0 * TFC_AppStyle.instance.pageMargins),
+              width: internalWidth,
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    //height: submitButtonHeight,
+                    width: textFieldWidth,
+                    alignment: Alignment.topCenter,
+                    child: TFC_TextField(
+                      hintText: "Enter Passcode",
+                      getSourceValue: () {
+                        return TFC_LogInMaterialApp.passcodeAttempt;
+                      },
+                      setSourceValue: (String newValue) {
+                        TFC_LogInMaterialApp.passcodeAttempt = newValue;
+                      },
+                      onSubmitted: () {
+                        TFC_LogInMaterialApp.updatePasscodeIsCorrect();
+                        reload();
+                      },
+                      unfocusedNonblankInputBorderColor: Colors.transparent,
+                      focusedInputBorderColor: Colors.transparent,
+                      unfocusedBlankInputBorderColor: Colors.transparent,
+                      borderType: TFC_BorderType.UNDERLINED,
+                    ),
+                  ),
+                  Container(
+                    height: submitButtonHeight,
+                    width: submitButtonWidth,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            TFC_AppStyle.colorPrimary),
+                        elevation: MaterialStateProperty.all(0.0),
+                      ),
+                      onPressed: () {
+                        TFC_LogInMaterialApp.updatePasscodeIsCorrect();
+                        reload();
+                      },
+                      child: TFC_Text.body(
+                        "Submit Code",
+                        color: TFC_AppStyle.COLOR_BACKGROUND,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            height: submitButtonHeight,
+          )
+        ]),
       ),
     );
   }

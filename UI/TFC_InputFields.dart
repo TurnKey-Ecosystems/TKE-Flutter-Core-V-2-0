@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../DataStructures/TFC_Attribute.dart';
 import 'TFC_AppStyle.dart';
 import 'TFC_ReloadableWidget.dart';
+import 'TFC_CustomWidgets.dart';
 
 // TODO: Make email and physical address input fields have input validation
 // TODO: Turn the TextField red if the input is not formatted properly.
@@ -16,6 +17,7 @@ class TFC_NumericField extends TFC_InputField {
   final int decimalCount;
   final num Function() getSourceValue;
   final void Function(num) setSourceValue;
+  final TFC_BorderType borderType;
 
   TFC_NumericField({
     @required this.getSourceValue,
@@ -33,6 +35,7 @@ class TFC_NumericField extends TFC_InputField {
     bool shouldStartWithFocus = false,
     int maxLength = 10,
     this.decimalCount = 0,
+    this.borderType = TFC_BorderType.OUTLINED,
   })  : _specficNumType = null,
         super(
           defaultValue: defaultValueAsNum.toStringAsFixed(decimalCount),
@@ -83,21 +86,18 @@ class TFC_NumericField extends TFC_InputField {
   InputBorder getInputBorder() {
     if (shouldChangeColorIfNotEqualToDefaultValue &&
         getSourceValue() == defaultValueAsNum) {
-      return OutlineInputBorder(
-        borderSide: BorderSide(color: defaultValueColor, width: 1.0),
-      );
+      return TFC_InputBorder.fromBorderType(
+          borderType: borderType, color: defaultValueColor);
     } else {
-      return OutlineInputBorder(
-        borderSide: BorderSide(color: nonDefaultValueColor, width: 1.0),
-      );
+      return TFC_InputBorder.fromBorderType(
+          borderType: borderType, color: nonDefaultValueColor);
     }
   }
 
   @override
   InputBorder getFocusedInputBorder() {
-    return OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.transparent),
-    );
+    return TFC_InputBorder.fromBorderType(
+        borderType: borderType, color: Colors.transparent);
   }
 }
 
@@ -107,6 +107,7 @@ class TFC_TextField extends TFC_InputField {
   final Color _focusedInputBorderColor;
   final Color _unfocusedBlankInputBorderColor;
   final Color _unfocusedNonblankInputBorderColor;
+  final TFC_BorderType borderType;
 
   TFC_TextField({
     @required this.getSourceValue,
@@ -133,6 +134,7 @@ class TFC_TextField extends TFC_InputField {
     int maxLength,
     int maxLines = 1,
     Key key,
+    this.borderType = TFC_BorderType.UNDERLINED,
   })  : _focusedInputBorderColor = (focusedInputBorderColor != null)
             ? focusedInputBorderColor
             : Colors.transparent,
@@ -195,6 +197,7 @@ class TFC_TextField extends TFC_InputField {
     int maxLength,
     int maxLines = 1,
     Key key,
+    this.borderType = TFC_BorderType.UNDERLINED,
   })  : getSourceValue = source.getValue,
         setSourceValue = source.setValue,
         _focusedInputBorderColor = (focusedInputBorderColor != null)
@@ -250,13 +253,11 @@ class TFC_TextField extends TFC_InputField {
     InputBorder inputBorder;
 
     if (getSourceValue() == "") {
-      inputBorder = UnderlineInputBorder(
-        borderSide: BorderSide(color: _unfocusedBlankInputBorderColor),
-      );
+      inputBorder = TFC_InputBorder.fromBorderType(
+          borderType: borderType, color: _unfocusedBlankInputBorderColor);
     } else {
-      inputBorder = UnderlineInputBorder(
-        borderSide: BorderSide(color: _unfocusedNonblankInputBorderColor),
-      );
+      inputBorder = TFC_InputBorder.fromBorderType(
+          borderType: borderType, color: _unfocusedNonblankInputBorderColor);
     }
 
     return inputBorder;
@@ -264,9 +265,8 @@ class TFC_TextField extends TFC_InputField {
 
   @override
   InputBorder getFocusedInputBorder() {
-    return UnderlineInputBorder(
-      borderSide: BorderSide(color: _focusedInputBorderColor),
-    );
+    return TFC_InputBorder.fromBorderType(
+        borderType: borderType, color: _focusedInputBorderColor);
   }
 }
 

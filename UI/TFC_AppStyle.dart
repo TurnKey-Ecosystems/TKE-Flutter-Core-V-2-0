@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'TFC_IOSKeyboardDoneButton.dart';
 
 enum TFC_TextType { HEADING, SUBHEADING, TITLE, BODY }
+enum TFC_BorderType {
+  OUTLINED,
+  UNDERLINED,
+}
 
 class TFC_AppStyle {
   // Colors
