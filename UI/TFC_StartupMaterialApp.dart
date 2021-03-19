@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'TFC_AppStyle.dart';
 import 'TFC_SplashScreen.dart';
+import '../APIs/TFC_WebExclusiveAPI.dart';
 
 class TFC_StartupMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Set the ios status bar color
+    TFC_WebExclusiveAPI.setWebBackgroundColor("#ffffff");
+
     return MaterialApp(
       theme: TFC_AppStyle.themeData,
       home: _TFC_StartupScaffold(),

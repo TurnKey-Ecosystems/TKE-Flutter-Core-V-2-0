@@ -24,6 +24,7 @@ class TFC_StartupController {
 
   static void runStartup({
     @required String appConfigPath,
+    @required String caseInsensitivePasscode,
     @required TFC_Page Function() homePageBuilder,
     @required TFC_Page Function() settingsPageBuilder,
     bool shouldStartSync = true,
@@ -70,19 +71,22 @@ class TFC_StartupController {
     /*final Map<String, dynamic> clientSettings =
         jsonDecode(await rootBundle.loadString("assets/data.json"));*/
 
-    /*TFC_AutoSavingProperty<String> isLoggedIn =
-        TFC_AutoSavingProperty("false", "isLoggedIn");
+    if (caseInsensitivePasscode != null) {
+      TFC_AutoSavingProperty<String> lastPasscodeAttempt =
+          TFC_AutoSavingProperty("", "lastPasscodeAttempt");
 
-    if (isLoggedIn.value == "false") {
-      runApp(TFC_LogInMaterialApp());
-      await TFC_Utilities.when(() {
-        return TFC_LogInMaterialApp.passwordIsCorrect;
-      });
-      isLoggedIn.value = "true";
-      runApp(TFC_PostLogInMaterialApp());
-      // We delay to let the loading icon appear
-      await Future.delayed(Duration(milliseconds: 250));
-    }*/
+      if (lastPasscodeAttempt.value.toLowerCase() !=
+          caseInsensitivePasscode.toLowerCase()) {
+        runApp(TFC_LogInMaterialApp(caseInsensitivePasscode));
+        await TFC_Utilities.when(() {
+          return TFC_LogInMaterialApp.passcodeIsCorrect;
+        });
+        lastPasscodeAttempt.value = caseInsensitivePasscode;
+        runApp(TFC_PostLogInMaterialApp());
+        // We delay to let the loading icon appear
+        await Future.delayed(Duration(milliseconds: 250));
+      }
+    }
 
     // Set up the database sync controller
     /*await TFC_SyncController.setupDatabaseSyncController(
