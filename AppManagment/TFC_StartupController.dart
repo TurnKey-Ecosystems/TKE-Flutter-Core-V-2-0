@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import '../UI/TFC_BrowserRedirectApp.dart';
+import '../APIs/TFC_WebExclusiveAPI.dart';
 import '../Utilities/TFC_ColorExtension.dart';
-
 import '../UI/TFC_LogInMaterialApp.dart';
 import '../UI/TFC_PostLogInMaterialApp.dart';
 import 'package:flutter/foundation.dart';
@@ -70,6 +71,18 @@ class TFC_StartupController {
     }
     /*final Map<String, dynamic> clientSettings =
         jsonDecode(await rootBundle.loadString("assets/data.json"));*/
+
+    if (kIsWeb) {
+      TFC_BrowserAndOSTestResults results =
+          TFC_WebExclusiveAPI.testBrowserAndOS();
+
+      if (!results.isCorrectBrowserForOS) {
+        runApp(TFC_BrowserRedirectApp(results));
+        await TFC_Utilities.when(() {
+          return TFC_BrowserRedirectApp.shouldContinuePastThisPage;
+        });
+      }
+    }
 
     if (caseInsensitivePasscode != null) {
       TFC_AutoSavingProperty<String> lastPasscodeAttempt =
