@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tke_delete_42_flutter_5b53/TKE-Flutter-Core/UI/TFC_Button.dart';
+import '../UI/TFC_Button.dart';
 import 'TFC_CustomWidgets.dart';
 import 'TFC_ReloadableWidget.dart';
 import 'TFC_AppStyle.dart';

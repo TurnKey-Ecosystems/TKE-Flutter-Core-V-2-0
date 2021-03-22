@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tke_delete_42_flutter_5b53/TKE-Flutter-Core/UI/TFC_AppStyle.dart';
+import '../UI/TFC_AppStyle.dart';
 
 class TFC_Button extends StatelessWidget {
   final double width;
