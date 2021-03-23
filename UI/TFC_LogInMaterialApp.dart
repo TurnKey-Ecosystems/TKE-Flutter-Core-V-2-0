@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'TFC_CustomWidgets.dart';
 import 'TFC_ReloadableWidget.dart';
 import 'TFC_AppStyle.dart';
@@ -11,8 +12,8 @@ class TFC_LogInMaterialApp extends StatelessWidget {
   static String failedPasscodeAttempt = null;
   static bool passcodeIsCorrect = false;
   static updatePasscodeIsCorrect() {
-    if (TFC_LogInMaterialApp.passcodeAttempt ==
-        TFC_LogInMaterialApp.correctPasscode) {
+    if (TFC_LogInMaterialApp.passcodeAttempt.toLowerCase() ==
+        TFC_LogInMaterialApp.correctPasscode.toLowerCase()) {
       TFC_LogInMaterialApp.passcodeIsCorrect = true;
     } else {
       failedPasscodeAttempt = passcodeAttempt;
@@ -47,10 +48,21 @@ class TFC_LogInMaterialApp extends StatelessWidget {
 
 class _TFC_LogInScaffold extends TFC_ReloadableWidget {
   @override
+  void onInit() {
+    super.onInit();
+
+    // Lock orientation to portrait
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  @override
   Widget buildWidget(BuildContext context) {
     final double internalWidth = TFC_AppStyle.instance.internalPageWidth -
         (2.0 * TFC_AppStyle.instance.pageMargins);
-    final double textFieldWidth = 0.6 * internalWidth;
+    final double textFieldWidth = 0.58 * internalWidth;
     final double submitButtonWidth = internalWidth - textFieldWidth;
     final double submitButtonHeight = (2.0 * TFC_AppStyle.instance.pageMargins);
 

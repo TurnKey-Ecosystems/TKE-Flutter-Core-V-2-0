@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import '../UI/TFC_InstallationApp.dart';
 import '../UI/TFC_BrowserRedirectApp.dart';
 import '../APIs/TFC_WebExclusiveAPI.dart';
 import '../Utilities/TFC_ColorExtension.dart';
@@ -69,9 +70,8 @@ class TFC_StartupController {
         TFC_FlutterApp.deviceID.value = iosInfo.identifierForVendor;
       }
     }
-    /*final Map<String, dynamic> clientSettings =
-        jsonDecode(await rootBundle.loadString("assets/data.json"));*/
 
+    // Show the browser redirect page
     if (kIsWeb) {
       TFC_BrowserAndOSTestResults results =
           TFC_WebExclusiveAPI.testBrowserAndOS();
@@ -84,12 +84,28 @@ class TFC_StartupController {
       }
     }
 
+    // Show the installation page
+    if (kIsWeb && !TFC_WebExclusiveAPI.getIsInstalled()) {
+      TFC_BrowserAndOSTestResults results =
+          TFC_WebExclusiveAPI.testBrowserAndOS();
+      runApp(TFC_InstallationApp(results.browser));
+      await TFC_Utilities.when(() {
+        return false;
+      });
+    }
+
+    // Show the passcode page
     if (caseInsensitivePasscode != null) {
       TFC_AutoSavingProperty<String> lastPasscodeAttempt =
           TFC_AutoSavingProperty("", "lastPasscodeAttempt");
+      bool lastPasscodeAttemptIsCorrect =
+          lastPasscodeAttempt.value.toLowerCase() ==
+              caseInsensitivePasscode.toLowerCase();
+      /*bool urlSearchPasscodeIsCorrect =
+          TFC_WebExclusiveAPI.getPasscodeFromURL().toLowerCase() ==
+              caseInsensitivePasscode.toLowerCase();*/
 
-      if (lastPasscodeAttempt.value.toLowerCase() !=
-          caseInsensitivePasscode.toLowerCase()) {
+      if (!lastPasscodeAttemptIsCorrect /* && !urlSearchPasscodeIsCorrect*/) {
         runApp(TFC_LogInMaterialApp(caseInsensitivePasscode));
         await TFC_Utilities.when(() {
           return TFC_LogInMaterialApp.passcodeIsCorrect;

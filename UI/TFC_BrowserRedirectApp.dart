@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../UI/TFC_Button.dart';
 import 'TFC_CustomWidgets.dart';
 import 'TFC_ReloadableWidget.dart';
 import 'TFC_AppStyle.dart';
 import '../APIs/TFC_WebExclusiveAPI.dart';
-import 'dart:html' as html;
+//import 'dart:html' as html;
 
 class TFC_BrowserRedirectApp extends StatelessWidget {
   static final String toChromeInstructions =
@@ -40,6 +41,12 @@ class _TFC_BrowserRedirectScaffold extends TFC_ReloadableWidget {
     if (TFC_BrowserRedirectApp.browserAndOSTestResults.isCorrectBrowserForOS) {
       TFC_BrowserRedirectApp.shouldContinuePastThisPage = true;
     }
+
+    // Lock orientation to portrait
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 
   @override
@@ -64,9 +71,16 @@ class _TFC_BrowserRedirectScaffold extends TFC_ReloadableWidget {
                     .browserAndOSTestResults.isCorrectBrowserForOS
                     .toString()),
             TFC_Text.body("User Agent: " + html.window.navigator.userAgent),*/
+            TFC_Text.heading("Double check your browser."),
+            Container(
+              height: TFC_AppStyle.instance.lineHeight,
+            ),
             TFC_Text.body(
               TFC_BrowserRedirectApp.unkownOSInstructions,
               textAlign: TextAlign.center,
+            ),
+            Container(
+              height: TFC_AppStyle.instance.lineHeight,
             ),
             TFC_Button.flat(
               onPressed: () {

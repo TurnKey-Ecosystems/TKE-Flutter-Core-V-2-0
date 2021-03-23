@@ -24,6 +24,20 @@ class TFC_WebExclusiveAPI {
     }
   }
 
+  static void showInstallPrompt() {
+    if (kIsWeb) {
+      context.callMethod('showInstallPrompt', []);
+    }
+  }
+
+  static bool getIsInstalled() {
+    if (kIsWeb) {
+      return context.callMethod('getIsInstalled', []);
+    } else {
+      return false;
+    }
+  }
+
   static String getCurrentURL() {
     if (kIsWeb) {
       return window.location.protocol +
@@ -35,6 +49,14 @@ class TFC_WebExclusiveAPI {
       //return context.callMethod('getCurrentURL', []);
     } else {
       return null;
+    }
+  }
+
+  static String getPasscodeFromURL() {
+    if (kIsWeb) {
+      return window.location.search.substring(("?passcode=").length);
+    } else {
+      return "";
     }
   }
 }
