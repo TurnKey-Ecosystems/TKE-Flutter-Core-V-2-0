@@ -23,7 +23,7 @@ class TFC_Button extends StatelessWidget {
     color = (color != null) ? color : TFC_AppStyle.colorPrimary;
     margin = (margin != null)
         ? margin
-        : EdgeInsets.all(TFC_AppStyle.instance.pageMargins);
+        : EdgeInsets.all(0.5 * TFC_AppStyle.instance.pageMargins);
     buttonWidget = ElevatedButton(
       key: key,
       onPressed: onPressed,
@@ -35,7 +35,7 @@ class TFC_Button extends StatelessWidget {
       focusNode: focusNode,
       autofocus: autofocus,
       clipBehavior: clipBehavior,
-      child: child,
+      child: Container(margin: margin, child: child),
     );
   }
 
@@ -55,7 +55,7 @@ class TFC_Button extends StatelessWidget {
     color = (color != null) ? color : TFC_AppStyle.colorPrimary;
     margin = (margin != null)
         ? margin
-        : EdgeInsets.all(TFC_AppStyle.instance.pageMargins);
+        : EdgeInsets.all(0.5 * TFC_AppStyle.instance.pageMargins);
     buttonWidget = OutlinedButton(
       key: key,
       onPressed: onPressed,
@@ -67,7 +67,7 @@ class TFC_Button extends StatelessWidget {
       focusNode: focusNode,
       autofocus: autofocus,
       clipBehavior: clipBehavior,
-      child: child,
+      child: Container(margin: margin, child: child),
     );
   }
 
@@ -76,7 +76,6 @@ class TFC_Button extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      margin: margin,
       child: buttonWidget,
     );
   }

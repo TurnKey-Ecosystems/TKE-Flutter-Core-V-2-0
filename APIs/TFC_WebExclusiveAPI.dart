@@ -20,14 +20,14 @@ class TFC_WebExclusiveAPI {
 
   static void copyTextToClipBoard(String textToCopy) {
     if (kIsWeb) {
-      context.callMethod('setWebBackgroundColor', [textToCopy]);
+      context.callMethod('copyTextToClipBoard', [textToCopy]);
     }
   }
 
   static String getCurrentURL() {
     if (kIsWeb) {
       return window.location.protocol +
-          "`//`" +
+          "//" +
           window.location.host +
           "/" +
           window.location.pathname +
@@ -55,7 +55,7 @@ class TFC_BrowserAndOSTestResults {
             : TFC_OperatingSystem.UNKNOWN;
     browser = (resultsObject['browser'] == 'chrome')
         ? TFC_Browser.CHROME
-        : (resultsObject['safari'] == 'ios')
+        : (resultsObject['browser'] == 'safari')
             ? TFC_Browser.SAFARI
             : TFC_Browser.UNKNOWN;
     isCorrectBrowserForOS = resultsObject['isCorrectBrowserForOS'];

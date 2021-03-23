@@ -4,12 +4,13 @@ import 'TFC_CustomWidgets.dart';
 import 'TFC_ReloadableWidget.dart';
 import 'TFC_AppStyle.dart';
 import '../APIs/TFC_WebExclusiveAPI.dart';
+import 'dart:html' as html;
 
 class TFC_BrowserRedirectApp extends StatelessWidget {
   static final String toChromeInstructions =
-      "Open the above URL in the Chrome web browser.";
+      "Paste the above URL into the Chrome web browser.";
   static final String toSafariInstructions =
-      "Open the abvoe URL in the Safari web browser.";
+      "Paste the above URL into the Safari web browser.";
   static final String unkownOSInstructions =
       " - If you are using an Android phone, make sure you are using the Chrome web browser.\n\n - If you are using an iPhone, make sure you are using the Safari web browser.";
   static TFC_BrowserAndOSTestResults browserAndOSTestResults;
@@ -53,7 +54,20 @@ class _TFC_BrowserRedirectScaffold extends TFC_ReloadableWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TFC_Text.body(TFC_BrowserRedirectApp.unkownOSInstructions),
+            /*TFC_Text.body("Browser: " +
+                TFC_BrowserRedirectApp.browserAndOSTestResults.browser
+                    .toString()),
+            TFC_Text.body("OS: " +
+                TFC_BrowserRedirectApp.browserAndOSTestResults.os.toString()),
+            TFC_Text.body("isCorrectBrowserForOS: " +
+                TFC_BrowserRedirectApp
+                    .browserAndOSTestResults.isCorrectBrowserForOS
+                    .toString()),
+            TFC_Text.body("User Agent: " + html.window.navigator.userAgent),*/
+            TFC_Text.body(
+              TFC_BrowserRedirectApp.unkownOSInstructions,
+              textAlign: TextAlign.center,
+            ),
             TFC_Button.flat(
               onPressed: () {
                 TFC_BrowserRedirectApp.shouldContinuePastThisPage = true;
@@ -76,15 +90,36 @@ class _TFC_BrowserRedirectScaffold extends TFC_ReloadableWidget {
       }
 
       return Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TFC_Text.subheading("Step 1"),
-            Row(
+        body: Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: TFC_AppStyle.instance.internalPageWidth,
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                TFC_Text.body("Copy this website's URL: " +
-                    TFC_WebExclusiveAPI.getCurrentURL()),
+                /*TFC_Text.body("Browser: " +
+                    TFC_BrowserRedirectApp.browserAndOSTestResults.browser
+                        .toString()),
+                TFC_Text.body("OS: " +
+                    TFC_BrowserRedirectApp.browserAndOSTestResults.os
+                        .toString()),
+                TFC_Text.body("isCorrectBrowserForOS: " +
+                    TFC_BrowserRedirectApp
+                        .browserAndOSTestResults.isCorrectBrowserForOS
+                        .toString()),
+                TFC_Text.body("User Agent: " + html.window.navigator.userAgent),*/
+                TFC_Text.heading(
+                    "You'll need to use a different browser to install this app."),
+                Container(
+                  height: 2.0 * TFC_AppStyle.instance.lineHeight,
+                ),
+                TFC_Text.subheading("Step 1"),
+                TFC_Text.body(
+                  "Copy this website's URL:",
+                  textAlign: TextAlign.center,
+                ),
+                //TFC_Text.body(TFC_WebExclusiveAPI.getCurrentURL()),
                 TFC_Button.flat(
                     onPressed: () {
                       TFC_WebExclusiveAPI.copyTextToClipBoard(
@@ -94,11 +129,17 @@ class _TFC_BrowserRedirectScaffold extends TFC_ReloadableWidget {
                       "Copy URL",
                       color: TFC_AppStyle.COLOR_BACKGROUND,
                     )),
+                Container(
+                  height: TFC_AppStyle.instance.lineHeight,
+                ),
+                TFC_Text.subheading("Step 2"),
+                TFC_Text.body(
+                  step2Instructions,
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
-            TFC_Text.subheading("Step 2"),
-            TFC_Text.body(step2Instructions),
-          ],
+          ),
         ),
       );
     }
