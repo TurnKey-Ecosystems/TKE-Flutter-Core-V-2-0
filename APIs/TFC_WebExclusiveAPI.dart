@@ -9,6 +9,12 @@ class TFC_WebExclusiveAPI {
     }
   }
 
+  static hideHTMLSplashScreen() async {
+    if (kIsWeb) {
+      context.callMethod('hideHTMLSplashScreen', []);
+    }
+  }
+
   static TFC_BrowserAndOSTestResults testBrowserAndOS() {
     if (kIsWeb) {
       JsObject resultsObject = context.callMethod('testBrowserAndOS', []);

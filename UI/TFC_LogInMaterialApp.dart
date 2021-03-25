@@ -37,6 +37,7 @@ class TFC_LogInMaterialApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Set the ios status bar color
     TFC_WebExclusiveAPI.setWebBackgroundColor("#ffffff");
+    TFC_WebExclusiveAPI.hideHTMLSplashScreen();
 
     return MaterialApp(
       theme: TFC_AppStyle.themeData,

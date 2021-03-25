@@ -20,6 +20,7 @@ class TFC_FlutterApp extends TFC_ReloadableWidget {
     // Set the ios status bar color
     TFC_WebExclusiveAPI.setWebBackgroundColor(
         TFC_AppStyle.colorPrimary.toHex());
+    TFC_WebExclusiveAPI.hideHTMLSplashScreen();
 
     // Lock orientation to portrait
     SystemChrome.setPreferredOrientations([

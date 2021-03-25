@@ -18,6 +18,7 @@ class TFC_InstallationApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Set the ios status bar color
     TFC_WebExclusiveAPI.setWebBackgroundColor("#ffffff");
+    TFC_WebExclusiveAPI.hideHTMLSplashScreen();
 
     // Lock orientation to portrait
     SystemChrome.setPreferredOrientations([
@@ -199,7 +200,7 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                         ),
                       ],
                       image: DecorationImage(
-                        image: AssetImage("assets/tap-share.png"),
+                        image: AssetImage("assets/tap-share.jpg"),
                         fit: BoxFit.fill,
                       ),
                       border: Border.all(
@@ -210,7 +211,7 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                     ),
                   ),
                   Container(
-                    height: TFC_AppStyle.instance.lineHeight,
+                    height: 1.5 * TFC_AppStyle.instance.lineHeight,
                   ),
                   TFC_Text.subheading("Step 2"),
                   TFC_Text.body(
@@ -236,7 +237,7 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                         ),
                       ],
                       image: DecorationImage(
-                        image: AssetImage("assets/tap-add-to-home-screen.png"),
+                        image: AssetImage("assets/tap-add-to-home-screen.jpg"),
                         fit: BoxFit.fill,
                       ),
                       border: Border.all(
@@ -247,7 +248,7 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                     ),
                   ),
                   Container(
-                    height: TFC_AppStyle.instance.lineHeight,
+                    height: 1.5 * TFC_AppStyle.instance.lineHeight,
                   ),
                   TFC_Text.subheading("Step 3"),
                   TFC_Text.body(
@@ -273,7 +274,7 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                         ),
                       ],
                       image: DecorationImage(
-                        image: AssetImage("assets/tap-add-app.png"),
+                        image: AssetImage("assets/tap-add-app.jpg"),
                         fit: BoxFit.fill,
                       ),
                       border: Border.all(
@@ -284,7 +285,7 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                     ),
                   ),
                   Container(
-                    height: TFC_AppStyle.instance.lineHeight,
+                    height: 1.5 * TFC_AppStyle.instance.lineHeight,
                   ),
                   TFC_Text.subheading("Step 4"),
                   TFC_Text.body(
@@ -310,7 +311,7 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                         ),
                       ],
                       image: DecorationImage(
-                        image: AssetImage("assets/enter-passcode.png"),
+                        image: AssetImage("assets/enter-passcode.jpg"),
                         fit: BoxFit.fill,
                       ),
                       border: Border.all(
