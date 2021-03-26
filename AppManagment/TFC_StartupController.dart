@@ -90,7 +90,7 @@ class TFC_StartupController {
           TFC_WebExclusiveAPI.testBrowserAndOS();
       runApp(TFC_InstallationApp(results.browser));
       await TFC_Utilities.when(() {
-        return false;
+        return TFC_InstallationApp.shouldContinuePastThisPage;
       });
     }
 

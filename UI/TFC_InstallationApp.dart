@@ -9,6 +9,7 @@ import '../APIs/TFC_WebExclusiveAPI.dart';
 
 class TFC_InstallationApp extends StatelessWidget {
   static TFC_Browser browser;
+  static bool shouldContinuePastThisPage = false;
 
   TFC_InstallationApp(TFC_Browser browser) {
     TFC_InstallationApp.browser = browser;
@@ -111,6 +112,23 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                   TFC_Text.body(
                     "Open the app and enter the passcode.",
                     textAlign: TextAlign.center,
+                  ),
+                  Container(
+                    height: 3.0 * TFC_AppStyle.instance.lineHeight,
+                  ),
+                  TFC_Text.body(
+                    "If this is the installed app, then you can simply continue.",
+                    textAlign: TextAlign.center,
+                    color: TFC_AppStyle.COLOR_HINT,
+                  ),
+                  TFC_Button.flat(
+                    onPressed: () {
+                      TFC_InstallationApp.shouldContinuePastThisPage = true;
+                    },
+                    child: TFC_Text.body(
+                      "Continue",
+                      color: TFC_AppStyle.COLOR_BACKGROUND,
+                    ),
                   ),
                 ],
               ),
@@ -319,6 +337,23 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                           color: Colors.transparent),
                       borderRadius: BorderRadius.all(Radius.circular(
                           1.0 * TFC_AppStyle.instance.pageMargins)),
+                    ),
+                  ),
+                  Container(
+                    height: 3.0 * TFC_AppStyle.instance.lineHeight,
+                  ),
+                  TFC_Text.body(
+                    "If this is the installed app, then you can simply continue.",
+                    textAlign: TextAlign.center,
+                    color: TFC_AppStyle.COLOR_HINT,
+                  ),
+                  TFC_Button.flat(
+                    onPressed: () {
+                      TFC_InstallationApp.shouldContinuePastThisPage = true;
+                    },
+                    child: TFC_Text.body(
+                      "Continue",
+                      color: TFC_AppStyle.COLOR_BACKGROUND,
                     ),
                   ),
                 ],
