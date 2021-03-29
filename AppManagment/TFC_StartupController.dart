@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:io';
 import '../UI/TFC_InstallationApp.dart';
 import '../UI/TFC_BrowserRedirectApp.dart';
@@ -27,6 +28,7 @@ class TFC_StartupController {
   static void runStartup({
     @required String appConfigPath,
     @required String caseInsensitivePasscode,
+    void Function() onAfterStartUpComplete,
     @required TFC_Page Function() homePageBuilder,
     @required TFC_Page Function() settingsPageBuilder,
     bool shouldStartSync = true,
@@ -48,7 +50,7 @@ class TFC_StartupController {
     runApp(TFC_StartupMaterialApp());
 
     // We delay to let the app logo load
-    await Future.delayed(Duration(milliseconds: 250));
+    //await Future.delayed(Duration(milliseconds: 250));
 
     // Setup the platform API
     await TFC_PlatformAPI.setupPlatformAPI();
@@ -59,20 +61,29 @@ class TFC_StartupController {
     // Setup device properties
     if (TFC_FlutterApp.deviceID.value == null ||
         TFC_FlutterApp.deviceID.value == "") {
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      const String VALID_CHARS = 'bcdfghjklmnpqrstvwxyz0123456789';
+      const int ID_LENGTH = 10;
+      int Function(int) getRandomInt = Random().nextInt;
+      String deviceID = "";
+
+      for (int i = 0; i < ID_LENGTH; i++) {
+        deviceID += VALID_CHARS[getRandomInt(VALID_CHARS.length)];
+      }
+      TFC_FlutterApp.deviceID.value = deviceID;
+      /*DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       if (kIsWeb) {
-        TFC_FlutterApp.deviceID.value = "BBBBB";
+        TFC_FlutterApp.deviceID.value = "web";
       } else if (Platform.isAndroid) {
         AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
         TFC_FlutterApp.deviceID.value = androidInfo.id;
       } else if (Platform.isIOS) {
         IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
         TFC_FlutterApp.deviceID.value = iosInfo.identifierForVendor;
-      }
+      }*/
     }
 
     // Show the browser redirect page
-    if (kIsWeb) {
+    /*if (kIsWeb) {
       TFC_BrowserAndOSTestResults results =
           TFC_WebExclusiveAPI.testBrowserAndOS();
 
@@ -115,7 +126,7 @@ class TFC_StartupController {
         // We delay to let the loading icon appear
         await Future.delayed(Duration(milliseconds: 250));
       }
-    }
+    }*/
 
     // Set up the database sync controller
     /*await TFC_SyncController.setupDatabaseSyncController(
@@ -125,7 +136,9 @@ class TFC_StartupController {
     // Actually start the app
     TFC_FlutterApp.homePage = homePageBuilder();
     TFC_FlutterApp.settingsPage = settingsPageBuilder();
-    runApp(TFC_FlutterApp());
+    runApp(TFC_FlutterApp(
+      onAfterStartUpComplete: onAfterStartUpComplete,
+    ));
 
     onTFCStartupComplete.trigger();
   }

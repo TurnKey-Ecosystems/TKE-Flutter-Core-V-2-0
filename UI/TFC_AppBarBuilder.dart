@@ -23,14 +23,13 @@ class TFC_AppBarBuilder {
         color: TFC_AppStyle.COLOR_BACKGROUND,
       );
       flexibleSpace = PreferredSize(
-        preferredSize:
-            Size.fromHeight(TFC_AppStyle.instance.m2UnitsToFlutterUnits(6)),
+        preferredSize: Size.fromHeight(2.0 * TFC_AppStyle.instance.lineHeight),
         child: Container(
           alignment: Alignment.center,
           child: Column(
             children: <Widget>[
               Container(
-                height: TFC_AppStyle.instance.m2UnitsToFlutterUnits(1.85),
+                height: 2.0 * TFC_AppStyle.instance.lineHeight,
               ),
               Stack(
                 children: [

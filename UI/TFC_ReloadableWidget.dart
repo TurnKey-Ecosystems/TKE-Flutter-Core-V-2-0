@@ -31,9 +31,26 @@ abstract class TFC_ReloadableWidget extends StatefulWidget {
     reload = _state.reload;
     return _state;
   }
+
+  // Let the children have access to the state object at build time
+  static Map<int, _TFC_ReloadableWidgetState> _stateInstances = Map();
+
+  _TFC_ReloadableWidgetState getStateInstance(BuildContext context) {
+    return _stateInstances[context.hashCode];
+  }
+
+  static void registerStateInstance(
+      BuildContext context, _TFC_ReloadableWidgetState stateInstance) {
+    _stateInstances[context.hashCode] = stateInstance;
+  }
+
+  static void deregisterStateInstance(BuildContext context) {
+    _stateInstances.remove(context.hashCode);
+  }
 }
 
-class _TFC_ReloadableWidgetState extends State<TFC_ReloadableWidget> {
+class _TFC_ReloadableWidgetState extends State<TFC_ReloadableWidget>
+    with TickerProviderStateMixin {
   final Widget Function(BuildContext context) _buildWidget;
   bool _buildIsInProgress = false;
   void Function() _onInit;
@@ -60,7 +77,9 @@ class _TFC_ReloadableWidgetState extends State<TFC_ReloadableWidget> {
   @override
   Widget build(BuildContext context) {
     _buildIsInProgress = true;
+    TFC_ReloadableWidget.registerStateInstance(context, this);
     Widget widgetToReturn = _buildWidget(context);
+    TFC_ReloadableWidget.deregisterStateInstance(context);
     _buildIsInProgress = false;
     return widgetToReturn;
   }

@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
+//import 'dart:developer';
 import '../Serialization/TFC_SerializingContainers.dart';
 import '../Utilities/TFC_Event.dart';
-import '../AppManagment/TFC_SyncController.dart';
+//import '../AppManagment/TFC_SyncController.dart';
 import '../AppManagment/TFC_DiskController.dart';
 import 'TFC_ItemUtilities.dart';
 
@@ -72,17 +72,17 @@ abstract class TFC_ItemInstances {
         },
         json: json,
         onElementAdded: (dynamic element, bool shouldLogChange) {
-          if (shouldLogChange) {
+          /*if (shouldLogChange) {
             TFC_SyncController.logElementAddedToSetAttribute(
                 itemID, itemType, attributeKey, element);
-          }
+          }*/
           _onAfterAttributeSetsByItemID[itemID][attributeKey].trigger();
         },
         onElementRemoved: (dynamic element, bool shouldLogChange) {
-          if (shouldLogChange) {
+          /*if (shouldLogChange) {
             TFC_SyncController.logElementRemovedFromSetAttribute(
                 itemID, itemType, attributeKey, element);
-          }
+          }*/
           _onAfterAttributeSetsByItemID[itemID][attributeKey].trigger();
         });
   }
@@ -151,7 +151,7 @@ abstract class TFC_ItemInstances {
     if (_onItemOfTypeCreatedOrDestroyed.containsKey(itemType)) {
       _onItemOfTypeCreatedOrDestroyed[itemType].trigger();
     }
-    TFC_SyncController.logItemCreation(itemID, itemType);
+    /*TFC_SyncController.logItemCreation(itemID, itemType);
     for (String attributeKey in itemData.keys) {
       if (attributeKey != "itemID") {
         if (itemData[attributeKey] is List || itemData[attributeKey] is Set) {
@@ -164,7 +164,7 @@ abstract class TFC_ItemInstances {
               itemID, itemType, attributeKey, itemData[attributeKey]);
         }
       }
-    }
+    }*/
     return itemID;
   }
 
@@ -193,9 +193,9 @@ abstract class TFC_ItemInstances {
     if (TFC_DiskController.fileExists(fileName)) {
       TFC_DiskController.deleteFile(fileName);
     }
-    if (shouldLogDeletion) {
+    /*if (shouldLogDeletion) {
       TFC_SyncController.logItemDeleteion(itemID, itemType);
-    }
+    }*/
     // Do this after we log the item deletion
     if (_onItemOfTypeCreatedOrDestroyed.containsKey(itemType)) {
       _onItemOfTypeCreatedOrDestroyed[itemType].trigger();
@@ -293,19 +293,19 @@ abstract class TFC_ItemInstances {
         _onAfterAttributeSetsByItemID[itemID][attributeKey].addListener(() {
           saveItem(itemID);
         });
-        if (shouldLogChange) {
+        /*if (shouldLogChange) {
           TFC_SyncController.logAttributeChange(itemID, nameOfItemType,
               attributeKey, _itemInstances[itemID][attributeKey]);
-        }
+        }*/
         if (shouldNotifyListeners) {
           _onAfterAttributeSetsByItemID[itemID][attributeKey].trigger();
         }
       } else if (_itemInstances[itemID][attributeKey] != newValue) {
         _itemInstances[itemID][attributeKey] = newValue;
-        if (shouldLogChange) {
+        /*if (shouldLogChange) {
           TFC_SyncController.logAttributeChange(itemID, nameOfItemType,
               attributeKey, _itemInstances[itemID][attributeKey]);
-        }
+        }*/
         if (shouldNotifyListeners) {
           _onAfterAttributeSetsByItemID[itemID][attributeKey].trigger();
         }
@@ -314,7 +314,7 @@ abstract class TFC_ItemInstances {
   }
 
   static List<String> getLocalItemIDsFromItemType(String nameOfItemType) {
-    List<String> localItemIDsForItemType = List();
+    List<String> localItemIDsForItemType = [];
 
     // Get the name of every item file in the app directory
     List<String> allItemFileNames =

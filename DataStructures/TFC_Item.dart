@@ -5,6 +5,7 @@ import 'TFC_ItemUtilities.dart';
 import 'TFC_ItemInstances.dart';
 
 abstract class TFC_Item {
+  static const int MAX_ITEM_ID_LENGTH = 256;
   String _itemID;
   String get itemID {
     return _itemID;
@@ -19,7 +20,7 @@ abstract class TFC_Item {
   TFC_Event onAttributesChanged = TFC_Event();
 
   @mustCallSuper
-  TFC_Item() {
+  TFC_Item.createNew() {
     _itemID = TFC_ItemInstances.locallyCreateNewItem(itemType);
     TFC_ItemInstances.loadItemInstance(itemID);
     _initialize();

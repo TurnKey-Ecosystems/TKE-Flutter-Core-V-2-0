@@ -22,6 +22,7 @@ class TFC_Text extends Text {
     Key key,
     TextAlign textAlign,
     Color color,
+    bool isUnderlined = false,
   }) : super(
           text,
           key: key,
@@ -29,8 +30,9 @@ class TFC_Text extends Text {
               ? textAlign
               : TFC_AppStyle.instance.textAlignments[textType],
           style: TFC_AppStyle.instance.textStyle[textType].apply(
-            color: (color != null) ? color : TFC_AppStyle.textColors[textType],
-          ),
+              color:
+                  (color != null) ? color : TFC_AppStyle.textColors[textType],
+              decoration: (isUnderlined) ? TextDecoration.underline : null),
         );
 
   factory TFC_Text.heading(
@@ -68,9 +70,16 @@ class TFC_Text extends Text {
     Key key,
     TextAlign textAlign,
     Color color,
+    bool isUnderlined = false,
   }) {
-    return TFC_Text(text, TFC_TextType.BODY,
-        key: key, textAlign: textAlign, color: color);
+    return TFC_Text(
+      text,
+      TFC_TextType.BODY,
+      key: key,
+      textAlign: textAlign,
+      color: color,
+      isUnderlined: isUnderlined,
+    );
   }
 }
 

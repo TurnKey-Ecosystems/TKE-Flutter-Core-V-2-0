@@ -14,6 +14,11 @@ class TFC_FlutterApp extends TFC_ReloadableWidget {
   static TFC_Page settingsPage;
   static TFC_AutoSavingProperty<String> deviceID =
       TFC_AutoSavingProperty("", "deviceID");
+  static void Function() _onAfterStartUpComplete;
+
+  TFC_FlutterApp({void Function() onAfterStartUpComplete}) : super() {
+    _onAfterStartUpComplete = onAfterStartUpComplete;
+  }
 
   @override
   void onInit() {
@@ -27,6 +32,11 @@ class TFC_FlutterApp extends TFC_ReloadableWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+
+    // Tell the app that startup is complete
+    if (_onAfterStartUpComplete != null) {
+      _onAfterStartUpComplete();
+    }
   }
 
   @override

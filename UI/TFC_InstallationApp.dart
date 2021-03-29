@@ -114,20 +114,32 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                     textAlign: TextAlign.center,
                   ),
                   Container(
-                    height: 3.0 * TFC_AppStyle.instance.lineHeight,
+                    height: 4.0 * TFC_AppStyle.instance.lineHeight,
                   ),
-                  TFC_Text.body(
-                    "If this is the installed app, then you can simply continue.",
+                  RichText(
                     textAlign: TextAlign.center,
-                    color: TFC_AppStyle.COLOR_HINT,
-                  ),
-                  TFC_Button.flat(
-                    onPressed: () {
-                      TFC_InstallationApp.shouldContinuePastThisPage = true;
-                    },
-                    child: TFC_Text.body(
-                      "Continue",
-                      color: TFC_AppStyle.COLOR_BACKGROUND,
+                    text: TextSpan(
+                      style: TFC_AppStyle.instance.textStyleBody
+                          .apply(color: TFC_AppStyle.COLOR_HINT),
+                      children: [
+                        TextSpan(
+                            text:
+                                "Note: If the app is already installed then you can simply "),
+                        WidgetSpan(
+                          child: GestureDetector(
+                            child: TFC_Text.body(
+                              "continue",
+                              isUnderlined: true,
+                              color: TFC_AppStyle.COLOR_HINT,
+                            ),
+                            onTap: () {
+                              TFC_InstallationApp.shouldContinuePastThisPage =
+                                  true;
+                            },
+                          ),
+                        ),
+                        TextSpan(text: "."),
+                      ],
                     ),
                   ),
                 ],
@@ -340,20 +352,32 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                     ),
                   ),
                   Container(
-                    height: 3.0 * TFC_AppStyle.instance.lineHeight,
+                    height: 4.0 * TFC_AppStyle.instance.lineHeight,
                   ),
-                  TFC_Text.body(
-                    "If this is the installed app, then you can simply continue.",
+                  RichText(
                     textAlign: TextAlign.center,
-                    color: TFC_AppStyle.COLOR_HINT,
-                  ),
-                  TFC_Button.flat(
-                    onPressed: () {
-                      TFC_InstallationApp.shouldContinuePastThisPage = true;
-                    },
-                    child: TFC_Text.body(
-                      "Continue",
-                      color: TFC_AppStyle.COLOR_BACKGROUND,
+                    text: TextSpan(
+                      style: TFC_AppStyle.instance.textStyleBody
+                          .apply(color: TFC_AppStyle.COLOR_HINT),
+                      children: [
+                        TextSpan(
+                            text:
+                                "Note: If the app is already installed then you can simply "),
+                        WidgetSpan(
+                          child: GestureDetector(
+                            child: TFC_Text.body(
+                              "continue",
+                              isUnderlined: true,
+                              color: TFC_AppStyle.COLOR_HINT,
+                            ),
+                            onTap: () {
+                              TFC_InstallationApp.shouldContinuePastThisPage =
+                                  true;
+                            },
+                          ),
+                        ),
+                        TextSpan(text: "."),
+                      ],
                     ),
                   ),
                 ],

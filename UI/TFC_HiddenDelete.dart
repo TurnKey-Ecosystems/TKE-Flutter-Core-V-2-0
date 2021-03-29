@@ -18,7 +18,7 @@ class TFC_HiddenDelete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<Choice>(
-      padding: EdgeInsets.all(TFC_AppStyle.instance.pageMargins),
+      padding: EdgeInsets.all(0.0 /*TFC_AppStyle.instance.pageMargins*/),
       icon: Icon(Icons.more_vert, color: TFC_AppStyle.COLOR_HINT),
       onSelected: (Choice choice) {
         if (choice.title == "Delete") {

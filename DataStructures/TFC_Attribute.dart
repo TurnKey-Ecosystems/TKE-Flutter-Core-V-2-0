@@ -2,46 +2,185 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:quiver/core.dart';
 import '../Serialization/TFC_SerializingContainers.dart';
+import 'TFC_Item.dart';
 import 'TFC_ItemInstances.dart';
 
-class TFC_AttributeInt extends TFC_AttributeProperty<int> {
-  TFC_AttributeInt({
+class TFC_AttributeItem<ItemType extends TFC_Item> {
+  final String _attributeKey;
+  final ItemType Function() _getDefaultItemOnCreateNew;
+  final ItemType Function(String) _getItemFromItemID;
+  TFC_AttributeString _itemIDAttribute;
+
+  TFC_AttributeItem({
     @required String attributeKey,
-    @required TFC_AttributeSetupDataFromItemInstance attributeSetupDataFromItemInstance,
+    @required ItemType Function() getDefaultItemOnCreateNew,
+    @required ItemType Function(String) getItemFromItemID,
+    @required
+        TFC_AttributeSetupDataFromItemInstance
+            attributeSetupDataFromItemInstance,
     void Function() onBeforeGetListener,
     void Function() onAfterSetListener,
-  }) : super(
-    attributeKey: attributeKey,
-    attributeSetupDataFromItemInstance: attributeSetupDataFromItemInstance,
-    onBeforeGetListener: onBeforeGetListener,
-    onAfterSetListener: onAfterSetListener,
-  );
+  })  : _attributeKey = attributeKey,
+        _getDefaultItemOnCreateNew = getDefaultItemOnCreateNew,
+        _getItemFromItemID = getItemFromItemID {
+    _itemIDAttribute = TFC_AttributeString(
+      attributeKey: _attributeKey,
+      attributeSetupDataFromItemInstance: attributeSetupDataFromItemInstance,
+      maxLength: TFC_Item.MAX_ITEM_ID_LENGTH,
+      onBeforeGetListener: onBeforeGetListener,
+      onAfterSetListener: onAfterSetListener,
+    );
+
+    // Call create new if the item is undefined
+    if (_itemIDAttribute.value == null || _itemIDAttribute.value == "") {
+      _itemIDAttribute.value = _getDefaultItemOnCreateNew().itemID;
+    }
+  }
+
+  ItemType get value {
+    return _getItemFromItemID(_itemIDAttribute.value);
+  }
+
+  set value(ItemType newItem) {
+    _itemIDAttribute.value = newItem.itemID;
+  }
+
+  void addOnBeforeGetListener(void Function() listener) {
+    TFC_ItemInstances.addOnBeforeGetListener(
+        _itemIDAttribute.value, _attributeKey, listener);
+  }
+
+  void removeOnBeforeGetListener(void Function() listener) {
+    TFC_ItemInstances.removeOnBeforeGetListener(
+        _itemIDAttribute.value, _attributeKey, listener);
+  }
+
+  void addOnAfterSetListener(void Function() listener) {
+    TFC_ItemInstances.addOnAfterSetListener(
+        _itemIDAttribute.value, _attributeKey, listener);
+  }
+
+  void removeOnAfterSetListener(void Function() listener) {
+    TFC_ItemInstances.removeOnAfterSetListener(
+        _itemIDAttribute.value, _attributeKey, listener);
+  }
+
+  @override
+  int get hashCode =>
+      hash2(_itemIDAttribute.value.hashCode, _attributeKey.hashCode);
+
+  @override
+  bool operator ==(dynamic other) {
+    return other is TFC_AttributeItem &&
+        other._itemIDAttribute.value.hashCode ==
+            _itemIDAttribute.value.hashCode &&
+        other._attributeKey.hashCode == _attributeKey.hashCode;
+  }
+}
+
+class TFC_AttributeDouble extends TFC_AttributeProperty<double> {
+  final double _defaultValue;
+
+  TFC_AttributeDouble({
+    @required String attributeKey,
+    double defaultValue = 0.0,
+    @required
+        TFC_AttributeSetupDataFromItemInstance
+            attributeSetupDataFromItemInstance,
+    void Function() onBeforeGetListener,
+    void Function() onAfterSetListener,
+  })  : _defaultValue = defaultValue,
+        super(
+          attributeKey: attributeKey,
+          attributeSetupDataFromItemInstance:
+              attributeSetupDataFromItemInstance,
+          onBeforeGetListener: onBeforeGetListener,
+          onAfterSetListener: onAfterSetListener,
+        );
+
+  @override
+  double getDefaultValue() {
+    return _defaultValue;
+  }
+}
+
+class TFC_AttributeInt extends TFC_AttributeProperty<int> {
+  final int _defaultValue;
+
+  TFC_AttributeInt({
+    @required String attributeKey,
+    int defaultValue = 0,
+    void Function() onBeforeGetListener,
+    void Function() onAfterSetListener,
+    @required
+        TFC_AttributeSetupDataFromItemInstance
+            attributeSetupDataFromItemInstance,
+  })  : _defaultValue = defaultValue,
+        super(
+          attributeKey: attributeKey,
+          attributeSetupDataFromItemInstance:
+              attributeSetupDataFromItemInstance,
+          onBeforeGetListener: onBeforeGetListener,
+          onAfterSetListener: onAfterSetListener,
+        );
 
   @override
   int getDefaultValue() {
-    return 0;
+    return _defaultValue;
   }
 }
 
 class TFC_AttributeString extends TFC_AttributeProperty<String> {
+  final String _defaultValue;
   final int maxLength;
 
   TFC_AttributeString({
     @required String attributeKey,
-    @required TFC_AttributeSetupDataFromItemInstance attributeSetupDataFromItemInstance,
+    String defaultValue = "",
     @required this.maxLength,
     void Function() onBeforeGetListener,
     void Function() onAfterSetListener,
-  }) : super(
-    attributeKey: attributeKey,
-    attributeSetupDataFromItemInstance: attributeSetupDataFromItemInstance,
-    onBeforeGetListener: onBeforeGetListener,
-    onAfterSetListener: onAfterSetListener,
-  );
+    @required
+        TFC_AttributeSetupDataFromItemInstance
+            attributeSetupDataFromItemInstance,
+  })  : _defaultValue = defaultValue,
+        super(
+          attributeKey: attributeKey,
+          attributeSetupDataFromItemInstance:
+              attributeSetupDataFromItemInstance,
+          onBeforeGetListener: onBeforeGetListener,
+          onAfterSetListener: onAfterSetListener,
+        );
 
   @override
   String getDefaultValue() {
-    return "";
+    return _defaultValue;
+  }
+}
+
+class TFC_AttributeBool extends TFC_AttributeProperty<bool> {
+  final bool _defaultValue;
+
+  TFC_AttributeBool({
+    @required String attributeKey,
+    @required bool defaultValue,
+    void Function() onBeforeGetListener,
+    void Function() onAfterSetListener,
+    @required
+        TFC_AttributeSetupDataFromItemInstance
+            attributeSetupDataFromItemInstance,
+  })  : _defaultValue = defaultValue,
+        super(
+          attributeKey: attributeKey,
+          attributeSetupDataFromItemInstance:
+              attributeSetupDataFromItemInstance,
+          onBeforeGetListener: onBeforeGetListener,
+          onAfterSetListener: onAfterSetListener,
+        );
+
+  @override
+  bool getDefaultValue() {
+    return _defaultValue;
   }
 }
 
@@ -49,24 +188,29 @@ abstract class TFC_AttributeProperty<AttributeType> extends TFC_Attribute {
   AttributeType get value {
     return getValue();
   }
+
   set value(AttributeType newValue) {
     setValue(newValue);
   }
 
   TFC_AttributeProperty({
     @required String attributeKey,
-    @required TFC_AttributeSetupDataFromItemInstance attributeSetupDataFromItemInstance,
+    @required
+        TFC_AttributeSetupDataFromItemInstance
+            attributeSetupDataFromItemInstance,
     void Function() onBeforeGetListener,
     void Function() onAfterSetListener,
   }) : super(
-    attributeKey: attributeKey,
-    attributeSetupDataFromItemInstance: attributeSetupDataFromItemInstance,
-    onBeforeGetListener: onBeforeGetListener,
-    onAfterSetListener: onAfterSetListener,
-  );
+          attributeKey: attributeKey,
+          attributeSetupDataFromItemInstance:
+              attributeSetupDataFromItemInstance,
+          onBeforeGetListener: onBeforeGetListener,
+          onAfterSetListener: onAfterSetListener,
+        );
 
   AttributeType getValue() {
-    dynamic instanceValue = TFC_ItemInstances.getAttributeValue(_itemID, _itemType, _attributeKey, getDefaultValue());
+    dynamic instanceValue = TFC_ItemInstances.getAttributeValue(
+        _itemID, _itemType, _attributeKey, getDefaultValue());
     if (instanceValue == null) {
       return getDefaultValue();
     } else {
@@ -75,7 +219,66 @@ abstract class TFC_AttributeProperty<AttributeType> extends TFC_Attribute {
   }
 
   void setValue(AttributeType newValue) {
-    TFC_ItemInstances.setAttributeValue(_itemID, _itemType, _attributeKey, newValue);
+    TFC_ItemInstances.setAttributeValue(
+        _itemID, _itemType, _attributeKey, newValue);
+  }
+}
+
+class TFC_AttributeItemSet<ItemType extends TFC_Item> extends TFC_Attribute {
+  final ItemType Function(String) _getItemFromItemID;
+
+  TFC_AttributeItemSet({
+    @required String attributeKey,
+    @required ItemType Function(String) getItemFromItemID,
+    void Function() onBeforeGetListener,
+    void Function() onAfterSetListener,
+    @required
+        TFC_AttributeSetupDataFromItemInstance
+            attributeSetupDataFromItemInstance,
+  })  : _getItemFromItemID = getItemFromItemID,
+        super(
+          attributeKey: attributeKey,
+          attributeSetupDataFromItemInstance:
+              attributeSetupDataFromItemInstance,
+          onBeforeGetListener: onBeforeGetListener,
+          onAfterSetListener: onAfterSetListener,
+        );
+
+  @override
+  List getDefaultValue() {
+    return [];
+  }
+
+  TFC_SerializingSet _getSerializingSet() {
+    return TFC_ItemInstances.getAttributeValue(
+        _itemID, _itemType, _attributeKey, getDefaultValue());
+  }
+
+  List<ItemType> getAllItems() {
+    TFC_SerializingSet serializingSetOfItemIDs = _getSerializingSet();
+    List<ItemType> items = [];
+
+    for (String itemID in serializingSetOfItemIDs) {
+      items.add(_getItemFromItemID(itemID));
+    }
+
+    return items;
+  }
+
+  List<ItemType> get allItems {
+    return getAllItems();
+  }
+
+  void add(ItemType newItem) {
+    _getSerializingSet().add(newItem.itemID);
+  }
+
+  void remove(ItemType itemToRemove) {
+    _getSerializingSet().remove(itemToRemove.itemID);
+  }
+
+  bool contains(ItemType itemToFind) {
+    return _getSerializingSet().contains(itemToFind.itemID);
   }
 }
 
@@ -86,15 +289,18 @@ class TFC_AttributeSet extends TFC_Attribute {
 
   TFC_AttributeSet({
     @required String attributeKey,
-    @required TFC_AttributeSetupDataFromItemInstance attributeSetupDataFromItemInstance,
     void Function() onBeforeGetListener,
     void Function() onAfterSetListener,
+    @required
+        TFC_AttributeSetupDataFromItemInstance
+            attributeSetupDataFromItemInstance,
   }) : super(
-    attributeKey: attributeKey,
-    attributeSetupDataFromItemInstance: attributeSetupDataFromItemInstance,
-    onBeforeGetListener: onBeforeGetListener,
-    onAfterSetListener: onAfterSetListener,
-  );
+          attributeKey: attributeKey,
+          attributeSetupDataFromItemInstance:
+              attributeSetupDataFromItemInstance,
+          onBeforeGetListener: onBeforeGetListener,
+          onAfterSetListener: onAfterSetListener,
+        );
 
   @override
   List getDefaultValue() {
@@ -102,7 +308,8 @@ class TFC_AttributeSet extends TFC_Attribute {
   }
 
   TFC_SerializingSet getSet() {
-    return TFC_ItemInstances.getAttributeValue(_itemID, _itemType, _attributeKey, getDefaultValue());
+    return TFC_ItemInstances.getAttributeValue(
+        _itemID, _itemType, _attributeKey, getDefaultValue());
   }
 
   void add(dynamic element) {
@@ -125,20 +332,22 @@ abstract class TFC_Attribute {
 
   TFC_Attribute({
     @required String attributeKey,
-    @required TFC_AttributeSetupDataFromItemInstance attributeSetupDataFromItemInstance,
+    @required
+        TFC_AttributeSetupDataFromItemInstance
+            attributeSetupDataFromItemInstance,
     void Function() onBeforeGetListener,
     void Function() onAfterSetListener,
-  }) :
-    _itemID = attributeSetupDataFromItemInstance.itemID,
-    _itemType = attributeSetupDataFromItemInstance.itemType,
-    _attributeKey = attributeKey
-  {
+  })  : _itemID = attributeSetupDataFromItemInstance.itemID,
+        _itemType = attributeSetupDataFromItemInstance.itemType,
+        _attributeKey = attributeKey {
     attributeSetupDataFromItemInstance.listToAddTo.add(this);
     if (onBeforeGetListener != null) {
-      TFC_ItemInstances.addOnBeforeGetListener(_itemID, _attributeKey, onBeforeGetListener);
+      TFC_ItemInstances.addOnBeforeGetListener(
+          _itemID, _attributeKey, onBeforeGetListener);
     }
     if (onBeforeGetListener != null) {
-      TFC_ItemInstances.addOnAfterSetListener(_itemID, _attributeKey, onAfterSetListener);
+      TFC_ItemInstances.addOnAfterSetListener(
+          _itemID, _attributeKey, onAfterSetListener);
     }
   }
 
@@ -147,7 +356,8 @@ abstract class TFC_Attribute {
   }
 
   void removeOnBeforeGetListener(void Function() listener) {
-    TFC_ItemInstances.removeOnBeforeGetListener(_itemID, _attributeKey, listener);
+    TFC_ItemInstances.removeOnBeforeGetListener(
+        _itemID, _attributeKey, listener);
   }
 
   void addOnAfterSetListener(void Function() listener) {
@@ -155,7 +365,8 @@ abstract class TFC_Attribute {
   }
 
   void removeOnAfterSetListener(void Function() listener) {
-    TFC_ItemInstances.removeOnAfterSetListener(_itemID, _attributeKey, listener);
+    TFC_ItemInstances.removeOnAfterSetListener(
+        _itemID, _attributeKey, listener);
   }
 
   dynamic getDefaultValue();
@@ -164,8 +375,10 @@ abstract class TFC_Attribute {
   int get hashCode => hash2(_itemID.hashCode, _attributeKey.hashCode);
 
   @override
-  bool operator == (dynamic other) {
-    return other is TFC_Attribute && other._itemID.hashCode == _itemID.hashCode && other._attributeKey.hashCode == _attributeKey.hashCode;
+  bool operator ==(dynamic other) {
+    return other is TFC_Attribute &&
+        other._itemID.hashCode == _itemID.hashCode &&
+        other._attributeKey.hashCode == _attributeKey.hashCode;
   }
 }
 
@@ -174,5 +387,6 @@ class TFC_AttributeSetupDataFromItemInstance {
   final String itemType;
   final List<dynamic> listToAddTo;
 
-  TFC_AttributeSetupDataFromItemInstance(this.itemID, this.itemType, this.listToAddTo);
+  TFC_AttributeSetupDataFromItemInstance(
+      this.itemID, this.itemType, this.listToAddTo);
 }

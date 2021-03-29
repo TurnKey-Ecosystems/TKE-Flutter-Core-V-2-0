@@ -56,6 +56,44 @@ class TFC_NumericField extends TFC_InputField {
           maxLength: maxLength,
         );
 
+  TFC_NumericField.fromNumAttribute({
+    @required TFC_AttributeProperty<num> source,
+    Color defaultValueColor = TFC_AppStyle.COLOR_HINT,
+    Color nonDefaultValueColor = TFC_AppStyle.COLOR_BLACK,
+    bool shouldChangeColorIfNotEqualToDefaultValue = true,
+    void Function() onSubmitted,
+    void Function() onFocused,
+    bool shouldSubmitOnFocusLost = true,
+    TextAlign textAlign = TextAlign.center,
+    TextInputAction textInputAction = TextInputAction.done,
+    TextStyle style,
+    bool shouldStartWithFocus = false,
+    int maxLength = 10,
+    this.decimalCount = 0,
+    this.borderType = TFC_BorderType.OUTLINED,
+  })  : _specficNumType = null,
+        getSourceValue = source.getValue,
+        setSourceValue = source.setValue,
+        defaultValueAsNum = source.getDefaultValue(),
+        super(
+          defaultValue: source.getDefaultValue().toStringAsFixed(decimalCount),
+          onSubmitted: onSubmitted,
+          onFocused: onFocused,
+          shouldSubmitOnFocusLost: shouldSubmitOnFocusLost,
+          hintText: source.getDefaultValue().toStringAsFixed(decimalCount),
+          textColor: nonDefaultValueColor,
+          hintColor: defaultValueColor,
+          autocorrect: false,
+          textCapitalization: TextCapitalization.none,
+          textAlign: textAlign,
+          keyboardType: TextInputType.numberWithOptions(
+              signed: false, decimal: decimalCount != 0),
+          textInputAction: textInputAction,
+          givenTextStyle: style,
+          shouldStartWithFocus: shouldStartWithFocus,
+          maxLength: maxLength,
+        );
+
   @override
   String getValueAsString() {
     return getSourceValue().toStringAsFixed(decimalCount);
@@ -417,7 +455,7 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
       _controller.text = getValueAsString();
     }
 
-    return TextField(
+    TextField textField = TextField(
       focusNode: _focusNode,
       onSubmitted: (shouldSubmitOnFocusLost)
           ? null
@@ -445,7 +483,7 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
       cursorColor: TFC_AppStyle.COLOR_HINT,
       //key: inputKey,
       decoration: InputDecoration(
-        icon: icon,
+        //prefixIcon: icon,
         contentPadding: EdgeInsets.all(0.0),
         hintText: hintText,
         hintStyle: style.apply(color: hintColor),
@@ -459,6 +497,19 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
       ),
       key: key,
     );
+
+    return textField;
+
+    /*if (icon != null) {
+      return Row(
+        children: [
+          icon,
+          textField,
+        ],
+      );
+    } else {
+      return textField;
+    }*/
   }
 
   static void unFocusActiveInputField() {
