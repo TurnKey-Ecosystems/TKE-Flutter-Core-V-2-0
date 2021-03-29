@@ -83,7 +83,7 @@ class TFC_StartupController {
     }
 
     // Show the browser redirect page
-    /*if (kIsWeb) {
+    if (kIsWeb) {
       TFC_BrowserAndOSTestResults results =
           TFC_WebExclusiveAPI.testBrowserAndOS();
 
@@ -126,7 +126,7 @@ class TFC_StartupController {
         // We delay to let the loading icon appear
         await Future.delayed(Duration(milliseconds: 250));
       }
-    }*/
+    }
 
     // Set up the database sync controller
     /*await TFC_SyncController.setupDatabaseSyncController(
