@@ -102,7 +102,7 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                   ),
                   TFC_Text.subheading("Step 2"),
                   TFC_Text.body(
-                    "Wait for the app to install.",
+                    "Wait for the app to install. (This may take a bit.)",
                     textAlign: TextAlign.center,
                   ),
                   Container(
