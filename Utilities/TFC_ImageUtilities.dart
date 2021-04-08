@@ -1,4 +1,4 @@
-import 'dart:io';
+//import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as DartUI;
 import 'package:flutter/foundation.dart';
@@ -17,12 +17,14 @@ class TFC_ImageUtilities {
   static const int _THUMBNAIL_WIDTH = 450; // 5
   static const int _THUMBNAIL_HEIGHT = 360; // 4
 
-  static Future<TFC_PictureData> importImage(Uint8List orignalImageBytes) async {
+  static Future<TFC_PictureData> importImage(
+      Uint8List orignalImageBytes) async {
     // Get the image ID
     String imageID = TFC_ItemUtilities.generateLocalItemID(IMAGE_ITEM_TYPE);
 
     // Get the image bytes
-    Uint8List compressedImageBytes = await FlutterImageCompress.compressWithList(orignalImageBytes);
+    Uint8List compressedImageBytes =
+        await FlutterImageCompress.compressWithList(orignalImageBytes);
     DartImg.Image scaledImage =
         await compute(_resizeOriginalImage, compressedImageBytes);
     TFC_ImageSize scaledImageSize =
@@ -30,11 +32,11 @@ class TFC_ImageUtilities {
 
     // Save the image locally
     String scaledImageFileName = getImageFileName(imageID, ".jpg");
-    TFC_DiskController.writeFileAsBytes(scaledImageFileName, DartImg.encodeJpg(scaledImage));
+    TFC_DiskController.writeFileAsBytes(
+        scaledImageFileName, DartImg.encodeJpg(scaledImage));
     TFC_SyncController.logImageCreation(imageID, scaledImageFileName);
     String thumbnailImageID = await createThumbnailAsync(scaledImage);
-    return TFC_PictureData(
-        imageID, thumbnailImageID, scaledImageSize, ".jpg");
+    return TFC_PictureData(imageID, thumbnailImageID, scaledImageSize, ".jpg");
     /*TFC_PictureData picuteData = await compute(_importImage, imageFile);
     return picuteData;*/
   }
@@ -72,8 +74,7 @@ class TFC_ImageUtilities {
 
     // Write the thumbnail to the local storage
     String thumbnailFileName = getThumbnailFileName(thumbnailImageID);
-    TFC_DiskController.writeFileAsBytes(
-        thumbnailFileName, croppedImageBytes);
+    TFC_DiskController.writeFileAsBytes(thumbnailFileName, croppedImageBytes);
 
     // Write the thumbnail to the database
     TFC_SyncController.logImageCreation(thumbnailImageID, thumbnailFileName);
@@ -154,8 +155,8 @@ class TFC_PictureData {
   final TFC_ImageSize size;
   final String fileExtension;
 
-  TFC_PictureData(this.imageID, this.thumbnailImageID,
-      this.size, this.fileExtension);
+  TFC_PictureData(
+      this.imageID, this.thumbnailImageID, this.size, this.fileExtension);
 }
 
 class TFC_ImageSize {

@@ -5,7 +5,7 @@ import '../UI/TFC_AppStyle.dart';
 import '../UI/TFC_Page.dart';
 import '../UI/TFC_ReloadableWidget.dart';
 import '../Utilities/TFC_Utilities.dart';
-import '../APIs/TFC_WebExclusiveAPI.dart';
+import '../APIs/TFC_PlatformAPI.dart';
 import '../Utilities/TFC_ColorExtension.dart';
 
 class TFC_FlutterApp extends TFC_ReloadableWidget {
@@ -23,9 +23,9 @@ class TFC_FlutterApp extends TFC_ReloadableWidget {
   @override
   void onInit() {
     // Set the ios status bar color
-    TFC_WebExclusiveAPI.setWebBackgroundColor(
-        TFC_AppStyle.colorPrimary.toHex());
-    TFC_WebExclusiveAPI.hideHTMLSplashScreen();
+    TFC_PlatformAPI.platformAPI
+        .setWebBackgroundColor(TFC_AppStyle.colorPrimary.toHex());
+    TFC_PlatformAPI.platformAPI.hideHTMLSplashScreen();
 
     // Lock orientation to portrait
     SystemChrome.setPreferredOrientations([

@@ -1,19 +1,12 @@
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 import '../APIs/TFC_IDeviceStorageAPI.dart';
-import '../APIs/TFC_WebAPI.dart';
 import 'TFC_IShareAPI.dart';
-import 'TFC_MobileAPI.dart';
+import 'TFC_MobileAPI.dart' if (dart.library.js) 'TFC_WebAPI.dart';
 
 abstract class TFC_PlatformAPI {
   static TFC_PlatformAPI platformAPI;
 
   static Future<void> setupPlatformAPI() async {
-    if (kIsWeb) {
-      platformAPI = TFC_WebAPI();
-    } else if (Platform.isIOS || Platform.isAndroid) {
-      platformAPI = TFC_MobileAPI();
-    }
+    platformAPI = TFC_APIForThisPlatform();
     await platformAPI.setup();
   }
 
@@ -23,4 +16,38 @@ abstract class TFC_PlatformAPI {
   Future setup() async {
     await deviceStorageAPI.setup();
   }
+
+  // Web Exclusive stubs
+  setWebBackgroundColor(String hexColor) async {}
+
+  hideHTMLSplashScreen() async {}
+
+  TFC_BrowserAndOSTestResults testBrowserAndOS() {
+    return null;
+  }
+
+  void copyTextToClipBoard(String textToCopy) {}
+
+  void showInstallPrompt() {}
+
+  bool getIsInstalled() {
+    return true;
+  }
+
+  String getCurrentURL() {
+    return null;
+  }
+
+  String getPasscodeFromURL() {
+    return "";
+  }
+}
+
+enum TFC_OperatingSystem { ANDROID, IOS, UNKNOWN }
+enum TFC_Browser { CHROME, SAFARI, UNKNOWN }
+
+class TFC_BrowserAndOSTestResults {
+  TFC_OperatingSystem os;
+  TFC_Browser browser;
+  bool isCorrectBrowserForOS;
 }

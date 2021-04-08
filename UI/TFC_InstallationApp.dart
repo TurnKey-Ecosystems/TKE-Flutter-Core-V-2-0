@@ -5,7 +5,7 @@ import '../UI/TFC_Button.dart';
 import 'TFC_CustomWidgets.dart';
 import 'TFC_ReloadableWidget.dart';
 import 'TFC_AppStyle.dart';
-import '../APIs/TFC_WebExclusiveAPI.dart';
+import '../APIs/TFC_PlatformAPI.dart';
 
 class TFC_InstallationApp extends StatelessWidget {
   static TFC_Browser browser;
@@ -18,8 +18,8 @@ class TFC_InstallationApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Set the ios status bar color
-    TFC_WebExclusiveAPI.setWebBackgroundColor("#ffffff");
-    TFC_WebExclusiveAPI.hideHTMLSplashScreen();
+    TFC_PlatformAPI.platformAPI.setWebBackgroundColor("#ffffff");
+    TFC_PlatformAPI.platformAPI.hideHTMLSplashScreen();
 
     // Lock orientation to portrait
     SystemChrome.setPreferredOrientations([
@@ -92,7 +92,7 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                     textAlign: TextAlign.center,
                   ),
                   TFC_Button.flat(
-                      onPressed: TFC_WebExclusiveAPI.showInstallPrompt,
+                      onPressed: TFC_PlatformAPI.platformAPI.showInstallPrompt,
                       child: TFC_Text.body(
                         "Install",
                         color: TFC_AppStyle.COLOR_BACKGROUND,
@@ -102,7 +102,7 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                   ),
                   TFC_Text.subheading("Step 2"),
                   TFC_Text.body(
-                    "Wait for the app to install. (This may take a bit.)",
+                    "Wait for the app to install. (This may take up to 60 seconds. After that, if the app is not on your home screen, then check your app drawer.)",
                     textAlign: TextAlign.center,
                   ),
                   Container(

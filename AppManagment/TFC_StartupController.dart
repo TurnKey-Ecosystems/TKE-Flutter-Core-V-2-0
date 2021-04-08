@@ -1,20 +1,19 @@
 import 'dart:convert';
 import 'dart:math';
-import 'dart:io';
+//import 'dart:io';
 import '../UI/TFC_InstallationApp.dart';
 import '../UI/TFC_BrowserRedirectApp.dart';
-import '../APIs/TFC_WebExclusiveAPI.dart';
+import '../APIs/TFC_PlatformAPI.dart';
 import '../Utilities/TFC_ColorExtension.dart';
 import '../UI/TFC_LogInMaterialApp.dart';
 import '../UI/TFC_PostLogInMaterialApp.dart';
 import 'package:flutter/foundation.dart';
-import '../APIs/TFC_PlatformAPI.dart';
 import 'package:flutter/material.dart';
-import 'package:device_info/device_info.dart';
+//import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
 import '../Serialization/TFC_AutoSaving.dart';
 import '../Utilities/TFC_Utilities.dart';
-import 'TFC_SyncController.dart';
+//import 'TFC_SyncController.dart';
 import '../UI/TFC_AppStyle.dart';
 import '../UI/TFC_Page.dart';
 import 'TFC_DiskController.dart';
@@ -85,7 +84,7 @@ class TFC_StartupController {
     // Show the browser redirect page
     if (kIsWeb) {
       TFC_BrowserAndOSTestResults results =
-          TFC_WebExclusiveAPI.testBrowserAndOS();
+          TFC_PlatformAPI.platformAPI.testBrowserAndOS();
 
       if (!results.isCorrectBrowserForOS) {
         runApp(TFC_BrowserRedirectApp(results));
@@ -96,9 +95,9 @@ class TFC_StartupController {
     }
 
     // Show the installation page
-    if (kIsWeb && !TFC_WebExclusiveAPI.getIsInstalled()) {
+    if (kIsWeb && !TFC_PlatformAPI.platformAPI.getIsInstalled()) {
       TFC_BrowserAndOSTestResults results =
-          TFC_WebExclusiveAPI.testBrowserAndOS();
+          TFC_PlatformAPI.platformAPI.testBrowserAndOS();
       runApp(TFC_InstallationApp(results.browser));
       await TFC_Utilities.when(() {
         return TFC_InstallationApp.shouldContinuePastThisPage;
@@ -106,7 +105,7 @@ class TFC_StartupController {
     }
 
     // Show the passcode page
-    if (caseInsensitivePasscode != null) {
+    if (kIsWeb && caseInsensitivePasscode != null) {
       TFC_AutoSavingProperty<String> lastPasscodeAttempt =
           TFC_AutoSavingProperty("", "lastPasscodeAttempt");
       bool lastPasscodeAttemptIsCorrect =

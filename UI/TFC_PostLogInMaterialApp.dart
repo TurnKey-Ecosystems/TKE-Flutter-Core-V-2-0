@@ -1,13 +1,13 @@
-import 'TFC_LoadingPage.dart';
+//import 'TFC_LoadingPage.dart';
 import 'package:flutter/material.dart';
 import 'TFC_AppStyle.dart';
-import '../APIs/TFC_WebExclusiveAPI.dart';
+import '../APIs/TFC_PlatformAPI.dart';
 
 class TFC_PostLogInMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Set the ios status bar color
-    TFC_WebExclusiveAPI.setWebBackgroundColor("#ffffff");
+    TFC_PlatformAPI.platformAPI.setWebBackgroundColor("#ffffff");
 
     return MaterialApp(
       theme: TFC_AppStyle.themeData,

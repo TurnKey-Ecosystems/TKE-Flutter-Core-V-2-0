@@ -4,7 +4,7 @@ import '../UI/TFC_Button.dart';
 import 'TFC_CustomWidgets.dart';
 import 'TFC_ReloadableWidget.dart';
 import 'TFC_AppStyle.dart';
-import '../APIs/TFC_WebExclusiveAPI.dart';
+import '../APIs/TFC_PlatformAPI.dart';
 //import 'dart:html' as html;
 
 class TFC_BrowserRedirectApp extends StatelessWidget {
@@ -24,8 +24,8 @@ class TFC_BrowserRedirectApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Set the ios status bar color
-    TFC_WebExclusiveAPI.setWebBackgroundColor("#ffffff");
-    TFC_WebExclusiveAPI.hideHTMLSplashScreen();
+    TFC_PlatformAPI.platformAPI.setWebBackgroundColor("#ffffff");
+    TFC_PlatformAPI.platformAPI.hideHTMLSplashScreen();
 
     return MaterialApp(
       theme: TFC_AppStyle.themeData,
@@ -137,8 +137,8 @@ class _TFC_BrowserRedirectScaffold extends TFC_ReloadableWidget {
                 //TFC_Text.body(TFC_WebExclusiveAPI.getCurrentURL()),
                 TFC_Button.flat(
                     onPressed: () {
-                      TFC_WebExclusiveAPI.copyTextToClipBoard(
-                          TFC_WebExclusiveAPI.getCurrentURL());
+                      TFC_PlatformAPI.platformAPI.copyTextToClipBoard(
+                          TFC_PlatformAPI.platformAPI.getCurrentURL());
                     },
                     child: TFC_Text.body(
                       "Copy URL",
