@@ -1,7 +1,7 @@
+import 'dart:developer';
 import 'dart:html';
 import 'dart:js';
 import 'package:flutter/foundation.dart';
-
 import '../APIs/TFC_WebShareAPI.dart';
 import '../APIs/TFC_WebStorageAPI.dart';
 import '../APIs/TFC_PlatformAPI.dart';
@@ -12,14 +12,14 @@ class TFC_APIForThisPlatform extends TFC_PlatformAPI {
 
   // Web Exclusive Overrides
   @override
-  setWebBackgroundColor(String hexColor) async {
+  void setWebBackgroundColor(String hexColor) async {
     if (kIsWeb) {
       context.callMethod('setWebBackgroundColor', [hexColor]);
     }
   }
 
   @override
-  hideHTMLSplashScreen() async {
+  void hideHTMLSplashScreen() async {
     if (kIsWeb) {
       context.callMethod('hideHTMLSplashScreen', []);
     }

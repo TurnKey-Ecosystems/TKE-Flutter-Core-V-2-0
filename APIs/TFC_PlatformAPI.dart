@@ -1,6 +1,6 @@
 import '../APIs/TFC_IDeviceStorageAPI.dart';
 import 'TFC_IShareAPI.dart';
-import 'TFC_MobileAPI.dart' if (dart.library.js) 'TFC_WebAPI.dart';
+import 'TFC_MobileAPI.dart' if (dart.library.html) 'TFC_WebAPI.dart';
 
 abstract class TFC_PlatformAPI {
   static TFC_PlatformAPI platformAPI;
@@ -18,9 +18,9 @@ abstract class TFC_PlatformAPI {
   }
 
   // Web Exclusive stubs
-  setWebBackgroundColor(String hexColor) async {}
+  void setWebBackgroundColor(String hexColor) async {}
 
-  hideHTMLSplashScreen() async {}
+  void hideHTMLSplashScreen() async {}
 
   TFC_BrowserAndOSTestResults testBrowserAndOS() {
     return null;

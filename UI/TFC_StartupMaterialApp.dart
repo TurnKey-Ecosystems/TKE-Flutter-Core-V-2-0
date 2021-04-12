@@ -7,7 +7,8 @@ class TFC_StartupMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Set the ios status bar color
-    TFC_PlatformAPI.platformAPI.setWebBackgroundColor("#ffffff");
+    // We can't set this, because the startup material app must run before the platform api setup
+    //TFC_PlatformAPI.platformAPI.setWebBackgroundColor("#ffffff");
 
     return MaterialApp(
       theme: TFC_AppStyle.themeData,

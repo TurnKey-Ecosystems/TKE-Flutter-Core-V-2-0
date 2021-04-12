@@ -20,6 +20,7 @@ import 'TFC_DiskController.dart';
 import '../Utilities/TFC_Event.dart';
 import 'TFC_FlutterApp.dart';
 import '../UI/TFC_StartupMaterialApp.dart';
+import 'dart:developer' as dev;
 
 class TFC_StartupController {
   static final TFC_Event onTFCStartupComplete = TFC_Event();
@@ -39,6 +40,9 @@ class TFC_StartupController {
     TFC_AppStyle.appBarLogoAssetPath = null;
     runApp(TFC_StartupMaterialApp());
 
+    // Setup the platform API
+    await TFC_PlatformAPI.setupPlatformAPI();
+
     // Render splash screen & setup UI base properties
     final Map<String, dynamic> appConfig =
         jsonDecode(await rootBundle.loadString(appConfigPath));
@@ -50,9 +54,6 @@ class TFC_StartupController {
 
     // We delay to let the app logo load
     //await Future.delayed(Duration(milliseconds: 250));
-
-    // Setup the platform API
-    await TFC_PlatformAPI.setupPlatformAPI();
 
     // Setup the disk controller
     await TFC_DiskController.setupTFCDiskController();
