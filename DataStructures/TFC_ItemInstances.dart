@@ -148,9 +148,6 @@ abstract class TFC_ItemInstances {
     String fileName = TFC_ItemUtilities.generateFileName(itemID);
     String itemAsEncodedJson = json.encode(itemData);
     TFC_DiskController.writeFileAsString(fileName, itemAsEncodedJson);
-    if (_onItemOfTypeCreatedOrDestroyed.containsKey(itemType)) {
-      _onItemOfTypeCreatedOrDestroyed[itemType].trigger();
-    }
     /*TFC_SyncController.logItemCreation(itemID, itemType);
     for (String attributeKey in itemData.keys) {
       if (attributeKey != "itemID") {
@@ -166,6 +163,12 @@ abstract class TFC_ItemInstances {
       }
     }*/
     return itemID;
+  }
+
+  static void triggerOnItemOfTypeCreatedOrDestroyed(String itemType) {
+    if (_onItemOfTypeCreatedOrDestroyed.containsKey(itemType)) {
+      _onItemOfTypeCreatedOrDestroyed[itemType].trigger();
+    }
   }
 
   static TFC_Event getOnItemOfTypeCreatedOrDestroyedEvent(

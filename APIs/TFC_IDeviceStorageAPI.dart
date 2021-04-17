@@ -14,9 +14,11 @@ abstract class TFC_IDeviceStorageAPI {
   String readFileAsString(String fileName, FileLocation fileLocation);
 
   // Write Functions
-  void writeFileAsString(String fileName, String data, FileLocation fileLocation);
-  void writeFileAsBytes(String fileName, Uint8List data, FileLocation fileLocation);
-  
+  String writeFileAsString(
+      String fileName, String data, FileLocation fileLocation);
+  String writeFileAsBytes(
+      String fileName, Uint8List data, FileLocation fileLocation);
+
   // Image Functions
   Future<Uint8List> getExternalImageBytes();
 

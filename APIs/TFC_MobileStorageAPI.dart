@@ -161,18 +161,22 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
   }
 
   // Write Functions
-  void writeFileAsBytes(
+  String writeFileAsBytes(
       String fileName, Uint8List contents, FileLocation fileLocation) {
     File file = _getFile(fileName, fileLocation);
 
     file.writeAsBytesSync(contents);
+
+    return file.path;
   }
 
-  void writeFileAsString(
+  String writeFileAsString(
       String fileName, String contents, FileLocation fileLocation) {
     File file = _getFile(fileName, fileLocation);
 
     file.writeAsStringSync(contents);
+
+    return file.path;
   }
 
   // Image Functions

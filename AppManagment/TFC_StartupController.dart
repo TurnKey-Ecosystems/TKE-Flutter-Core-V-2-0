@@ -29,8 +29,8 @@ class TFC_StartupController {
     @required String appConfigPath,
     @required String caseInsensitivePasscode,
     void Function() onAfterStartUpComplete,
-    @required TFC_Page Function() homePageBuilder,
-    @required TFC_Page Function() settingsPageBuilder,
+    @required Widget Function() homePageBuilder,
+    @required Widget Function() settingsPageBuilder,
     bool shouldStartSync = true,
   }) async {
     // We have to have a flutter app running before we can access assets where our app config file resides

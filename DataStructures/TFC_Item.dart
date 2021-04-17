@@ -12,18 +12,20 @@ abstract class TFC_Item {
   }
 
   String get itemType;
-  List<TFC_Attribute> _attributes = List();
+  List<TFC_Attribute> _attributes = [];
   String get fileName {
     return TFC_ItemUtilities.generateFileName(itemID);
   }
 
-  TFC_Event onAttributesChanged = TFC_Event();
+  final TFC_Event onAttributesChanged = TFC_Event();
+  final TFC_Event onBeforeDelete = TFC_Event();
 
   @mustCallSuper
   TFC_Item.createNew() {
     _itemID = TFC_ItemInstances.locallyCreateNewItem(itemType);
     TFC_ItemInstances.loadItemInstance(itemID);
     _initialize();
+    TFC_ItemInstances.triggerOnItemOfTypeCreatedOrDestroyed(itemType);
   }
 
   @mustCallSuper
@@ -53,6 +55,7 @@ abstract class TFC_Item {
 
   @mustCallSuper
   void delete() {
+    onBeforeDelete.trigger();
     TFC_ItemInstances.deleteItem(itemID);
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../Serialization/TFC_AutoSaving.dart';
 import '../UI/TFC_AppStyle.dart';
-import '../UI/TFC_Page.dart';
 import '../UI/TFC_ReloadableWidget.dart';
 import '../Utilities/TFC_Utilities.dart';
 import '../APIs/TFC_PlatformAPI.dart';
@@ -10,8 +9,8 @@ import '../Utilities/TFC_ColorExtension.dart';
 
 class TFC_FlutterApp extends TFC_ReloadableWidget {
   static String appName;
-  static TFC_Page homePage;
-  static TFC_Page settingsPage;
+  static Widget homePage;
+  static Widget settingsPage;
   static TFC_AutoSavingProperty<String> deviceID =
       TFC_AutoSavingProperty("", "deviceID");
   static void Function() _onAfterStartUpComplete;

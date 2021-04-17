@@ -37,17 +37,19 @@ class TFC_WebStorageAPI extends TFC_IDeviceStorageAPI {
 
   // Write Functions
   @override
-  void writeFileAsBytes(
+  String writeFileAsBytes(
       String fileName, Uint8List contents, FileLocation fileLocation) {
     String contentsAsString = base64.encode(contents);
     writeFileAsString(fileName, contentsAsString, fileLocation);
+    return fileName;
   }
 
   @override
-  void writeFileAsString(
+  String writeFileAsString(
       String fileName, String contents, FileLocation fileLocation) {
     String filePath = _getFileLocationPrefix(fileLocation) + fileName;
     _webStorage[filePath] = contents;
+    return fileName;
   }
 
   // Image Functions
