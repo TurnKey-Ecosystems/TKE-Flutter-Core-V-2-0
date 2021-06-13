@@ -309,7 +309,7 @@ class TFC_TextField extends TFC_InputField {
 }
 
 abstract class TFC_InputField extends TFC_ReloadableWidget {
-  static late FocusNode? _focus;
+  static FocusNode? _focus;
   static FocusNode? get focus {
     return _focus;
   }
