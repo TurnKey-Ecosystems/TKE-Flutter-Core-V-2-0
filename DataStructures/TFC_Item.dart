@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../Utilities/TFC_Event.dart';
 import 'package:flutter/foundation.dart';
 import 'TFC_Attribute.dart';
@@ -25,6 +27,7 @@ abstract class TFC_Item {
     _itemID = TFC_ItemInstances.locallyCreateNewItem(itemType);
     TFC_ItemInstances.loadItemInstance(itemID);
     _initialize();
+    createNewInit();
     TFC_ItemInstances.triggerOnItemOfTypeCreatedOrDestroyed(itemType);
   }
 
@@ -43,6 +46,8 @@ abstract class TFC_Item {
       attribute.addOnAfterSetListener(tempTrackable);
     }
   }
+
+  void createNewInit() {}
 
   void tempTrackable() {
     onAttributesChanged.trigger();
