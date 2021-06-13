@@ -12,7 +12,7 @@ class TFC_MobileShareAPI extends TFC_IShareAPI {
     }
 
     TFC_MobileStorageAPI storageAPI = TFC_PlatformAPI.platformAPI.deviceStorageAPI as TFC_MobileStorageAPI;
-    List<String> filePaths = List();
+    List<String> filePaths = [];
     for (String fileName in fileNames) {
       String filePath = storageAPI.getAbsoluteFilePath(fileName, FileLocation.EXPORT);
       filePaths.add(filePath);

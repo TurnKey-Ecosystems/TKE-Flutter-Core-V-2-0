@@ -3,17 +3,17 @@ import '../Utilities/TFC_Utilities.dart';
 
 abstract class TFC_ReloadableWidget extends StatefulWidget {
   //_TFC_ReloadableWidgetState _state;
-  Future Function() reload;
-  final bool Function() _mayReload;
+  Future Function() reload = () async {};
+  final bool Function()? _mayReload;
   bool checkIfMayReload() {
     if (_mayReload != null) {
-      return _mayReload();
+      return _mayReload!();
     } else {
       return true;
     }
   }
 
-  TFC_ReloadableWidget({Key key, bool Function() mayReload})
+  TFC_ReloadableWidget({Key? key, bool Function()? mayReload})
       : _mayReload = mayReload,
         super(key: key) {
     //_state = _TFC_ReloadableWidgetState(onInit, onDispose, buildWidget);
@@ -36,7 +36,7 @@ abstract class TFC_ReloadableWidget extends StatefulWidget {
   static Map<int, _TFC_ReloadableWidgetState> _stateInstances = Map();
 
   _TFC_ReloadableWidgetState getStateInstance(BuildContext context) {
-    return _stateInstances[context.hashCode];
+    return _stateInstances[context.hashCode]!;
   }
 
   static void registerStateInstance(

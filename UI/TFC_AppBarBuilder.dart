@@ -59,7 +59,7 @@ class TFC_AppBarBuilder {
                   Container(
                     alignment: Alignment.center,
                     height: TFC_AppStyle.instance.m2UnitsToFlutterUnits(4),
-                    child: Image.asset(TFC_AppStyle.appBarLogoAssetPath),
+                    child: Image.asset(TFC_AppStyle.appBarLogoAssetPath!),
                   ),
                   _getSettingsButton(context, shouldShowSettingsButton),
                 ],

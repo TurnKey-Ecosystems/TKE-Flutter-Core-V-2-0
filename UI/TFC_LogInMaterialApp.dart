@@ -7,9 +7,9 @@ import 'TFC_InputFields.dart';
 import '../APIs/TFC_PlatformAPI.dart';
 
 class TFC_LogInMaterialApp extends StatelessWidget {
-  static String correctPasscode;
+  static late String correctPasscode;
   static String passcodeAttempt = "";
-  static String failedPasscodeAttempt = null;
+  static String? failedPasscodeAttempt = null;
   static bool passcodeIsCorrect = false;
   static updatePasscodeIsCorrect() {
     if (TFC_LogInMaterialApp.passcodeAttempt.toLowerCase() ==

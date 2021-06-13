@@ -8,7 +8,7 @@ abstract class TFC_SerializingContainer {
 
   dynamic _valueFromJson(dynamic value) {
     if (value is Map) {
-      return TFC_SerializingMap.fromJson(_onSet, value);
+      return TFC_SerializingMap.fromJson(_onSet, value as Map<String, dynamic>);
     } else if (value is List || value is Set) {
       return TFC_SerializingSet.fromJson(onSet: _onSet, json: value);
     } else {
@@ -28,7 +28,7 @@ abstract class TFC_SerializingContainer {
 }
 
 class TFC_SerializingMap extends TFC_SerializingContainer {
-  Map<String, dynamic> _map;
+  late Map<String, dynamic> _map;
   int get length {
     return _map.length;
   }
@@ -95,9 +95,9 @@ class TFC_SerializingMap extends TFC_SerializingContainer {
 }
 
 class TFC_SerializingSet extends TFC_SerializingContainer implements Iterable {
-  Set<dynamic> _set;
-  final void Function(dynamic, bool) _onElementAdded;
-  final void Function(dynamic, bool) _onElementRemoved;
+  late Set<dynamic> _set;
+  late final void Function(dynamic, bool)? _onElementAdded;
+  late final void Function(dynamic, bool)? _onElementRemoved;
   int get length {
     return _set.length;
   }
@@ -107,8 +107,8 @@ class TFC_SerializingSet extends TFC_SerializingContainer implements Iterable {
   }
 
   TFC_SerializingSet(void Function() onSet,
-      {void Function(dynamic, bool) onElementAdded,
-      void Function(dynamic, bool) onElementRemoved})
+      {void Function(dynamic, bool)? onElementAdded,
+      void Function(dynamic, bool)? onElementRemoved})
       : _onElementAdded = onElementAdded,
         _onElementRemoved = onElementRemoved,
         super(onSet) {
@@ -116,10 +116,10 @@ class TFC_SerializingSet extends TFC_SerializingContainer implements Iterable {
   }
 
   TFC_SerializingSet.fromJson(
-      {@required void Function() onSet,
-      @required List<dynamic> json,
-      void Function(dynamic, bool) onElementAdded,
-      void Function(dynamic, bool) onElementRemoved})
+      {required void Function() onSet,
+      required List<dynamic> json,
+      void Function(dynamic, bool)? onElementAdded,
+      void Function(dynamic, bool)? onElementRemoved})
       : _onElementAdded = onElementAdded,
         _onElementRemoved = onElementRemoved,
         super(onSet) {
@@ -130,7 +130,7 @@ class TFC_SerializingSet extends TFC_SerializingContainer implements Iterable {
   }
 
   List<dynamic> toJson() {
-    List<dynamic> asJson = List();
+    List<dynamic> asJson = [];
     for (dynamic element in _set) {
       asJson.add(_valueToJson(element));
     }
@@ -174,13 +174,13 @@ class TFC_SerializingSet extends TFC_SerializingContainer implements Iterable {
 
   void triggerOnElementAdded(dynamic element, bool shouldLogChange) {
     if (_onElementAdded != null) {
-      _onElementAdded(element, shouldLogChange);
+      _onElementAdded!(element, shouldLogChange);
     }
   }
 
   void triggerOnElementRemoved(dynamic element, bool shouldLogChange) {
     if (_onElementRemoved != null) {
-      _onElementRemoved(element, shouldLogChange);
+      _onElementRemoved!(element, shouldLogChange);
     }
   }
 
@@ -210,7 +210,7 @@ class TFC_SerializingSet extends TFC_SerializingContainer implements Iterable {
     return _set.expand(f);
   }
 
-  dynamic firstWhere(bool Function(dynamic) test, {dynamic Function() orElse}) {
+  dynamic firstWhere(bool Function(dynamic) test, {dynamic Function()? orElse}) {
     return _set.firstWhere(test, orElse: orElse);
   }
 
@@ -230,7 +230,7 @@ class TFC_SerializingSet extends TFC_SerializingContainer implements Iterable {
     return _set.join(seperator);
   }
 
-  dynamic lastWhere(bool Function(dynamic) test, {dynamic Function() orElse}) {
+  dynamic lastWhere(bool Function(dynamic) test, {dynamic Function()? orElse}) {
     return _set.lastWhere(test, orElse: orElse);
   }
 
@@ -243,7 +243,7 @@ class TFC_SerializingSet extends TFC_SerializingContainer implements Iterable {
   }
 
   dynamic singleWhere(bool Function(dynamic) test,
-      {dynamic Function() orElse}) {
+      {dynamic Function()? orElse}) {
     return _set.singleWhere(test, orElse: orElse);
   }
 

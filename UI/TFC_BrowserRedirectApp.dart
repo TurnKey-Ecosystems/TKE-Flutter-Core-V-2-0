@@ -16,7 +16,7 @@ class TFC_BrowserRedirectApp extends StatelessWidget {
       "Paste the above URL into the Safari web browser.";
   static final String unkownOSInstructions =
       " - If you are using an Android phone, make sure you are using the Chrome web browser.\n\n - If you are using an iPhone, make sure you are using the Safari web browser.";
-  static TFC_BrowserAndOSTestResults browserAndOSTestResults;
+  static late TFC_BrowserAndOSTestResults browserAndOSTestResults;
   static bool shouldContinuePastThisPage = false;
 
   TFC_BrowserRedirectApp(TFC_BrowserAndOSTestResults browserAndOSTestResults) {
@@ -98,7 +98,7 @@ class _TFC_BrowserRedirectScaffold extends TFC_ReloadableWidget {
         ),
       );
     } else {
-      String step2Instructions;
+      String step2Instructions = "";
       if (os == TFC_OperatingSystem.ANDROID && browser != TFC_Browser.CHROME) {
         step2Instructions = TFC_BrowserRedirectApp.toChromeInstructions;
       } else if (os == TFC_OperatingSystem.IOS &&

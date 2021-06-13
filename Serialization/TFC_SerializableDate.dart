@@ -12,7 +12,7 @@ class TFC_SerializableDate {
   int day;
 
   // Contructors
-  TFC_SerializableDate({@required this.year, @required this.month, @required this.day});
+  TFC_SerializableDate({required this.year, required this.month, required this.day});
 
   TFC_SerializableDate.fromDateTime(DateTime dateTime, )
     : year = dateTime.year,

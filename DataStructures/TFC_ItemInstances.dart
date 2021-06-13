@@ -20,7 +20,7 @@ abstract class TFC_ItemInstances {
       if (TFC_DiskController.fileExists(itemFileName)) {
         // Load the file
         String encodedItemJson =
-            TFC_DiskController.readFileAsString(itemFileName);
+            TFC_DiskController.readFileAsString(itemFileName)!;
         Map decodedItemJson = jsonDecode(encodedItemJson);
         String nameOfItemType = decodedItemJson["itemType"];
 
@@ -33,18 +33,18 @@ abstract class TFC_ItemInstances {
         for (String attributeKey in decodedItemJson.keys) {
           if (decodedItemJson[attributeKey] is List ||
               decodedItemJson[attributeKey] is Set) {
-            _itemInstances[itemID][attributeKey] =
+            _itemInstances[itemID]![attributeKey] =
                 _createSerializingSetForItemInstances(itemID, nameOfItemType,
                     attributeKey, decodedItemJson[attributeKey]);
           } else {
-            _itemInstances[itemID][attributeKey] =
+            _itemInstances[itemID]![attributeKey] =
                 decodedItemJson[attributeKey];
           }
 
           // Setup the on change events for this attribute
-          _onBeforeAttributeGetsByItemID[itemID][attributeKey] = TFC_Event();
-          _onAfterAttributeSetsByItemID[itemID][attributeKey] = TFC_Event();
-          _onAfterAttributeSetsByItemID[itemID][attributeKey].addListener(() {
+          _onBeforeAttributeGetsByItemID[itemID]![attributeKey] = TFC_Event();
+          _onAfterAttributeSetsByItemID[itemID]![attributeKey] = TFC_Event();
+          _onAfterAttributeSetsByItemID[itemID]![attributeKey]!.addListener(() {
             saveItem(itemID);
           });
         }
@@ -76,14 +76,14 @@ abstract class TFC_ItemInstances {
             TFC_SyncController.logElementAddedToSetAttribute(
                 itemID, itemType, attributeKey, element);
           }*/
-          _onAfterAttributeSetsByItemID[itemID][attributeKey].trigger();
+          _onAfterAttributeSetsByItemID[itemID]![attributeKey]!.trigger();
         },
         onElementRemoved: (dynamic element, bool shouldLogChange) {
           /*if (shouldLogChange) {
             TFC_SyncController.logElementRemovedFromSetAttribute(
                 itemID, itemType, attributeKey, element);
           }*/
-          _onAfterAttributeSetsByItemID[itemID][attributeKey].trigger();
+          _onAfterAttributeSetsByItemID[itemID]![attributeKey]!.trigger();
         });
   }
 
@@ -95,7 +95,7 @@ abstract class TFC_ItemInstances {
     TFC_DiskController.writeFileAsString(fileName, itemAsEncodedJson);
     saveItem(itemID);
     if (_onItemOfTypeCreatedOrDestroyed.containsKey(nameOfItemType)) {
-      _onItemOfTypeCreatedOrDestroyed[nameOfItemType].trigger();
+      _onItemOfTypeCreatedOrDestroyed[nameOfItemType]!.trigger();
     }
   }
 
@@ -121,7 +121,7 @@ abstract class TFC_ItemInstances {
     TFC_DiskController.writeFileAsString(fileName, itemAsEncodedJson);
     saveItem(itemID);
     if (_onItemOfTypeCreatedOrDestroyed.containsKey(itemType)) {
-      _onItemOfTypeCreatedOrDestroyed[itemType].trigger();
+      _onItemOfTypeCreatedOrDestroyed[itemType]!.trigger();
     }
   }
 
@@ -134,7 +134,7 @@ abstract class TFC_ItemInstances {
     Map<String, dynamic> initialItemData;
     if (TFC_DiskController.fileExists(defaultItemIDForItemOfThisTypeFileName)) {
       String encodedDefaultItemJson = TFC_DiskController.readFileAsString(
-          defaultItemIDForItemOfThisTypeFileName);
+          defaultItemIDForItemOfThisTypeFileName)!;
       initialItemData = jsonDecode(encodedDefaultItemJson);
     } else {
       initialItemData = Map();
@@ -167,7 +167,7 @@ abstract class TFC_ItemInstances {
 
   static void triggerOnItemOfTypeCreatedOrDestroyed(String itemType) {
     if (_onItemOfTypeCreatedOrDestroyed.containsKey(itemType)) {
-      _onItemOfTypeCreatedOrDestroyed[itemType].trigger();
+      _onItemOfTypeCreatedOrDestroyed[itemType]!.trigger();
     }
   }
 
@@ -177,7 +177,7 @@ abstract class TFC_ItemInstances {
         _onItemOfTypeCreatedOrDestroyed[nameOfItemType] == null) {
       _onItemOfTypeCreatedOrDestroyed[nameOfItemType] = TFC_Event();
     }
-    return _onItemOfTypeCreatedOrDestroyed[nameOfItemType];
+    return _onItemOfTypeCreatedOrDestroyed[nameOfItemType]!;
   }
 
   static void saveItem(String itemID) {
@@ -191,7 +191,7 @@ abstract class TFC_ItemInstances {
   static void deleteItem(String itemID, {bool shouldLogDeletion = true}) {
     String fileName = TFC_ItemUtilities.generateFileName(itemID);
     String itemType =
-        jsonDecode(TFC_DiskController.readFileAsString(fileName))["itemType"];
+        jsonDecode(TFC_DiskController.readFileAsString(fileName)!)["itemType"];
     unloadItemInstance(itemID);
     if (TFC_DiskController.fileExists(fileName)) {
       TFC_DiskController.deleteFile(fileName);
@@ -201,41 +201,41 @@ abstract class TFC_ItemInstances {
     }*/
     // Do this after we log the item deletion
     if (_onItemOfTypeCreatedOrDestroyed.containsKey(itemType)) {
-      _onItemOfTypeCreatedOrDestroyed[itemType].trigger();
+      _onItemOfTypeCreatedOrDestroyed[itemType]!.trigger();
     }
   }
 
   static void addOnBeforeGetListener(
-      String itemID, String attributeKey, void Function() listener) {
+      String itemID, String attributeKey, void Function()? listener) {
     if (_itemInstances.containsKey(itemID) &&
-        _itemInstances[itemID].containsKey(attributeKey)) {
-      _onBeforeAttributeGetsByItemID[itemID][attributeKey]
+        _itemInstances[itemID]!.containsKey(attributeKey)) {
+      _onBeforeAttributeGetsByItemID[itemID]![attributeKey]!
           .addListener(listener);
     }
   }
 
   static void removeOnBeforeGetListener(
-      String itemID, String attributeKey, void Function() listener) {
+      String itemID, String attributeKey, void Function()? listener) {
     if (_itemInstances.containsKey(itemID) &&
-        _itemInstances[itemID].containsKey(attributeKey)) {
-      _onBeforeAttributeGetsByItemID[itemID][attributeKey]
+        _itemInstances[itemID]!.containsKey(attributeKey)) {
+      _onBeforeAttributeGetsByItemID[itemID]![attributeKey]!
           .removeListener(listener);
     }
   }
 
   static void addOnAfterSetListener(
-      String itemID, String attributeKey, void Function() listener) {
+      String itemID, String attributeKey, void Function()? listener) {
     if (_itemInstances.containsKey(itemID) &&
-        _itemInstances[itemID].containsKey(attributeKey)) {
-      _onAfterAttributeSetsByItemID[itemID][attributeKey].addListener(listener);
+        _itemInstances[itemID]!.containsKey(attributeKey)) {
+      _onAfterAttributeSetsByItemID[itemID]![attributeKey]!.addListener(listener);
     }
   }
 
   static void removeOnAfterSetListener(
-      String itemID, String attributeKey, void Function() listener) {
+      String itemID, String attributeKey, void Function()? listener) {
     if (_itemInstances.containsKey(itemID) &&
-        _itemInstances[itemID].containsKey(attributeKey)) {
-      _onAfterAttributeSetsByItemID[itemID][attributeKey]
+        _itemInstances[itemID]!.containsKey(attributeKey)) {
+      _onAfterAttributeSetsByItemID[itemID]![attributeKey]!
           .removeListener(listener);
     }
   }
@@ -257,24 +257,24 @@ abstract class TFC_ItemInstances {
       }
     }
 
-    if (!_itemInstances[itemID].containsKey(attributeKey) ||
-        _itemInstances[itemID][attributeKey] == null) {
+    if (!_itemInstances[itemID]!.containsKey(attributeKey) ||
+        _itemInstances[itemID]![attributeKey] == null) {
       if (defaultValue is List || defaultValue is Set) {
-        _itemInstances[itemID][attributeKey] =
+        _itemInstances[itemID]![attributeKey] =
             _createSerializingSetForItemInstances(
                 itemID, itemType, attributeKey, defaultValue as List<dynamic>);
       } else {
-        _itemInstances[itemID][attributeKey] = defaultValue;
+        _itemInstances[itemID]![attributeKey] = defaultValue;
       }
-      _onAfterAttributeSetsByItemID[itemID][attributeKey] = TFC_Event();
-      _onBeforeAttributeGetsByItemID[itemID][attributeKey] = TFC_Event();
-      _onAfterAttributeSetsByItemID[itemID][attributeKey].addListener(() {
+      _onAfterAttributeSetsByItemID[itemID]![attributeKey] = TFC_Event();
+      _onBeforeAttributeGetsByItemID[itemID]![attributeKey] = TFC_Event();
+      _onAfterAttributeSetsByItemID[itemID]![attributeKey]!.addListener(() {
         saveItem(itemID);
       });
     }
 
-    _onBeforeAttributeGetsByItemID[itemID][attributeKey].trigger();
-    return _itemInstances[itemID][attributeKey];
+    _onBeforeAttributeGetsByItemID[itemID]![attributeKey]!.trigger();
+    return _itemInstances[itemID]![attributeKey];
   }
 
   static void setAttributeValue(String itemID, String nameOfItemType,
@@ -289,11 +289,11 @@ abstract class TFC_ItemInstances {
       }
     }
     if (_itemInstances.containsKey(itemID)) {
-      if (!_itemInstances[itemID].containsKey(attributeKey)) {
-        _itemInstances[itemID][attributeKey] = newValue;
-        _onAfterAttributeSetsByItemID[itemID][attributeKey] = TFC_Event();
-        _onBeforeAttributeGetsByItemID[itemID][attributeKey] = TFC_Event();
-        _onAfterAttributeSetsByItemID[itemID][attributeKey].addListener(() {
+      if (!_itemInstances[itemID]!.containsKey(attributeKey)) {
+        _itemInstances[itemID]![attributeKey] = newValue;
+        _onAfterAttributeSetsByItemID[itemID]![attributeKey] = TFC_Event();
+        _onBeforeAttributeGetsByItemID[itemID]![attributeKey] = TFC_Event();
+        _onAfterAttributeSetsByItemID[itemID]![attributeKey]!.addListener(() {
           saveItem(itemID);
         });
         /*if (shouldLogChange) {
@@ -301,16 +301,16 @@ abstract class TFC_ItemInstances {
               attributeKey, _itemInstances[itemID][attributeKey]);
         }*/
         if (shouldNotifyListeners) {
-          _onAfterAttributeSetsByItemID[itemID][attributeKey].trigger();
+          _onAfterAttributeSetsByItemID[itemID]![attributeKey]!.trigger();
         }
-      } else if (_itemInstances[itemID][attributeKey] != newValue) {
-        _itemInstances[itemID][attributeKey] = newValue;
+      } else if (_itemInstances[itemID]![attributeKey] != newValue) {
+        _itemInstances[itemID]![attributeKey] = newValue;
         /*if (shouldLogChange) {
           TFC_SyncController.logAttributeChange(itemID, nameOfItemType,
               attributeKey, _itemInstances[itemID][attributeKey]);
         }*/
         if (shouldNotifyListeners) {
-          _onAfterAttributeSetsByItemID[itemID][attributeKey].trigger();
+          _onAfterAttributeSetsByItemID[itemID]![attributeKey]!.trigger();
         }
       }
     }

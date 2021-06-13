@@ -8,8 +8,8 @@ import 'TFC_AppStyle.dart';
 import '../APIs/TFC_PlatformAPI.dart';
 
 class TFC_InstallationApp extends StatelessWidget {
-  static TFC_Browser browser;
-  static bool shouldContinuePastThisPage = false;
+  static late TFC_Browser browser;
+  static late bool shouldContinuePastThisPage = false;
 
   TFC_InstallationApp(TFC_Browser browser) {
     TFC_InstallationApp.browser = browser;

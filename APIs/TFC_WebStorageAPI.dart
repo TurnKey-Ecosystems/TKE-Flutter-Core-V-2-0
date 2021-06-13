@@ -7,7 +7,7 @@ import '../AppManagment/TFC_FlutterApp.dart';
 import '../APIs/TFC_IDeviceStorageAPI.dart';
 
 class TFC_WebStorageAPI extends TFC_IDeviceStorageAPI {
-  DartHTML.Storage _webStorage;
+  late DartHTML.Storage _webStorage;
 
   // Setup Functions
   @override
@@ -24,14 +24,14 @@ class TFC_WebStorageAPI extends TFC_IDeviceStorageAPI {
 
   // Read Functions
   @override
-  Uint8List readFileAsBytes(String fileName, FileLocation fileLocation) {
-    String contentsAsString = readFileAsString(fileName, fileLocation);
-    return base64.decode(contentsAsString);
+  Uint8List? readFileAsBytes(String fileName, FileLocation fileLocation) {
+    String? contentsAsString = readFileAsString(fileName, fileLocation);
+    return (contentsAsString != null) ? base64.decode(contentsAsString) : null;
   }
 
   @override
-  String readFileAsString(String fileName, FileLocation fileLocation) {
-    String filePath = _getFileLocationPrefix(fileLocation) + fileName;
+  String? readFileAsString(String fileName, FileLocation fileLocation) {
+    String? filePath = _getFileLocationPrefix(fileLocation) + fileName;
     return _webStorage[filePath];
   }
 
@@ -53,15 +53,15 @@ class TFC_WebStorageAPI extends TFC_IDeviceStorageAPI {
   }
 
   // Image Functions
-  Future<Uint8List> getExternalImageBytes() async {
+  /*Future<Uint8List> getExternalImageBytes() async {
     DartHTML.InputElement uploadInput = DartHTML.FileUploadInputElement();
     uploadInput.click();
 
-    Uint8List uploadedImageBytes;
+    Uint8List? uploadedImageBytes;
     uploadInput.onChange.listen((e) {
       // read file content as dataURL
       final files = uploadInput.files;
-      if (files.length == 1) {
+      if (files!.length == 1) {
         final file = files[0];
         DartHTML.FileReader reader = DartHTML.FileReader();
 
@@ -75,8 +75,8 @@ class TFC_WebStorageAPI extends TFC_IDeviceStorageAPI {
     await TFC_Utilities.when(() {
       return uploadedImageBytes != null;
     });
-    return uploadedImageBytes;
-  }
+    return uploadedImageBytes!;
+  }*/
 
   // Utility Functions
   @override
@@ -98,10 +98,9 @@ class TFC_WebStorageAPI extends TFC_IDeviceStorageAPI {
 
   @override
   List<String> listFileNames(FileLocation fileLocation) {
-    List<String> fileNamesFromRequestedFileLocation = List();
-    List<String> allFilePaths = _webStorage.keys;
+    List<String> fileNamesFromRequestedFileLocation = [];
     String fileLocationPrefix = _getFileLocationPrefix(fileLocation);
-    for (String filePath in allFilePaths) {
+    for (String filePath in _webStorage.keys) {
       if (filePath.startsWith(fileLocationPrefix)) {
         String fileName = filePath.substring(fileLocationPrefix.length);
         fileNamesFromRequestedFileLocation.add(fileName);

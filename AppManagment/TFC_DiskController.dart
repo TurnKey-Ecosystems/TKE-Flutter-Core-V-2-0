@@ -42,7 +42,7 @@ class TFC_DiskController {
   }
 
   static List<String> getLocalFileNamesFromFileExtension(String fileExtension) {
-    List<String> matchingFileNames = List();
+    List<String> matchingFileNames = [];
     List<String> allLocalFileNames =
         listFileNames(fileLocation: FileLocation.LOCAL);
 
@@ -62,12 +62,12 @@ class TFC_DiskController {
   }
 
   // Read Functions
-  static Uint8List readFileAsBytes(String fileName,
+  static Uint8List? readFileAsBytes(String fileName,
       {FileLocation fileLocation = FileLocation.LOCAL}) {
     return _deviceStorageAPI.readFileAsBytes(fileName, fileLocation);
   }
 
-  static String readFileAsString(String fileName,
+  static String? readFileAsString(String fileName,
       {FileLocation fileLocation = FileLocation.LOCAL}) {
     return _deviceStorageAPI.readFileAsString(fileName, fileLocation);
   }
@@ -84,9 +84,9 @@ class TFC_DiskController {
   }
 
   // Image Functions
-  static Future<Uint8List> getExternalImageBytes() async {
-    return _deviceStorageAPI.getExternalImageBytes();
-  }
+  //static Future<Uint8List> getExternalImageBytes() async {
+  //  return _deviceStorageAPI.getExternalImageBytes();
+  //}
 
   // Utility Functions
   static const DEFAULT_FILE_NAME_PART_SEPERATOR = "_";

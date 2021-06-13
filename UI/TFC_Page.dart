@@ -16,24 +16,24 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
   final double preferredChildHeight;
   final TFC_TextType preferredChildTextType;
   Widget floatingActionButton = Container();
-  BuildContext pageContext;
+  BuildContext? pageContext;
   double get internalPageWidth {
     return TFC_AppStyle.instance.screenWidth -
         (2 * TFC_AppStyle.instance.pageMargins);
   }
 
   TFC_Page({
-    @required this.icon,
-    @required this.loadingMessage,
-    @required this.getShouldShowPage,
+    required this.icon,
+    required this.loadingMessage,
+    required this.getShouldShowPage,
     PreferredSizeWidget Function(BuildContext) appBarBuilder =
         TFC_AppBarBuilder.buildDefaultAppBar,
     double pageMargins = -1,
     double childPadding = -1,
     double preferredChildHeight = -1,
     this.preferredChildTextType = TFC_TextType.BODY,
-    bool Function() mayReload,
-    Key key,
+    bool Function()? mayReload,
+    Key? key,
   })  : _appBarBuilder = appBarBuilder,
         this.pageMargins = (pageMargins != -1)
             ? pageMargins

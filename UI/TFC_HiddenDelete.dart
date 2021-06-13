@@ -13,7 +13,7 @@ class TFC_HiddenDelete extends StatelessWidget {
     const Choice(title: 'Cancel'),
   ];
 
-  TFC_HiddenDelete({@required this.deleteItem, @required this.deleteWarning});
+  TFC_HiddenDelete({required this.deleteItem, required this.deleteWarning});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class TFC_HiddenDelete extends StatelessWidget {
 }
 
 class Choice {
-  const Choice({this.title});
-
   final String title;
+
+  const Choice({required this.title});
 }
