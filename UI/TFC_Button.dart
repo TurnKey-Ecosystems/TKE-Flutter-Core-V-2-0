@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../UI/TFC_AppStyle.dart';
 
@@ -6,6 +8,7 @@ class TFC_Button extends StatelessWidget {
   late final double? height;
   late EdgeInsetsGeometry? margin;
   late Widget buttonWidget;
+  //BoxDecoration boxDecoration;
 
   TFC_Button.flat({
     Key? key,
@@ -19,18 +22,20 @@ class TFC_Button extends StatelessWidget {
     this.margin,
     this.width,
     this.height,
+    double elevation = 0.0,
   }) {
-    color = (color != null) ? color : TFC_AppStyle.colorPrimary;
-    margin = (margin != null)
-        ? margin
-        : EdgeInsets.all(0.5 * TFC_AppStyle.instance.pageMargins);
+    color = (color == null) ? TFC_AppStyle.colorPrimary : color;
+    margin = (margin == null)
+        ? EdgeInsets.all(0.5 * TFC_AppStyle.instance.pageMargins)
+        : margin;
     buttonWidget = ElevatedButton(
       key: key,
       onPressed: onPressed,
       onLongPress: onLongPress,
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(color),
-        elevation: MaterialStateProperty.all(0.0),
+        elevation: MaterialStateProperty.all(
+            elevation * TFC_AppStyle.instance.lineHeight),
       ),
       focusNode: focusNode,
       autofocus: autofocus,
@@ -85,17 +90,19 @@ class TFC_Button extends StatelessWidget {
     this.width,
     this.height,
   }) {
-    color = (color != null) ? color : TFC_AppStyle.colorPrimary;
-    margin = (margin != null)
-        ? margin
-        : EdgeInsets.all(0.5 * TFC_AppStyle.instance.pageMargins);
+    color = (color == null) ? TFC_AppStyle.colorPrimary : color;
+    margin = (margin == null)
+        ? EdgeInsets.all(0.5 * TFC_AppStyle.instance.pageMargins)
+        : margin;
     buttonWidget = OutlinedButton(
       key: key,
       onPressed: onPressed,
       onLongPress: onLongPress,
       style: ButtonStyle(
         overlayColor: MaterialStateProperty.all<Color>(color),
+        foregroundColor: MaterialStateProperty.all<Color>(color),
         elevation: MaterialStateProperty.all(0.0),
+        side: MaterialStateProperty.all<BorderSide>(BorderSide(color: color)),
       ),
       focusNode: focusNode,
       autofocus: autofocus,
