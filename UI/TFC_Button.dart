@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import '../UI/TFC_AppStyle.dart';
 
 class TFC_Button extends StatelessWidget {
-  final double width;
-  final double height;
-  EdgeInsetsGeometry margin;
-  Widget buttonWidget;
+  late final double? width;
+  late final double? height;
+  late EdgeInsetsGeometry? margin;
+  late Widget buttonWidget;
 
   TFC_Button.flat({
-    Key key,
-    @required VoidCallback onPressed,
-    VoidCallback onLongPress,
-    FocusNode focusNode,
+    Key? key,
+    required VoidCallback onPressed,
+    VoidCallback? onLongPress,
+    FocusNode? focusNode,
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
-    @required Widget child,
-    Color color,
+    required Widget child,
+    Color? color,
     this.margin,
     this.width,
     this.height,
@@ -40,14 +40,14 @@ class TFC_Button extends StatelessWidget {
   }
 
   TFC_Button.outlined({
-    Key key,
-    @required VoidCallback onPressed,
-    VoidCallback onLongPress,
-    FocusNode focusNode,
+    Key? key,
+    required VoidCallback onPressed,
+    VoidCallback? onLongPress,
+    FocusNode? focusNode,
     bool autofocus = false,
     Clip clipBehavior = Clip.none,
-    @required Widget child,
-    Color color,
+    required Widget child,
+    Color? color,
     this.margin,
     this.width,
     this.height,

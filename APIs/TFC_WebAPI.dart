@@ -3,8 +3,8 @@ import 'dart:html';
 import 'dart:js';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:tke_iquote_flutter_hj4s/TKE-Flutter-Core/APIs/TFC_IDeviceStorageAPI.dart';
-import 'package:tke_iquote_flutter_hj4s/TKE-Flutter-Core/AppManagment/TFC_DiskController.dart';
+import '../APIs/TFC_IDeviceStorageAPI.dart';
+import '../AppManagment/TFC_DiskController.dart';
 import '../APIs/TFC_WebShareAPI.dart';
 import '../APIs/TFC_WebStorageAPI.dart';
 import '../APIs/TFC_PlatformAPI.dart';
@@ -34,7 +34,7 @@ class TFC_APIForThisPlatform extends TFC_PlatformAPI {
       JsObject resultsObject = context.callMethod('testBrowserAndOS', []);
       return TFC_BrowserAndOSTestResultsWeb.fromJSObject(resultsObject);
     } else {
-      return null;
+      return TFC_BrowserAndOSTestResults();
     }
   }
 
@@ -68,22 +68,22 @@ class TFC_APIForThisPlatform extends TFC_PlatformAPI {
           "//" +
           window.location.host +
           "/" +
-          window.location.pathname +
-          window.location.search;
+          window.location.pathname!;
+          // + window.location.search;
       //return context.callMethod('getCurrentURL', []);
-    } else {
-      return null;
-    }
-  }
-
-  @override
-  String getPasscodeFromURL() {
-    if (kIsWeb) {
-      return window.location.search.substring(("?passcode=").length);
     } else {
       return "";
     }
   }
+
+  /*@override
+  String getPasscodeFromURL() {
+    if (kIsWeb) {
+      return window.location.search!.substring(("?passcode=").length);
+    } else {
+      return "";
+    }
+  }*/
 }
 
 class TFC_BrowserAndOSTestResultsWeb extends TFC_BrowserAndOSTestResults {

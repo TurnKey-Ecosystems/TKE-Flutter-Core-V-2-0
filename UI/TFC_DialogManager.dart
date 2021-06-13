@@ -5,10 +5,10 @@ import 'TFC_CustomWidgets.dart';
 
 class TFC_DialogManager {
   static void showYesNoDialog({
-    @required BuildContext context,
-    @required String description,
-    void Function() onYes,
-    void Function() onNo,
+    required BuildContext context,
+    required String description,
+    required void Function() onYes,
+    required void Function() onNo,
   }) {
     showTwoButtonDialog(
       context: context,
@@ -24,12 +24,12 @@ class TFC_DialogManager {
   }
 
   static void showTwoButtonDialog({
-    @required BuildContext context,
-    @required Widget content,
-    @required String button1Text,
-    void Function() onButton1,
-    @required String button2Text,
-    void Function() onButton2,
+    required BuildContext context,
+    required Widget content,
+    required String button1Text,
+    required void Function() onButton1,
+    required String button2Text,
+    required void Function() onButton2,
   }) {
     showDialog(
       context: context,

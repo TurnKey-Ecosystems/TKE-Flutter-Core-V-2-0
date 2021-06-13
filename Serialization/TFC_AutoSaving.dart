@@ -19,7 +19,7 @@ abstract class TFC_AutoSaving {
 }
 
 class TFC_AutoSavingProperty<PropertyType> extends TFC_AutoSaving {
-  PropertyType _value;
+  late PropertyType _value;
   PropertyType get value {
     return _value;
   }
@@ -40,7 +40,7 @@ class TFC_AutoSavingProperty<PropertyType> extends TFC_AutoSaving {
   }
 
   void _attemptLoadValue(PropertyType initialValue) {
-    String encodedJson = TFC_DiskController.readFileAsString(fileName);
+    String? encodedJson = TFC_DiskController.readFileAsString(fileName);
 
     if (encodedJson != null) {
       _value = json.decode(encodedJson);
@@ -51,7 +51,7 @@ class TFC_AutoSavingProperty<PropertyType> extends TFC_AutoSaving {
 }
 
 class TFC_AutoSavingMap extends TFC_AutoSaving {
-  TFC_SerializingMap _map;
+  late TFC_SerializingMap _map;
   TFC_SerializingMap get map {
     return _map;
   }
@@ -66,7 +66,7 @@ class TFC_AutoSavingMap extends TFC_AutoSaving {
   }
 
   void _attemptLoadMap() {
-    String encodedJson = TFC_DiskController.readFileAsString(fileName);
+    String? encodedJson = TFC_DiskController.readFileAsString(fileName);
 
     if (encodedJson != null) {
       _map = TFC_SerializingMap.fromJson(_saveMap, json.decode(encodedJson));
@@ -75,7 +75,7 @@ class TFC_AutoSavingMap extends TFC_AutoSaving {
     }
   }
 
-  void setFromJson(Map newMap) {
+  void setFromJson(Map<String, dynamic> newMap) {
     _map = TFC_SerializingMap.fromJson(_saveMap, newMap);
     _saveMap();
   }
@@ -86,7 +86,7 @@ class TFC_AutoSavingMap extends TFC_AutoSaving {
 }
 
 class TFC_AutoSavingSet extends TFC_AutoSaving {
-  TFC_SerializingSet _set;
+  late TFC_SerializingSet _set;
   TFC_SerializingSet get serializingSet {
     return _set;
   }
@@ -101,7 +101,7 @@ class TFC_AutoSavingSet extends TFC_AutoSaving {
   }
 
   void _attemptLoadList() {
-    String encodedJson = TFC_DiskController.readFileAsString(fileName);
+    String? encodedJson = TFC_DiskController.readFileAsString(fileName);
 
     if (encodedJson != null) {
       _set = TFC_SerializingSet.fromJson(

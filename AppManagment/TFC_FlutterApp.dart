@@ -8,14 +8,14 @@ import '../APIs/TFC_PlatformAPI.dart';
 import '../Utilities/TFC_ColorExtension.dart';
 
 class TFC_FlutterApp extends TFC_ReloadableWidget {
-  static String appName;
-  static Widget homePage;
-  static Widget settingsPage;
+  static late String appName;
+  static late Widget homePage;
+  static late Widget settingsPage;
   static TFC_AutoSavingProperty<String> deviceID =
       TFC_AutoSavingProperty("", "deviceID");
-  static void Function() _onAfterStartUpComplete;
+  static late void Function()? _onAfterStartUpComplete;
 
-  TFC_FlutterApp({void Function() onAfterStartUpComplete}) : super() {
+  TFC_FlutterApp({void Function()? onAfterStartUpComplete}) : super() {
     _onAfterStartUpComplete = onAfterStartUpComplete;
   }
 
@@ -34,7 +34,7 @@ class TFC_FlutterApp extends TFC_ReloadableWidget {
 
     // Tell the app that startup is complete
     if (_onAfterStartUpComplete != null) {
-      _onAfterStartUpComplete();
+      _onAfterStartUpComplete!();
     }
   }
 

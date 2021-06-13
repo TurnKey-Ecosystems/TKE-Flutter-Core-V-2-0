@@ -1,23 +1,25 @@
 import 'dart:developer';
 
 class TFC_Event {
-  List<Function> listeners;
+  late List<Function?> listeners;
 
   TFC_Event() {
-    listeners = List();
+    listeners = [];
   }
 
-  void addListener(Function listener) {
-    listeners.add(listener);
+  void addListener(Function? listener) {
+    if (listener != null) {
+      listeners.add(listener);
+    }
   }
 
-  void removeListener(Function listener) {
+  void removeListener(Function? listener) {
     listeners.remove(listener);
   }
 
   void trigger() {
-    List<Function> nullListeners = List();
-    for (Function listener in listeners) {
+    int nullListenerCount = 0;
+    for (Function? listener in listeners) {
       if (listener != null) {
         try {
           listener();
@@ -25,12 +27,11 @@ class TFC_Event {
           log(e.toString());
         }
       } else {
-        nullListeners.add(listener);
+        nullListenerCount++;
       }
     }
-    while (nullListeners.length > 0) {
-      Function listener = nullListeners.removeAt(0);
-      removeListener(listener);
+    for (; nullListenerCount > 0; nullListenerCount--) {
+      removeListener(null);
     }
   }
 }

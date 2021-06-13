@@ -12,7 +12,7 @@ import 'TFC_CustomWidgets.dart';
 // TODO: In large numeric input fields, insert a comman(10,000)
 
 class TFC_NumericField extends TFC_InputField {
-  final Type _specficNumType;
+  final Type? _specficNumType;
   final num defaultValueAsNum;
   final int decimalCount;
   final num Function() getSourceValue;
@@ -20,18 +20,18 @@ class TFC_NumericField extends TFC_InputField {
   final TFC_BorderType borderType;
 
   TFC_NumericField({
-    @required this.getSourceValue,
-    @required this.setSourceValue,
-    @required this.defaultValueAsNum,
+    required this.getSourceValue,
+    required this.setSourceValue,
+    required this.defaultValueAsNum,
     Color defaultValueColor = TFC_AppStyle.COLOR_HINT,
     Color nonDefaultValueColor = TFC_AppStyle.COLOR_BLACK,
     bool shouldChangeColorIfNotEqualToDefaultValue = true,
-    void Function() onSubmitted,
-    void Function() onFocused,
+    void Function()? onSubmitted,
+    void Function()? onFocused,
     bool shouldSubmitOnFocusLost = true,
     TextAlign textAlign = TextAlign.center,
     TextInputAction textInputAction = TextInputAction.done,
-    TextStyle style,
+    TextStyle? style,
     bool shouldStartWithFocus = false,
     int maxLength = 10,
     this.decimalCount = 0,
@@ -57,16 +57,16 @@ class TFC_NumericField extends TFC_InputField {
         );
 
   TFC_NumericField.fromNumAttribute({
-    @required TFC_AttributeProperty<num> source,
+    required TFC_AttributeProperty<num> source,
     Color defaultValueColor = TFC_AppStyle.COLOR_HINT,
     Color nonDefaultValueColor = TFC_AppStyle.COLOR_BLACK,
     bool shouldChangeColorIfNotEqualToDefaultValue = true,
-    void Function() onSubmitted,
-    void Function() onFocused,
+    void Function()? onSubmitted,
+    void Function()? onFocused,
     bool shouldSubmitOnFocusLost = true,
     TextAlign textAlign = TextAlign.center,
     TextInputAction textInputAction = TextInputAction.done,
-    TextStyle style,
+    TextStyle? style,
     bool shouldStartWithFocus = false,
     int maxLength = 10,
     this.decimalCount = 0,
@@ -102,7 +102,7 @@ class TFC_NumericField extends TFC_InputField {
   @override
   void setValueFromString(String newValueAsString) {
     newValueAsString = newValueAsString.replaceAll(RegExp(r"[^0-9.]"), "");
-    num newValueAsNum = num.tryParse(newValueAsString);
+    num? newValueAsNum = num.tryParse(newValueAsString);
     if (newValueAsString != "" && newValueAsNum != null) {
       if (_specficNumType != null) {
         if (_specficNumType == double) {
@@ -148,30 +148,30 @@ class TFC_TextField extends TFC_InputField {
   final TFC_BorderType borderType;
 
   TFC_TextField({
-    @required this.getSourceValue,
-    @required this.setSourceValue,
-    void Function() onSubmitted,
-    void Function() onFocused,
+    required this.getSourceValue,
+    required this.setSourceValue,
+    void Function()? onSubmitted,
+    void Function()? onFocused,
     bool shouldSubmitOnFocusLost = true,
-    Icon icon,
-    String hintText,
+    Icon? icon,
+    String? hintText,
     Color nonDefaultValueColor = TFC_AppStyle.COLOR_TEXT_BODY,
     Color defaultValueColor = TFC_AppStyle.COLOR_HINT,
-    Color focusedInputBorderColor,
-    Color unfocusedBlankInputBorderColor,
-    Color unfocusedNonblankInputBorderColor,
+    Color? focusedInputBorderColor,
+    Color? unfocusedBlankInputBorderColor,
+    Color? unfocusedNonblankInputBorderColor,
     bool autocorrect = false,
     TextCapitalization textCapitalization = TextCapitalization.none,
     TextAlign textAlign = TextAlign.left,
     TextInputType keyboardType = TextInputType.text,
     TextInputAction textInputAction = TextInputAction.done,
-    TextStyle style,
-    String labelText,
-    String helperText,
+    TextStyle? style,
+    String? labelText,
+    String? helperText,
     bool shouldStartWithFocus = false,
-    int maxLength,
+    int maxLength = 256,
     int maxLines = 1,
-    Key key,
+    Key? key,
     this.borderType = TFC_BorderType.UNDERLINED,
   })  : _focusedInputBorderColor = (focusedInputBorderColor != null)
             ? focusedInputBorderColor
@@ -193,8 +193,8 @@ class TFC_TextField extends TFC_InputField {
           textColor: (nonDefaultValueColor != null)
               ? nonDefaultValueColor
               : (style != null)
-                  ? style.color
-                  : TFC_AppStyle.instance.textStyleBody.color,
+                  ? style.color!
+                  : TFC_AppStyle.instance.textStyleBody.color!,
           hintColor: defaultValueColor,
           autocorrect: autocorrect,
           textCapitalization: textCapitalization,
@@ -212,29 +212,29 @@ class TFC_TextField extends TFC_InputField {
         );
 
   TFC_TextField.fromStringAttribute({
-    @required TFC_AttributeString source,
-    void Function() onSubmitted,
-    void Function() onFocused,
+    required TFC_AttributeString source,
+    void Function()? onSubmitted,
+    void Function()? onFocused,
     bool shouldSubmitOnFocusLost = true,
-    Icon icon,
-    String hintText,
+    Icon? icon,
+    String? hintText,
     Color nonDefaultValueColor = TFC_AppStyle.COLOR_TEXT_BODY,
     Color defaultValueColor = TFC_AppStyle.COLOR_HINT,
-    Color focusedInputBorderColor,
-    Color unfocusedBlankInputBorderColor,
-    Color unfocusedNonblankInputBorderColor,
+    Color? focusedInputBorderColor,
+    Color? unfocusedBlankInputBorderColor,
+    Color? unfocusedNonblankInputBorderColor,
     bool autocorrect = false,
     TextCapitalization textCapitalization = TextCapitalization.none,
     TextAlign textAlign = TextAlign.left,
     TextInputType keyboardType = TextInputType.text,
     TextInputAction textInputAction = TextInputAction.done,
-    TextStyle style,
-    String labelText,
-    String helperText,
+    TextStyle? style,
+    String? labelText,
+    String? helperText,
     bool bshouldStartWithFocus = false,
-    int maxLength,
-    int maxLines = 1,
-    Key key,
+    int maxLength = 256,
+    int? maxLines = 1,
+    Key? key,
     this.borderType = TFC_BorderType.UNDERLINED,
   })  : getSourceValue = source.getValue,
         setSourceValue = source.setValue,
@@ -258,8 +258,8 @@ class TFC_TextField extends TFC_InputField {
           textColor: (nonDefaultValueColor != null)
               ? nonDefaultValueColor
               : (style != null)
-                  ? style.color
-                  : TFC_AppStyle.instance.textStyleBody.color,
+                  ? style.color!
+                  : TFC_AppStyle.instance.textStyleBody.color!,
           hintColor: defaultValueColor,
           autocorrect: autocorrect,
           textCapitalization: textCapitalization,
@@ -309,17 +309,17 @@ class TFC_TextField extends TFC_InputField {
 }
 
 abstract class TFC_InputField extends TFC_ReloadableWidget {
-  static FocusNode _focus;
-  static FocusNode get focus {
+  static late FocusNode? _focus;
+  static FocusNode? get focus {
     return _focus;
   }
 
-  final String defaultValue;
-  final void Function() onSubmitted;
-  final void Function() onFocused;
+  final String? defaultValue;
+  final void Function()? onSubmitted;
+  final void Function()? onFocused;
   final bool shouldSubmitOnFocusLost;
-  final Icon icon;
-  final String hintText;
+  final Icon? icon;
+  final String? hintText;
   final Color textColor;
   final Color hintColor;
   final bool autocorrect;
@@ -329,8 +329,8 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
   final TextStyle style;
-  final String labelText;
-  final String helperText;
+  final String? labelText;
+  final String? helperText;
   final Color nonDefaultValueColor;
   final Color defaultValueColor;
   final bool shouldChangeColorIfNotEqualToDefaultValue;
@@ -338,9 +338,9 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
    despite this being final, between initialization and build, dart will change 
    the value to false. */
   final dynamic shouldStartWithFocus;
-  final int maxLength;
-  final int maxLines;
-  final void Function(BuildContext) onBeforeBuild;
+  final int? maxLength;
+  final int? maxLines;
+  final void Function(BuildContext)? onBeforeBuild;
   final TextEditingController _controller;
   //final FocusNode _focusNode;
   InputBorder getInputBorder();
@@ -364,7 +364,7 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
     this.textAlignVertical = TextAlignVertical.center,
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.done,
-    TextStyle givenTextStyle,
+    TextStyle? givenTextStyle,
     this.labelText,
     this.helperText,
     this.nonDefaultValueColor = TFC_AppStyle.COLOR_BLACK,
@@ -374,14 +374,14 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
     this.maxLength,
     this.maxLines = 1,
     this.onBeforeBuild,
-    Key key,
+    Key? key,
   })  : _focusNode = FocusNode(),
         _controller = TextEditingController(),
         inputKey = Key(key.toString() + "inputKey"),
         style = (givenTextStyle != null)
             ? givenTextStyle
             : TFC_AppStyle.instance.textStyleBody,
-        super(key: key) {
+        super() {
     // Apply any external changes to the value
     if (defaultValue != null && getValueAsString() == defaultValue) {
       _controller.text = "";
@@ -410,7 +410,7 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
   }*/
 
   static Map<Key, FocusNode> focusNodesByKey = Map();
-  static FocusNode getFocusNode(Key key) {
+  static FocusNode? getFocusNode(Key key) {
     if (!focusNodesByKey.containsKey(key)) {
       focusNodesByKey[key] = FocusNode();
     }
@@ -420,12 +420,12 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
   void focusChanged() {
     if (_focusNode.hasFocus) {
       // On focus gained
-      if (_focus != null && _focus != _focusNode && _focus.hasFocus) {
-        _focus.unfocus();
+      if (_focus != null && _focus != _focusNode && _focus!.hasFocus) {
+        _focus!.unfocus();
       }
       _focus = _focusNode;
       if (onFocused != null) {
-        onFocused();
+        onFocused!();
       }
     } else {
       // On focus lost
@@ -436,7 +436,7 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
         reload();
       }
       if (shouldSubmitOnFocusLost && onSubmitted != null) {
-        onSubmitted();
+        onSubmitted!();
       }
     }
   }
@@ -448,7 +448,7 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
   @override
   Widget buildWidget(BuildContext context) {
     if (onBeforeBuild != null) {
-      onBeforeBuild(context);
+      onBeforeBuild!(context);
     }
 
     if (!_focusNode.hasFocus) {
@@ -461,7 +461,7 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
           ? null
           : (String text) {
               if (onSubmitted != null) {
-                onSubmitted();
+                onSubmitted!();
               }
             },
       autofocus: shouldStartWithFocus,
@@ -513,8 +513,8 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
   }
 
   static void unFocusActiveInputField() {
-    if (_focus != null && _focus.hasFocus) {
-      _focus.unfocus();
+    if (_focus != null && _focus!.hasFocus) {
+      _focus!.unfocus();
     }
   }
 }
@@ -587,7 +587,7 @@ abstract class TFC_InputField extends StatefulWidget {
     this.maxLength,
     this.maxLines = 1,
     this.onBeforeBuild,
-    Key key,
+    Key? key,
   })  : _focusNode = FocusNode(),
         _controller = TextEditingController(),
         inputKey = Key(key.toString() + "inputKey"),

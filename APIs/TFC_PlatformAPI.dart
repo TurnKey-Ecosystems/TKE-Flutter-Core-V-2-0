@@ -3,7 +3,7 @@ import 'TFC_IShareAPI.dart';
 import 'TFC_MobileAPI.dart' if (dart.library.html) 'TFC_WebAPI.dart';
 
 abstract class TFC_PlatformAPI {
-  static TFC_PlatformAPI platformAPI;
+  static late TFC_PlatformAPI platformAPI;
 
   static Future<void> setupPlatformAPI() async {
     platformAPI = TFC_APIForThisPlatform();
@@ -23,7 +23,7 @@ abstract class TFC_PlatformAPI {
   void hideHTMLSplashScreen() async {}
 
   TFC_BrowserAndOSTestResults testBrowserAndOS() {
-    return null;
+    return TFC_BrowserAndOSTestResults();
   }
 
   void copyTextToClipBoard(String textToCopy) {}
@@ -35,7 +35,7 @@ abstract class TFC_PlatformAPI {
   }
 
   String getCurrentURL() {
-    return null;
+    return "";
   }
 
   String getPasscodeFromURL() {
@@ -47,7 +47,9 @@ enum TFC_OperatingSystem { ANDROID, IOS, UNKNOWN }
 enum TFC_Browser { CHROME, SAFARI, UNKNOWN }
 
 class TFC_BrowserAndOSTestResults {
-  TFC_OperatingSystem os;
-  TFC_Browser browser;
-  bool isCorrectBrowserForOS;
+  late TFC_OperatingSystem os;
+  late TFC_Browser browser;
+  late bool isCorrectBrowserForOS;
+
+  TFC_BrowserAndOSTestResults({this.os = TFC_OperatingSystem.UNKNOWN, this.browser = TFC_Browser.UNKNOWN, this.isCorrectBrowserForOS = false});
 }

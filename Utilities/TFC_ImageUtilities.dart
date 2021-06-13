@@ -33,7 +33,7 @@ class TFC_ImageUtilities {
     // Save the image locally
     String scaledImageFileName = getImageFileName(imageID, ".jpg");
     TFC_DiskController.writeFileAsBytes(
-        scaledImageFileName, DartImg.encodeJpg(scaledImage));
+        scaledImageFileName, Uint8List.fromList(DartImg.encodeJpg(scaledImage)));
     TFC_SyncController.logImageCreation(imageID, scaledImageFileName);
     String thumbnailImageID = await createThumbnailAsync(scaledImage);
     return TFC_PictureData(imageID, thumbnailImageID, scaledImageSize, ".jpg");
@@ -74,7 +74,7 @@ class TFC_ImageUtilities {
 
     // Write the thumbnail to the local storage
     String thumbnailFileName = getThumbnailFileName(thumbnailImageID);
-    TFC_DiskController.writeFileAsBytes(thumbnailFileName, croppedImageBytes);
+    TFC_DiskController.writeFileAsBytes(thumbnailFileName, Uint8List.fromList(croppedImageBytes));
 
     // Write the thumbnail to the database
     TFC_SyncController.logImageCreation(thumbnailImageID, thumbnailFileName);

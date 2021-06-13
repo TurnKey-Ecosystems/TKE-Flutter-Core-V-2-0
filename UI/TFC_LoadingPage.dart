@@ -4,8 +4,8 @@ import 'TFC_CustomWidgets.dart';
 
 class TFC_LoadingPage extends StatelessWidget {
   bool _isImagePage;
-  IconData _iconData;
-  String _imageLocation;
+  IconData? _iconData;
+  String? _imageLocation;
   String _loadingText;
   Color _color;
 
@@ -52,7 +52,7 @@ class TFC_LoadingPage extends StatelessWidget {
     if (_isImagePage) {
       double imageSize = TFC_AppStyle.instance.internalPageWidth / 4.0;
       return Image.asset(
-        _imageLocation,
+        _imageLocation!,
         width: imageSize,
         height: imageSize,
       );

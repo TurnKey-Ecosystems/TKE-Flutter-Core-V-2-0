@@ -14,8 +14,8 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
   static const _IOS_EXPORT_DIRECTORY_NAME = "export";
   Map<FileLocation, Directory> _directories = Map();
   Map<FileLocation, String> get _directoryPaths {
-    String _localDirectoryPath = _directories[FileLocation.LOCAL].path + "/";
-    String _exportDirectoryPath = _directories[FileLocation.EXPORT].path + "/";
+    String _localDirectoryPath = _directories[FileLocation.LOCAL]!.path + "/";
+    String _exportDirectoryPath = _directories[FileLocation.EXPORT]!.path + "/";
     return {
       FileLocation.LOCAL: _localDirectoryPath,
       FileLocation.EXPORT: _exportDirectoryPath
@@ -54,9 +54,9 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
   }
 
   Future _cleanUpExportedFiles() async {
-    List<File> filesToDelete = List();
+    List<File> filesToDelete = [];
     List<FileSystemEntity> allExportedFiles =
-        await _directories[FileLocation.EXPORT].list().toList();
+        await _directories[FileLocation.EXPORT]!.list().toList();
     for (FileSystemEntity exportedFileEntity in allExportedFiles) {
       // If this is not a directory
       if (Path.basenameWithoutExtension(exportedFileEntity.path) !=
@@ -87,9 +87,9 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
 
   // File getter functions
   List<String> getLocalFileNamesFromFileNamePattern(String pattern) {
-    List<String> matchingFileNames = List();
+    List<String> matchingFileNames = [];
     List<FileSystemEntity> allTopLevelLocalFiles =
-        _directories[FileLocation.LOCAL].listSync();
+        _directories[FileLocation.LOCAL]!.listSync();
 
     allTopLevelLocalFiles.forEach((localFile) {
       String thisFileBaseName = Path.basename(localFile.path);
@@ -105,9 +105,9 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
   }
 
   List<String> getLocalFileNamesFromFileExtension(String fileExtension) {
-    List<String> matchingFileNames = List();
+    List<String> matchingFileNames = [];
     List<FileSystemEntity> allTopLevelLocalFiles =
-        _directories[FileLocation.LOCAL].listSync();
+        _directories[FileLocation.LOCAL]!.listSync();
 
     allTopLevelLocalFiles.forEach((savedFile) {
       if (Path.extension(savedFile.path) == fileExtension) {
@@ -119,11 +119,11 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
   }
 
   String getAbsoluteFilePath(String fileName, FileLocation fileLocation) {
-    return File(_directoryPaths[fileLocation] + fileName).path;
+    return File(_directoryPaths[fileLocation]! + fileName).path;
   }
 
   File _getFile(String fileName, FileLocation fileLocation) {
-    return File(_directoryPaths[fileLocation] + fileName);
+    return File(_directoryPaths[fileLocation]! + fileName);
   }
 
   String getFilePath(String fileName, FileLocation fileLocation) {
@@ -131,6 +131,7 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
   }
 
   // Deletion functions
+  @override
   void deleteFile(String fileName, FileLocation fileLocation) {
     File file = _getFile(fileName, fileLocation);
 
@@ -140,7 +141,8 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
   }
 
   // Read Functions
-  Uint8List readFileAsBytes(String fileName, FileLocation fileLocation) {
+  @override
+  Uint8List? readFileAsBytes(String fileName, FileLocation fileLocation) {
     File file = _getFile(fileName, fileLocation);
 
     if (file.existsSync()) {
@@ -150,7 +152,8 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
     }
   }
 
-  String readFileAsString(String fileName, FileLocation fileLocation) {
+  @override
+  String? readFileAsString(String fileName, FileLocation fileLocation) {
     File file = _getFile(fileName, fileLocation);
 
     if (file.existsSync()) {
@@ -161,6 +164,7 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
   }
 
   // Write Functions
+  @override
   String writeFileAsBytes(
       String fileName, Uint8List contents, FileLocation fileLocation) {
     File file = _getFile(fileName, fileLocation);
@@ -170,6 +174,7 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
     return file.path;
   }
 
+  @override
   String writeFileAsString(
       String fileName, String contents, FileLocation fileLocation) {
     File file = _getFile(fileName, fileLocation);
@@ -180,8 +185,8 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
   }
 
   // Image Functions
-  Future<Uint8List> getExternalImageBytes() async {
-    Uint8List pictureBytes;
+  //Future<Uint8List?> getExternalImageBytes() async {
+    //Uint8List pictureBytes;
     /*// Have the use take or pick and external image
     ImagePicker imagePicker = ImagePicker();
     PickedFile externalImageFile = await imagePicker.getImage(source: imageSource);
@@ -189,8 +194,8 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
       // If the user picked an image, then copy it to the local directory
       pictureBytes = File(externalImageFile.path).readAsBytesSync();
     }*/
-    return pictureBytes;
-  }
+  //  return pictureBytes;
+  //}
 
   // Utility Functions
   static const DEFAULT_FILE_NAME_PART_SEPERATOR = "_";
@@ -213,12 +218,13 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
     return newFileNameWithExtension;
   }
 
+  @override
   String exportAllFiles() {
     // TODO: Put more information in this zip file name
     String fileName =
         TFC_FlutterApp.appName.toLowerCase().replaceAll(" ", "_") +
             "_all_files.zip";
-    String zipFileExportPath = _directoryPaths[FileLocation.EXPORT] + fileName;
+    String zipFileExportPath = _directoryPaths[FileLocation.EXPORT]! + fileName;
     ZipFileEncoder encoder = ZipFileEncoder();
 
     // Remove any existing all-file-export-zips
@@ -233,14 +239,16 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
     return zipFileExportPath;
   }
 
+  @override
   bool fileExists(String fileName, FileLocation fileLocation) {
     return _getFile(fileName, fileLocation).existsSync();
   }
 
+  @override
   List<String> listFileNames(FileLocation fileLocation) {
-    List<String> allFileNamesAtRequestedFileLocation = List();
+    List<String> allFileNamesAtRequestedFileLocation = [];
     List<FileSystemEntity> allFilesAtRequestedFileLocation =
-        _directories[fileLocation].listSync();
+        _directories[fileLocation]!.listSync();
     for (FileSystemEntity file in allFilesAtRequestedFileLocation) {
       allFileNamesAtRequestedFileLocation.add(Path.basename(file.path));
     }

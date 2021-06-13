@@ -25,7 +25,7 @@ class TFC_SyncController {
       "https://g1n78jreyb.execute-api.us-west-2.amazonaws.com/demo-1-0/";*/
   /*static const String REST_GATEWAY_URL =
       "https://1w1s6t19d9.execute-api.us-west-2.amazonaws.com/dev/";*/
-  static String clientID;
+  static late String clientID;
   static bool _downloadAllIsInProgress = false;
   static bool get downloadAllIsInProgress {
     return _downloadAllIsInProgress;
@@ -52,7 +52,7 @@ class TFC_SyncController {
       TFC_AutoSavingMap("imagesToUpload");
   static TFC_AutoSavingMap _imagesToDownload =
       TFC_AutoSavingMap("imagesToDownload");
-  static Set<String> _itemTypesInThisApp;
+  static late Set<String> _itemTypesInThisApp;
 
   static Future<void> setupDatabaseSyncController(
       String givenClientID, Set<String> itemTypesInThisApp,
@@ -72,8 +72,8 @@ class TFC_SyncController {
           try {
             await wipeAndRedownloadAllFiles();
             redownloadCompleted = true;
-          } catch (e) {
-            log(e.message);
+          } catch(e) {
+            //log(e.message);
             redownloadCompleted = false;
             await Future.delayed(Duration(seconds: 2));
           }
@@ -281,7 +281,7 @@ class TFC_SyncController {
 
     // Sync with the server
     bool syncWasSuccessful = false;
-    Map<String, dynamic> decodedSyncJson;
+    Map<String, dynamic>? decodedSyncJson;
     try {
       HTTP.Response syncResponse = await HTTP.post(
         "$REST_GATEWAY_URL/sync",
@@ -459,12 +459,12 @@ class TFC_SyncController {
     if (!mapToLogTo[itemID]["setAttributes"][attributeKey]
         .containsKey("removedElements")) {
       mapToLogTo[itemID]["setAttributes"][attributeKey]["removedElements"] =
-          List<dynamic>();
+          [];
     }
     if (!mapToLogTo[itemID]["setAttributes"][attributeKey]
         .containsKey("addedElements")) {
       mapToLogTo[itemID]["setAttributes"][attributeKey]["addedElements"] =
-          List<dynamic>();
+          [];
     }
   }
 
@@ -554,7 +554,7 @@ class TFC_SyncController {
   }
 
   static Future<bool> _uploadFileToS3(String imageID, String fileName) async {
-    Uint8List imageBytes = TFC_DiskController.readFileAsBytes(fileName);
+    Uint8List imageBytes = TFC_DiskController.readFileAsBytes(fileName)!;
     bool uploadWasSuccessful = false;
     try {
       // Get an S3 put url

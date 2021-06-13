@@ -10,8 +10,8 @@ abstract class TFC_IDeviceStorageAPI {
   void deleteFile(String fileName, FileLocation fileLocation);
 
   // Read Functions
-  Uint8List readFileAsBytes(String fileName, FileLocation fileLocation);
-  String readFileAsString(String fileName, FileLocation fileLocation);
+  Uint8List? readFileAsBytes(String fileName, FileLocation fileLocation);
+  String? readFileAsString(String fileName, FileLocation fileLocation);
 
   // Write Functions
   String writeFileAsString(
@@ -20,7 +20,7 @@ abstract class TFC_IDeviceStorageAPI {
       String fileName, Uint8List data, FileLocation fileLocation);
 
   // Image Functions
-  Future<Uint8List> getExternalImageBytes();
+  //Future<Uint8List> getExternalImageBytes();
 
   // Utility Functions
   String exportAllFiles();

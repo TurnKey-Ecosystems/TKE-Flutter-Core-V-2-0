@@ -6,7 +6,7 @@ class TFC_PaddedColumn extends StatelessWidget {
   final double _padding;
 
   TFC_PaddedColumn({
-    @required List<Widget> children,
+    required List<Widget> children,
     double padding = 0.0
   }) :
     _givenChildren = children,
@@ -15,7 +15,7 @@ class TFC_PaddedColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> buildTimeChildren = List();
+    List<Widget> buildTimeChildren = [];
 
     // Add padding between each given child
     for (int givenChildIndex = 0; givenChildIndex < _givenChildren.length; givenChildIndex++) {

@@ -9,7 +9,7 @@ enum TFC_BorderType {
 
 class TFC_AppStyle {
   // Colors
-  static Color colorPrimary;
+  static late Color colorPrimary;
 
   ///Color(0xFF006eb6);
   static const Color COLOR_ACCENT = Colors.white;
@@ -54,15 +54,15 @@ class TFC_AppStyle {
   );
 
   // Logos
-  static String appLoadingLogoAssetPath;
-  static String appBarLogoAssetPath;
+  static String? appLoadingLogoAssetPath;
+  static String? appBarLogoAssetPath;
 
   // Sizing
   static const double SCREEN_WIDTH_IN_M2_UNITS = 24;
   static const double MARGINS_IN_M2_UNITS = 1;
 
   // Instance
-  static _TFC_AppStyleInstanceProperties instance;
+  static late _TFC_AppStyleInstanceProperties instance;
   static void setupInstance(BuildContext context) {
     instance = _TFC_AppStyleInstanceProperties(context);
   }

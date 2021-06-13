@@ -1,4 +1,4 @@
-import '../Utilities/TFC_KeyedMapWithDefaultValue.dart';
+/*import '../Utilities/TFC_KeyedMapWithDefaultValue.dart';
 import '../DataStructures/TFC_Attribute.dart';
 import '../UI/TFC_CustomWidgets.dart';
 import '../UI/TFC_InputFields.dart';
@@ -7,28 +7,28 @@ import 'package:flutter/material.dart';
 import 'TFC_AppStyle.dart';
 
 class TFC_EditableTitle extends TFC_ReloadableWidget {
-  static int _lastEditableTitleID = 0;
-  final TFC_AttributeString _sourceAttribute;
+  static late int _lastEditableTitleID = 0;
+  late final TFC_AttributeString _sourceAttribute;
   //final Key _key;
-  final String _hintText;
-  final IconData _blankButtonIconData;
-  final String _blankButtonText;
-  final Color _blankButtonTextColor;
-  final Color _blankButtonBackgroundColor;
-  final int _maxLength;
-  final int _maxDisplayLength;
-  final bool _isMutliline;
-  final TFC_TextType _textType;
-  final TextCapitalization _textCapitalization;
-  final double _height;
-  final double _width;
-  final Key keyB;
-  TFC_TextField _textField;
+  late final String _hintText;
+  late final IconData _blankButtonIconData;
+  late final String _blankButtonText;
+  late final Color _blankButtonTextColor;
+  late final Color _blankButtonBackgroundColor;
+  late final int _maxLength;
+  late final int _maxDisplayLength;
+  late final bool _isMutliline;
+  late final TFC_TextType _textType;
+  late final TextCapitalization _textCapitalization;
+  late final double _height;
+  late final double _width;
+  late final Key keyB;
+  late TFC_TextField _textField;
 
   static TFC_KeyedMapWithDefaultValue<bool>
       _shouldAllowDescriptionEditingByKey = TFC_KeyedMapWithDefaultValue(false);
 
-  TFC_ReferenceToKeyedMapValue _shouldAllowDescriptionEditing;
+  late TFC_ReferenceToKeyedMapValue _shouldAllowDescriptionEditing;
 
   TFC_EditableTitle(
     this._sourceAttribute, {
@@ -44,7 +44,7 @@ class TFC_EditableTitle extends TFC_ReloadableWidget {
     TextCapitalization textCapitalization = TextCapitalization.sentences,
     double height = 0,
     double width = 0,
-    Key keyA,
+    required Key keyA,
   })  : _hintText = hintText,
         _blankButtonIconData = blankButtonIconData,
         _blankButtonText = blankButtonText,
@@ -88,11 +88,11 @@ class TFC_EditableTitle extends TFC_ReloadableWidget {
       source: _sourceAttribute,
       hintText: _hintText,
       textCapitalization: _textCapitalization,
-      style: TFC_AppStyle.instance.textStyle[_textType],
+      style: TFC_AppStyle.instance.textStyle[_textType]!,
       textAlign: TextAlign.left,
       maxLength: _maxLength,
       maxLines: (_isMutliline) ? null : 1,
-      nonDefaultValueColor: TFC_AppStyle.textColors[_textType],
+      nonDefaultValueColor: TFC_AppStyle.textColors[_textType]!,
       focusedInputBorderColor: Colors.transparent,
       unfocusedBlankInputBorderColor: Colors.transparent,
       unfocusedNonblankInputBorderColor: Colors.transparent,
@@ -213,7 +213,7 @@ class TFC_EditableTitle extends TFC_ReloadableWidget {
 }
 
 class _TFC_EditableTitleButton extends StatefulWidget {
-  void Function(bool) reload;
+  late void Function(bool) reload;
 
   @override
   _TFC_EditableTitleButtonState createState() =>
@@ -227,8 +227,8 @@ class _TFC_EditableTitleButtonState extends State<_TFC_EditableTitleButton> {
   void Function() swapOutOfEditingMode;
   void Function() swapToEditingMode;
 
-  _TFC_EditableTitleButtonState(
-      {this.width,
+  _TFC_EditableTitleButtonState({
+      this.width = 0.5,
       this.isInEditMode,
       this.textType,
       this.swapOutOfEditingMode,
@@ -265,4 +265,4 @@ class _TFC_EditableTitleButtonState extends State<_TFC_EditableTitleButton> {
       ),
     );
   }
-}
+}*/

@@ -6,7 +6,7 @@ import 'TFC_ItemInstances.dart';
 
 abstract class TFC_Item {
   static const int MAX_ITEM_ID_LENGTH = 256;
-  String _itemID;
+  late String _itemID;
   String get itemID {
     return _itemID;
   }

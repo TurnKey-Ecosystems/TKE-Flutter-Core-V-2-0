@@ -15,7 +15,7 @@ class TFC_Utilities {
     }
   }
 
-  static ObjectType tryReadJson<ObjectType>(
+  static ObjectType? tryReadJson<ObjectType>(
       Map<String, dynamic> decodedJson, String jsonKey) {
     if (decodedJson != null && decodedJson.containsKey(jsonKey)) {
       return decodedJson[jsonKey];
@@ -28,7 +28,7 @@ class TFC_Utilities {
     List<String> numberTextParts =
         number.toStringAsFixed(decimalCount).split(".");
     RegExp reg = new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))');
-    Function commaFunction = (Match match) => '${match[1]},';
+    String Function(Match) commaFunction = (Match match) => '${match[1]},';
     String numberText = numberTextParts[0].replaceAllMapped(reg, commaFunction);
     if (numberTextParts.length > 1) {
       numberText += "." + numberTextParts[1];
@@ -37,8 +37,8 @@ class TFC_Utilities {
   }
 
   static void closeTheKeyboard(BuildContext context) {
-    if (TFC_InputField.focus != null && TFC_InputField.focus.hasFocus) {
-      TFC_InputField.focus.unfocus();
+    if (TFC_InputField.focus != null && TFC_InputField.focus!.hasFocus) {
+      TFC_InputField.focus!.unfocus();
     } else {
       FocusScope.of(context).unfocus();
     }

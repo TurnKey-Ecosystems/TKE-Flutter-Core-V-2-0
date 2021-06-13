@@ -3,7 +3,7 @@ import 'TFC_AppStyle.dart';
 
 // Tab Widget
 class TFC_Tab extends Tab {
-  TFC_Tab({Key key, String text, Icon icon, Color textColor})
+  TFC_Tab({Key? key, required String text, Icon? icon, Color? textColor})
       : super(
           key: key,
           child: Text(
@@ -19,9 +19,9 @@ class TFC_Text extends Text {
   TFC_Text(
     String text,
     TFC_TextType textType, {
-    Key key,
-    TextAlign textAlign,
-    Color color,
+    Key? key,
+    TextAlign? textAlign,
+    Color? color,
     bool isUnderlined = false,
   }) : super(
           text,
@@ -29,7 +29,7 @@ class TFC_Text extends Text {
           textAlign: (textAlign != null)
               ? textAlign
               : TFC_AppStyle.instance.textAlignments[textType],
-          style: TFC_AppStyle.instance.textStyle[textType].apply(
+          style: TFC_AppStyle.instance.textStyle[textType]!.apply(
               color:
                   (color != null) ? color : TFC_AppStyle.textColors[textType],
               decoration: (isUnderlined) ? TextDecoration.underline : null),
@@ -37,9 +37,9 @@ class TFC_Text extends Text {
 
   factory TFC_Text.heading(
     String text, {
-    Key key,
-    TextAlign textAlign,
-    Color color,
+    Key? key,
+    TextAlign? textAlign,
+    Color? color,
   }) {
     return TFC_Text(text, TFC_TextType.HEADING,
         key: key, textAlign: textAlign, color: color);
@@ -47,9 +47,9 @@ class TFC_Text extends Text {
 
   factory TFC_Text.subheading(
     String text, {
-    Key key,
-    TextAlign textAlign,
-    Color color,
+    Key? key,
+    TextAlign? textAlign,
+    Color? color,
   }) {
     return TFC_Text(text, TFC_TextType.SUBHEADING,
         key: key, textAlign: textAlign, color: color);
@@ -57,9 +57,9 @@ class TFC_Text extends Text {
 
   factory TFC_Text.title(
     String text, {
-    Key key,
-    TextAlign textAlign,
-    Color color,
+    Key? key,
+    TextAlign? textAlign,
+    Color? color,
   }) {
     return TFC_Text(text, TFC_TextType.TITLE,
         key: key, textAlign: textAlign, color: color);
@@ -67,9 +67,9 @@ class TFC_Text extends Text {
 
   factory TFC_Text.body(
     String text, {
-    Key key,
-    TextAlign textAlign,
-    Color color,
+    Key? key,
+    TextAlign? textAlign,
+    Color? color,
     bool isUnderlined = false,
   }) {
     return TFC_Text(
@@ -86,7 +86,7 @@ class TFC_Text extends Text {
 // Input Border Widgets
 class TFC_InputBorder {
   static InputBorder fromBorderType(
-      {@required TFC_BorderType borderType, @required color}) {
+      {required TFC_BorderType borderType, required color}) {
     if (borderType == TFC_BorderType.OUTLINED) {
       return OutlineInputBorder(
         borderSide: BorderSide(color: color),
@@ -105,7 +105,7 @@ class TFC_InputBorder {
 
 // Progress Indicator Widget
 class TFC_ProgressIndicator extends CircularProgressIndicator {
-  TFC_ProgressIndicator({Key key, Color color})
+  TFC_ProgressIndicator({Key? key, Color? color})
       : super(
           key: key,
           backgroundColor: (color != null) ? color : TFC_AppStyle.colorPrimary,
@@ -113,7 +113,7 @@ class TFC_ProgressIndicator extends CircularProgressIndicator {
 }
 
 // Outlined Button Widget
-class TFC_OutlinedButton extends OutlineButton {
+/*class TFC_OutlinedButton extends OutlineButton {
   TFC_OutlinedButton({
     Key key,
     Function onPressed,
@@ -124,4 +124,4 @@ class TFC_OutlinedButton extends OutlineButton {
           onPressed: onPressed,
           child: child,
         );
-}
+}*/
