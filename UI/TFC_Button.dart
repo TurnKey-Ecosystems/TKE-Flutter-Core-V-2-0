@@ -39,6 +39,39 @@ class TFC_Button extends StatelessWidget {
     );
   }
 
+  TFC_Button.raised({
+    Key? key,
+    required VoidCallback onPressed,
+    required double elevation,
+    VoidCallback? onLongPress,
+    FocusNode? focusNode,
+    bool autofocus = false,
+    Clip clipBehavior = Clip.none,
+    required Widget child,
+    Color? color,
+    this.margin,
+    this.width,
+    this.height,
+  }) {
+    color = (color != null) ? color : TFC_AppStyle.colorPrimary;
+    margin = (margin != null)
+        ? margin
+        : EdgeInsets.all(0.5 * TFC_AppStyle.instance.pageMargins);
+    buttonWidget = ElevatedButton(
+      key: key,
+      onPressed: onPressed,
+      onLongPress: onLongPress,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(color),
+        elevation: MaterialStateProperty.all(elevation),
+      ),
+      focusNode: focusNode,
+      autofocus: autofocus,
+      clipBehavior: clipBehavior,
+      child: Container(margin: margin, child: child),
+    );
+  }
+
   TFC_Button.outlined({
     Key? key,
     required VoidCallback onPressed,
