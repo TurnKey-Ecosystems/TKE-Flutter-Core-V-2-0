@@ -313,6 +313,9 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
   static FocusNode? get focus {
     return _focus;
   }
+  static void setFocusVar(FocusNode newFocusNode) {
+    _focus = newFocusNode;
+  }
 
   final String? defaultValue;
   final void Function()? onSubmitted;

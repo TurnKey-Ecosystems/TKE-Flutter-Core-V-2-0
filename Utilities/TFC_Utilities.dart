@@ -36,10 +36,10 @@ class TFC_Utilities {
     return numberText;
   }
 
-  static void closeTheKeyboard(BuildContext context) {
+  static void closeTheKeyboard(BuildContext? context) {
     if (TFC_InputField.focus != null && TFC_InputField.focus!.hasFocus) {
       TFC_InputField.focus!.unfocus();
-    } else {
+    } else if (context != null) {
       FocusScope.of(context).unfocus();
     }
   }
