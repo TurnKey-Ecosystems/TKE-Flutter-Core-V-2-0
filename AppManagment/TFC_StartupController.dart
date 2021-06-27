@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../Serialization/TFC_AutoSaving.dart';
 import '../Utilities/TFC_Utilities.dart';
-//import 'TFC_SyncController.dart';
+import 'TFC_SyncController.dart';
 import '../UI/TFC_AppStyle.dart';
 import '../UI/TFC_Page.dart';
 import 'TFC_DiskController.dart';
@@ -129,9 +129,9 @@ class TFC_StartupController {
     }
 
     // Set up the database sync controller
-    /*await TFC_SyncController.setupDatabaseSyncController(
-        clientSettings["clientID"], itemTypesInThisApp,
-        shouldStartSync: shouldStartSync);*/
+    await TFC_SyncController.setupDatabaseSyncController(
+        /*clientSettings["clientID"], itemTypesInThisApp,*/
+        shouldStartSync: false);//shouldStartSync);
 
     // Actually start the app
     TFC_FlutterApp.homePage = homePageBuilder();

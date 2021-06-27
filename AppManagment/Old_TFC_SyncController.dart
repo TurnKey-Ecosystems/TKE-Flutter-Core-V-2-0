@@ -1,8 +1,6 @@
 import 'dart:developer';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:tke_ia_sync_flutter_5c6r/UI/pages/HomePage.dart';
-
 import '../Utilities/TFC_ImageUtilities.dart';
 import '../AppManagment/TFC_FlutterApp.dart';
 import '../Utilities/TFC_Event.dart';
@@ -15,11 +13,19 @@ import 'TFC_DiskController.dart';
 import '../Serialization/TFC_SerializingContainers.dart';
 
 class TFC_SyncController {
-  static const String API_KEY = "6AE857F22B43461B983935022D8444A9";
+  //static const String REST_GATEWAY_URL = "https://9gj1n5qh3c.execute-api.us-west-2.amazonaws.com/alpha";
+  static const String DEV_API_KEY = "BzfkKFcaSm2nG34qcQbmZ8qWKOwZv9L27TXzX7WD";
+  static const String DEMO_API_KEY = "OE5ZY9MLPY5usRaOyQ25Xa4UyisIKrqW7rxYEdfh";
   static const String RELEASE_API_KEY =
-      "6AE857F22B43461B983935022D8444A9";
-  static const String REST_GATEWAY_URL = "https://api-dev.inspectall.com/v1";
-  //static late String clientID;
+      "rNLOR9sOnu3fFV6DoAfR48TW9OyHhla6875tWRUU";
+  //static const String DEMO_API_KEY = "x26sWIEtRE8WXJWf4tZPz2SGwHAHJGHf6G0gbRTL";
+  static const String REST_GATEWAY_URL =
+      "https://1yba8o86j1.execute-api.us-west-2.amazonaws.com/release/";
+  /*static const String REST_GATEWAY_URL =
+      "https://g1n78jreyb.execute-api.us-west-2.amazonaws.com/demo-1-0/";*/
+  /*static const String REST_GATEWAY_URL =
+      "https://1w1s6t19d9.execute-api.us-west-2.amazonaws.com/dev/";*/
+  static late String clientID;
   static bool _downloadAllIsInProgress = false;
   static bool get downloadAllIsInProgress {
     return _downloadAllIsInProgress;
@@ -27,13 +33,7 @@ class TFC_SyncController {
 
   static bool _syncShouldBePaused = true;
   static bool _syncIsRunning = false;
-  static TFC_AutoSavingProperty _changeLogsFolderID =
-      TFC_AutoSavingProperty(-1, "changeLogsFolderID");
-  static TFC_AutoSavingProperty _itemsFolderID =
-      TFC_AutoSavingProperty(-1, "itemsFolderID");
-  static TFC_AutoSavingProperty _imagesFolderID =
-      TFC_AutoSavingProperty(-1, "imagesFolderID");
-  static TFC_AutoSavingProperty _timeOfLastSync =
+  static TFC_AutoSavingProperty timeOfLastSync =
       TFC_AutoSavingProperty(0, "timeOfLastSync");
   static TFC_AutoSavingMap _newItems = TFC_AutoSavingMap("newItems");
   static TFC_AutoSavingMap _itemChanges = TFC_AutoSavingMap("itemChanges");
@@ -52,20 +52,19 @@ class TFC_SyncController {
       TFC_AutoSavingMap("imagesToUpload");
   static TFC_AutoSavingMap _imagesToDownload =
       TFC_AutoSavingMap("imagesToDownload");
-  //static late Set<String> _itemTypesInThisApp;
+  static late Set<String> _itemTypesInThisApp;
 
   static Future<void> setupDatabaseSyncController(
-      /*String givenClientID,*/ /*Set<String> itemTypesInThisApp,*/
+      String givenClientID, Set<String> itemTypesInThisApp,
       {shouldStartSync = true}) async {
-    //clientID = givenClientID;
-    //_itemTypesInThisApp = itemTypesInThisApp;
-    _ensureCloudFoldersExistAndThatWeKnowHowToFindThem();
+    clientID = givenClientID;
+    _itemTypesInThisApp = itemTypesInThisApp;
     if (shouldStartSync) {
-      //_timeOfLastSync.value = 1594055539000;
+      //timeOfLastSync.value = 1594055539000;
 
       // If it has been a while since this phone was synced, wipe the local files and start fresh
       DateTime datofLastSync =
-          DateTime.fromMillisecondsSinceEpoch(_timeOfLastSync.value);
+          DateTime.fromMillisecondsSinceEpoch(timeOfLastSync.value);
       Duration timeSinceLastSinc = DateTime.now().difference(datofLastSync);
       if (timeSinceLastSinc >= Duration(days: 90)) {
         bool redownloadCompleted = false;
@@ -82,43 +81,17 @@ class TFC_SyncController {
       }
 
       // If there are any images that need uploaded or downloaded, then sync them
-      /*if (!_imageDownloadIsRunning) {
+      if (!_imageDownloadIsRunning) {
         _downloadImages();
       }
       if (!_imageUploadIsRunning) {
         _uploadImages();
-      }*/
+      }
 
-      //_timeOfLastSync.value = 1594055539100;
+      //timeOfLastSync.value = 1594055539100;
 
       // Start the sync loop
-      //runSyncLoop();
-    }
-  }
-
-  static Future<void> _ensureCloudFoldersExistAndThatWeKnowHowToFindThem() async {
-    if (_changeLogsFolderID.value == -1 || _itemsFolderID.value == -1 || _imagesFolderID.value == -1) {
-      int lastCompletedPageNumber = 0;
-      int totalPageCount = 1;
-      HomePage.setLogs("Temp0!");
-      HomePage.setLogs("Temp1!");
-
-      while (lastCompletedPageNumber < totalPageCount) {
-        HomePage.setLogs("Temp2!");
-        // Sync with the server3
-        HTTP.Response response = await HTTP.get(
-          //"$REST_GATEWAY_URL/folders?page=${lastCompletedPageNumber + 1}",
-          "https://api-dev.inspectall.com/v1/folders?page=1",
-          headers: <String, String>{
-            "Authorization":  "Basic NkFFODU3RjIyQjQzNDYxQjk4MzkzNTAyMkQ4NDQ0QTk6eA==",
-            "credentials": 'include'
-          },
-        );
-        
-        HomePage.setLogs(response.statusCode.toString());
-
-        lastCompletedPageNumber++;
-      }
+      runSyncLoop();
     }
   }
 
@@ -149,18 +122,20 @@ class TFC_SyncController {
 
     // Create the download all http request
     Map<String, dynamic> request = Map();
-    /*request["itemTypesInThisApp"] = _itemTypesInThisApp.toList();
+    request["itemTypesInThisApp"] = _itemTypesInThisApp.toList();
     request["itemTypesToGetNextItemIDIndicesFor"] =
-        _itemTypesInThisApp.toList();*/
+        _itemTypesInThisApp.toList();
     request["itemTypesToGetNextItemIDIndicesFor"]
         .add(TFC_ImageUtilities.IMAGE_ITEM_TYPE);
     request["deviceID"] = TFC_FlutterApp.deviceID.value;
-    //request["clientID"] = clientID;
+    request["clientID"] = clientID;
     log("About to start download all.");
 
     // Sync with the server3
     HTTP.Response response = await HTTP.post(
       "$REST_GATEWAY_URL/download_all",
+      //"https://k75gaw97rf.execute-api.us-west-2.amazonaws.com/dev/download_all",
+      //"https://8fg44b1i7l.execute-api.us-west-2.amazonaws.com/alpha/downloadall",
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         "x-api-key": RELEASE_API_KEY
@@ -181,7 +156,7 @@ class TFC_SyncController {
     //await AND_CleanupLegacyFiles.cleanUp();
 
     // Apply the server-side changes
-    _timeOfLastSync.value = decodedJson["new_timeOfLastSync"];
+    timeOfLastSync.value = decodedJson["newTimeOfLastSync"];
     for (String itemID in decodedJson["items"].keys) {
       TFC_ItemInstances.addNewItemFromServerItem(
           decodedJson["items"][itemID], itemID);
@@ -238,11 +213,11 @@ class TFC_SyncController {
     Map<String, dynamic> syncRequest = Map();
 
     // Compile: Time of last sync
-    syncRequest["_timeOfLastSync"] = _timeOfLastSync.value;
+    syncRequest["timeOfLastSync"] = timeOfLastSync.value;
 
     // Compile: next item ID index information.
     syncRequest["deviceID"] = TFC_FlutterApp.deviceID.value;
-    //syncRequest["clientID"] = clientID;
+    syncRequest["clientID"] = clientID;
     Set<String> newItemTypesInThisSync = Set();
     Map<String, dynamic> nextItemIDIndicesByItemType = Map();
     for (String itemID in _activelySyncingNewItems.map.keys) {
@@ -329,13 +304,13 @@ class TFC_SyncController {
     if (syncWasSuccessful &&
         decodedSyncJson != null &&
         decodedSyncJson.keys != null &&
-        decodedSyncJson.containsKey("new_timeOfLastSync") &&
+        decodedSyncJson.containsKey("newTimeOfLastSync") &&
         decodedSyncJson.containsKey("itemChanges") &&
         decodedSyncJson.containsKey("deletedItemIDs") &&
         decodedSyncJson.containsKey("deletedImages") &&
         decodedSyncJson.containsKey("newImages")) {
       // Apply the server-side changes
-      _timeOfLastSync.value = decodedSyncJson["new_timeOfLastSync"];
+      timeOfLastSync.value = decodedSyncJson["newTimeOfLastSync"];
       applyItems(decodedSyncJson["itemChanges"]);
       applyItemDeletions(decodedSyncJson["deletedItemIDs"]);
       _applyImageDeletions(decodedSyncJson["deletedImages"]);
@@ -590,7 +565,7 @@ class TFC_SyncController {
           'Content-Type': 'application/json; charset=UTF-8',
           "x-api-key": RELEASE_API_KEY
         },
-        body: jsonEncode({"fileName": fileName/*, "clientID": clientID*/}),
+        body: jsonEncode({"fileName": fileName, "clientID": clientID}),
       );
 
       if (getURLResponse.statusCode == 200) {
@@ -655,7 +630,7 @@ class TFC_SyncController {
           'Content-Type': 'application/json; charset=UTF-8',
           "x-api-key": RELEASE_API_KEY
         },
-        body: jsonEncode({"fileName": fileName/*, "clientID": clientID*/}),
+        body: jsonEncode({"fileName": fileName, "clientID": clientID}),
       );
       /*HTTP.Response getURLResponse = await HTTP.get(
         "$REST_GATEWAY_URL/get_image_download_url",
