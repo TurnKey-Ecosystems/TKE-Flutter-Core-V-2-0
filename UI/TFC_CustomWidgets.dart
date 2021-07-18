@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../DataStructures/TFC_Attribute.dart';
 import 'TFC_AppStyle.dart';
 
 // Tab Widget

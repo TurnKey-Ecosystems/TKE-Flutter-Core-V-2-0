@@ -3,7 +3,6 @@ import '../Utilities/TFC_Utilities.dart';
 
 abstract class TFC_ReloadableWidget extends StatefulWidget {
   //_TFC_ReloadableWidgetState _state;
-  Future Function() reload = () async {};
   final bool Function()? _mayReload;
   bool checkIfMayReload() {
     if (_mayReload != null) {
@@ -28,8 +27,14 @@ abstract class TFC_ReloadableWidget extends StatefulWidget {
   State<StatefulWidget> createState() {
     _TFC_ReloadableWidgetState _state =
         _TFC_ReloadableWidgetState(onInit, onDispose, buildWidget);
-    reload = _state.reload;
+    _reloadWrapper.reload = _state.reload;
     return _state;
+  }
+  
+  // This is janky, but it works
+  final _TFC_ReloadFunctionWrapper _reloadWrapper = _TFC_ReloadFunctionWrapper();
+  Future reload() async {
+    _reloadWrapper.reload();
   }
 
   // Let the children have access to the state object at build time
@@ -47,6 +52,10 @@ abstract class TFC_ReloadableWidget extends StatefulWidget {
   static void deregisterStateInstance(BuildContext context) {
     _stateInstances.remove(context.hashCode);
   }
+}
+
+class _TFC_ReloadFunctionWrapper {
+  Future Function() reload = () async {};
 }
 
 class _TFC_ReloadableWidgetState extends State<TFC_ReloadableWidget>

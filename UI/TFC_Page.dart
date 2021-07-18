@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../Utilities/TFC_BasicValueWrapper.dart';
 import 'TFC_PaddedColumn.dart';
 import 'TFC_AppBarBuilder.dart';
 import '../Utilities/TFC_Utilities.dart';
@@ -15,8 +16,11 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
   final double childPadding;
   final double preferredChildHeight;
   final TFC_TextType preferredChildTextType;
-  Widget floatingActionButton = Container();
-  BuildContext? pageContext;
+  final TFC_BasicValueWrapper<Widget> floatingActionButton = TFC_BasicValueWrapper(Container());
+  final TFC_BasicValueWrapper<BuildContext?> _pageContext = TFC_BasicValueWrapper(null);
+  BuildContext? get pageContext {
+    return _pageContext.value;
+  }
   double get internalPageWidth {
     return TFC_AppStyle.instance.screenWidth -
         (2 * TFC_AppStyle.instance.pageMargins);
@@ -40,7 +44,7 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
             : TFC_AppStyle.instance.pageMargins,
         this.childPadding = (childPadding != -1)
             ? childPadding
-            : TFC_AppStyle.instance.pageMargins,
+            : TFC_AppStyle.instance.pageMargins / 2.0,
         this.preferredChildHeight = (preferredChildHeight != -1)
             ? preferredChildHeight
             : 2.5 * TFC_AppStyle.instance.lineHeight,
@@ -50,7 +54,7 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
 
   @override
   Widget buildWidget(BuildContext context) {
-    pageContext = context;
+    _pageContext.value = context;
     Widget body;
 
     if (getShouldShowPage()) {
@@ -77,12 +81,12 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     return Scaffold(
       appBar: _appBarBuilder(context),
       body: body,
-      floatingActionButton: floatingActionButton,
+      floatingActionButton: floatingActionButton.value,
     );
   }
 
   void setFloatingActionButton(Widget newFloatingActionButton) {
-    floatingActionButton = newFloatingActionButton;
+    floatingActionButton.value = newFloatingActionButton;
   }
 
   static void openPage(Widget page, BuildContext context) {

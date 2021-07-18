@@ -83,7 +83,7 @@ class TFC_StartupController {
     }
 
     // Show the browser redirect page
-    if (kIsWeb) {
+    if (kIsWeb && kReleaseMode) {
       TFC_BrowserAndOSTestResults results =
           TFC_PlatformAPI.platformAPI.testBrowserAndOS();
 
@@ -96,7 +96,7 @@ class TFC_StartupController {
     }
 
     // Show the installation page
-    if (kIsWeb && !TFC_PlatformAPI.platformAPI.getIsInstalled()) {
+    if (kIsWeb && kReleaseMode && !TFC_PlatformAPI.platformAPI.getIsInstalled()) {
       TFC_BrowserAndOSTestResults results =
           TFC_PlatformAPI.platformAPI.testBrowserAndOS();
       runApp(TFC_InstallationApp(results.browser));
@@ -106,7 +106,7 @@ class TFC_StartupController {
     }
 
     // Show the passcode page
-    if (kIsWeb && caseInsensitivePasscode != null) {
+    if (kIsWeb && kReleaseMode && caseInsensitivePasscode != null) {
       TFC_AutoSavingProperty<String> lastPasscodeAttempt =
           TFC_AutoSavingProperty("", "lastPasscodeAttempt");
       bool lastPasscodeAttemptIsCorrect =
