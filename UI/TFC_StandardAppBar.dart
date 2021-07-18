@@ -16,6 +16,9 @@ class TFC_StandardAppBar extends StatelessWidget {
       child: AppBar(
         foregroundColor: TFC_AppStyle.COLOR_BACKGROUND,
         backgroundColor: TFC_AppStyle.colorPrimary,
+        iconTheme: IconThemeData(
+          color: TFC_AppStyle.COLOR_BACKGROUND,
+        ),
         flexibleSpace: Container(
           height: preferredHeight,
           alignment: Alignment.center,
