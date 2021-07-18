@@ -14,6 +14,7 @@ class TFC_StandardAppBar extends StatelessWidget {
     return PreferredSize(
       preferredSize: Size.fromHeight(preferredHeight),
       child: AppBar(
+        foregroundColor: TFC_AppStyle.COLOR_BACKGROUND,
         backgroundColor: TFC_AppStyle.colorPrimary,
         flexibleSpace: Container(
           height: preferredHeight,
