@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import '../Utilities/TFC_BasicValueWrapper.dart';
 import 'TFC_PaddedColumn.dart';
@@ -55,10 +57,15 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
   @override
   Widget buildWidget(BuildContext context) {
     _pageContext.value = context;
+    return overrideableBuildWidget(context);
+  }
+
+  Widget overrideableBuildWidget(BuildContext context) {
     Widget body;
 
     if (getShouldShowPage()) {
       List<Widget> children = getPageContents(context);
+
 
       body = ListView(
         children: [
@@ -82,6 +89,7 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
       appBar: _appBarBuilder(context),
       body: body,
       floatingActionButton: floatingActionButton.value,
+      bottomNavigationBar: getBottomNavigationBar(context),
     );
   }
 
@@ -97,4 +105,6 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
       ),
     );
   }
+
+  Widget? getBottomNavigationBar(BuildContext context) { return null; }
 }
