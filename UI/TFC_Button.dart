@@ -101,6 +101,8 @@ class TFC_Button extends StatelessWidget {
       style: ButtonStyle(
         overlayColor: MaterialStateProperty.all<Color>(color),
         foregroundColor: MaterialStateProperty.all<Color>(color),
+        backgroundColor:
+            MaterialStateProperty.all<Color>(TFC_AppStyle.COLOR_BACKGROUND),
         elevation: MaterialStateProperty.all(0.0),
         side: MaterialStateProperty.all<BorderSide>(BorderSide(color: color)),
       ),

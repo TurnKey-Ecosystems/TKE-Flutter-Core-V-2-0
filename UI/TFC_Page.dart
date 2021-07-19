@@ -18,11 +18,14 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
   final double childPadding;
   final double preferredChildHeight;
   final TFC_TextType preferredChildTextType;
-  final TFC_BasicValueWrapper<Widget> floatingActionButton = TFC_BasicValueWrapper(Container());
-  final TFC_BasicValueWrapper<BuildContext?> _pageContext = TFC_BasicValueWrapper(null);
+  final TFC_BasicValueWrapper<Widget> floatingActionButton =
+      TFC_BasicValueWrapper(Container());
+  final TFC_BasicValueWrapper<BuildContext?> _pageContext =
+      TFC_BasicValueWrapper(null);
   BuildContext? get pageContext {
     return _pageContext.value;
   }
+
   double get internalPageWidth {
     return TFC_AppStyle.instance.screenWidth -
         (2 * TFC_AppStyle.instance.pageMargins);
@@ -66,7 +69,6 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     if (getShouldShowPage()) {
       List<Widget> children = getPageContents(context);
 
-
       body = ListView(
         children: [
           Container(
@@ -106,5 +108,7 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     );
   }
 
-  Widget? getBottomNavigationBar(BuildContext context) { return null; }
+  Widget? getBottomNavigationBar(BuildContext context) {
+    return null;
+  }
 }
