@@ -44,11 +44,14 @@ abstract class TFC_Item {
       attribute.injectSetupDataFromItemInstance(itemID: _itemID, itemType: itemType);
       attribute.addOnAfterSetListener(tempTrackable);
     }
+    afterObjectInit();
   }
 
   List<TFC_Attribute> getAllAttributes();
 
   void createNewInit() {}
+
+  void afterObjectInit() {}
 
   void tempTrackable() {
     onAttributesChanged.trigger();
