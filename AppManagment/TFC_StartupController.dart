@@ -96,7 +96,9 @@ class TFC_StartupController {
     }
 
     // Show the installation page
-    if (kIsWeb && kReleaseMode && !TFC_PlatformAPI.platformAPI.getIsInstalled()) {
+    if (kIsWeb &&
+        kReleaseMode &&
+        !TFC_PlatformAPI.platformAPI.getIsInstalled()) {
       TFC_BrowserAndOSTestResults results =
           TFC_PlatformAPI.platformAPI.testBrowserAndOS();
       runApp(TFC_InstallationApp(results.browser));
