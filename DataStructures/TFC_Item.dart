@@ -39,13 +39,14 @@ abstract class TFC_Item {
   }
 
   void _initialize() {
-    TFC_AttributeSetupDataFromItemInstance attributeSetupDataFromItemInstance =
-        TFC_AttributeSetupDataFromItemInstance(_itemID, itemType, _attributes);
-    initializeAttributes(attributeSetupDataFromItemInstance);
+    _attributes = getAllAttributes();
     for (TFC_Attribute attribute in _attributes) {
+      attribute.injectSetupDataFromItemInstance(itemID: _itemID, itemType: itemType);
       attribute.addOnAfterSetListener(tempTrackable);
     }
   }
+
+  List<TFC_Attribute> getAllAttributes();
 
   void createNewInit() {}
 
@@ -53,10 +54,6 @@ abstract class TFC_Item {
     onAttributesChanged.trigger();
   }
   //Saved Items can not  be > 400KB
-
-  void initializeAttributes(
-      TFC_AttributeSetupDataFromItemInstance
-          attributeSetupDataFromItemInstance);
 
   @mustCallSuper
   void delete() {

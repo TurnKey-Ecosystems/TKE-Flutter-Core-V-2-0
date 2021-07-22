@@ -1,23 +1,34 @@
-//import 'dart:developer';
-import 'package:flutter/foundation.dart';
 import 'package:quiver/core.dart';
 import '../Serialization/TFC_SerializingContainers.dart';
 import 'TFC_Item.dart';
 import 'TFC_ItemInstances.dart';
 
-class TFC_AttributeItem<ItemType extends TFC_Item> {
+class TFC_AttributeItem<ItemType extends TFC_Item> implements TFC_Attribute {
   final String _attributeKey;
   final ItemType Function() _getDefaultItemOnCreateNew;
   final ItemType Function(String) _getItemFromItemID;
   late TFC_AttributeString _itemIDAttribute;
 
+  String get _itemID {
+    return _itemIDAttribute._itemID;
+  }
+
+  void set _itemID(String newItemID) {
+    _itemIDAttribute._itemID = newItemID;
+  }
+
+  String get _itemType {
+    return _itemIDAttribute._itemType;
+  }
+
+  void set _itemType(String newItemType) {
+    _itemIDAttribute._itemType = newItemType;
+  }
+
   TFC_AttributeItem({
     required String attributeKey,
     required ItemType Function() getDefaultItemOnCreateNew,
     required ItemType Function(String) getItemFromItemID,
-    required
-        TFC_AttributeSetupDataFromItemInstance
-            attributeSetupDataFromItemInstance,
     void Function()? onBeforeGetListener,
     void Function()? onAfterSetListener,
   })  : _attributeKey = attributeKey,
@@ -25,7 +36,6 @@ class TFC_AttributeItem<ItemType extends TFC_Item> {
         _getItemFromItemID = getItemFromItemID {
     _itemIDAttribute = TFC_AttributeString(
       attributeKey: _attributeKey,
-      attributeSetupDataFromItemInstance: attributeSetupDataFromItemInstance,
       maxLength: TFC_Item.MAX_ITEM_ID_LENGTH,
       onBeforeGetListener: onBeforeGetListener,
       onAfterSetListener: onAfterSetListener,
@@ -35,6 +45,14 @@ class TFC_AttributeItem<ItemType extends TFC_Item> {
     if (_itemIDAttribute.value == null || _itemIDAttribute.value == "") {
       _itemIDAttribute.value = _getDefaultItemOnCreateNew().itemID;
     }
+  }
+
+  void injectSetupDataFromItemInstance({
+    required String itemID,
+    required String itemType,
+  }) {
+    _itemID = itemID;
+    _itemType = itemType;
   }
 
   ItemType get value {
@@ -84,16 +102,11 @@ class TFC_AttributeDouble extends TFC_AttributeProperty<double> {
   TFC_AttributeDouble({
     required String attributeKey,
     double defaultValue = 0.0,
-    required
-        TFC_AttributeSetupDataFromItemInstance
-            attributeSetupDataFromItemInstance,
     void Function()? onBeforeGetListener,
     void Function()? onAfterSetListener,
   })  : _defaultValue = defaultValue,
         super(
           attributeKey: attributeKey,
-          attributeSetupDataFromItemInstance:
-              attributeSetupDataFromItemInstance,
           onBeforeGetListener: onBeforeGetListener,
           onAfterSetListener: onAfterSetListener,
         );
@@ -112,14 +125,9 @@ class TFC_AttributeInt extends TFC_AttributeProperty<int> {
     int defaultValue = 0,
     void Function()? onBeforeGetListener,
     void Function()? onAfterSetListener,
-    required
-        TFC_AttributeSetupDataFromItemInstance
-            attributeSetupDataFromItemInstance,
   })  : _defaultValue = defaultValue,
         super(
           attributeKey: attributeKey,
-          attributeSetupDataFromItemInstance:
-              attributeSetupDataFromItemInstance,
           onBeforeGetListener: onBeforeGetListener,
           onAfterSetListener: onAfterSetListener,
         );
@@ -140,14 +148,9 @@ class TFC_AttributeString extends TFC_AttributeProperty<String> {
     required this.maxLength,
     void Function()? onBeforeGetListener,
     void Function()? onAfterSetListener,
-    required
-        TFC_AttributeSetupDataFromItemInstance
-            attributeSetupDataFromItemInstance,
   })  : _defaultValue = defaultValue,
         super(
           attributeKey: attributeKey,
-          attributeSetupDataFromItemInstance:
-              attributeSetupDataFromItemInstance,
           onBeforeGetListener: onBeforeGetListener,
           onAfterSetListener: onAfterSetListener,
         );
@@ -166,14 +169,9 @@ class TFC_AttributeBool extends TFC_AttributeProperty<bool> {
     required bool defaultValue,
     void Function()? onBeforeGetListener,
     void Function()? onAfterSetListener,
-    required
-        TFC_AttributeSetupDataFromItemInstance
-            attributeSetupDataFromItemInstance,
   })  : _defaultValue = defaultValue,
         super(
           attributeKey: attributeKey,
-          attributeSetupDataFromItemInstance:
-              attributeSetupDataFromItemInstance,
           onBeforeGetListener: onBeforeGetListener,
           onAfterSetListener: onAfterSetListener,
         );
@@ -195,15 +193,10 @@ abstract class TFC_AttributeProperty<AttributeType> extends TFC_Attribute {
 
   TFC_AttributeProperty({
     required String attributeKey,
-    required
-        TFC_AttributeSetupDataFromItemInstance
-            attributeSetupDataFromItemInstance,
     void Function()? onBeforeGetListener,
     void Function()? onAfterSetListener,
   }) : super(
           attributeKey: attributeKey,
-          attributeSetupDataFromItemInstance:
-              attributeSetupDataFromItemInstance,
           onBeforeGetListener: onBeforeGetListener,
           onAfterSetListener: onAfterSetListener,
         );
@@ -217,6 +210,8 @@ abstract class TFC_AttributeProperty<AttributeType> extends TFC_Attribute {
       return instanceValue;
     }
   }
+
+  dynamic getDefaultValue();
 
   void setValue(AttributeType newValue) {
     TFC_ItemInstances.setAttributeValue(
@@ -232,19 +227,13 @@ class TFC_AttributeItemSet<ItemType extends TFC_Item> extends TFC_Attribute {
     required ItemType Function(String) getItemFromItemID,
     void Function()? onBeforeGetListener,
     void Function()? onAfterSetListener,
-    required
-        TFC_AttributeSetupDataFromItemInstance
-            attributeSetupDataFromItemInstance,
   })  : _getItemFromItemID = getItemFromItemID,
         super(
           attributeKey: attributeKey,
-          attributeSetupDataFromItemInstance:
-              attributeSetupDataFromItemInstance,
           onBeforeGetListener: onBeforeGetListener,
           onAfterSetListener: onAfterSetListener,
         );
 
-  @override
   List getDefaultValue() {
     return [];
   }
@@ -291,18 +280,12 @@ class TFC_AttributeSet extends TFC_Attribute {
     required String attributeKey,
     void Function()? onBeforeGetListener,
     void Function()? onAfterSetListener,
-    required
-        TFC_AttributeSetupDataFromItemInstance
-            attributeSetupDataFromItemInstance,
   }) : super(
           attributeKey: attributeKey,
-          attributeSetupDataFromItemInstance:
-              attributeSetupDataFromItemInstance,
           onBeforeGetListener: onBeforeGetListener,
           onAfterSetListener: onAfterSetListener,
         );
 
-  @override
   List getDefaultValue() {
     return [];
   }
@@ -326,21 +309,15 @@ class TFC_AttributeSet extends TFC_Attribute {
 }
 
 abstract class TFC_Attribute {
-  final String _itemID;
-  final String _itemType;
+  late final String _itemID;
+  late final String _itemType;
   final String _attributeKey;
 
   TFC_Attribute({
     required String attributeKey,
-    required
-        TFC_AttributeSetupDataFromItemInstance
-            attributeSetupDataFromItemInstance,
     void Function()? onBeforeGetListener,
     void Function()? onAfterSetListener,
-  })  : _itemID = attributeSetupDataFromItemInstance.itemID,
-        _itemType = attributeSetupDataFromItemInstance.itemType,
-        _attributeKey = attributeKey {
-    attributeSetupDataFromItemInstance.listToAddTo.add(this);
+  })  : _attributeKey = attributeKey {
     if (onBeforeGetListener != null) {
       TFC_ItemInstances.addOnBeforeGetListener(
           _itemID, _attributeKey, onBeforeGetListener);
@@ -349,6 +326,14 @@ abstract class TFC_Attribute {
       TFC_ItemInstances.addOnAfterSetListener(
           _itemID, _attributeKey, onAfterSetListener);
     }
+  }
+
+  void injectSetupDataFromItemInstance({
+    required String itemID,
+    required String itemType,
+  }) {
+    _itemID = itemID;
+    _itemType = itemType;
   }
 
   void addOnBeforeGetListener(void Function() listener) {
@@ -369,8 +354,6 @@ abstract class TFC_Attribute {
         _itemID, _attributeKey, listener);
   }
 
-  dynamic getDefaultValue();
-
   @override
   int get hashCode => hash2(_itemID.hashCode, _attributeKey.hashCode);
 
@@ -380,13 +363,4 @@ abstract class TFC_Attribute {
         other._itemID.hashCode == _itemID.hashCode &&
         other._attributeKey.hashCode == _attributeKey.hashCode;
   }
-}
-
-class TFC_AttributeSetupDataFromItemInstance {
-  final String itemID;
-  final String itemType;
-  final List<dynamic> listToAddTo;
-
-  TFC_AttributeSetupDataFromItemInstance(
-      this.itemID, this.itemType, this.listToAddTo);
 }
