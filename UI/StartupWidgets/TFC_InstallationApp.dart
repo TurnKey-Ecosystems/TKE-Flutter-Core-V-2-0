@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../AppManagment/TFC_FlutterApp.dart';
-import '../UI/TFC_Button.dart';
-import 'TFC_CustomWidgets.dart';
-import 'TFC_ReloadableWidget.dart';
-import 'TFC_AppStyle.dart';
-import '../APIs/TFC_PlatformAPI.dart';
+import '../../AppManagment/TFC_FlutterApp.dart';
+import '../PrebuiltWidgets/TFC_Button.dart';
+import '../PrebuiltWidgets/TFC_CustomWidgets.dart';
+import '../FoundationalElements/TFC_ReloadableWidget.dart';
+import '../FoundationalElements/TFC_AppStyle.dart';
+import '../../APIs/TFC_PlatformAPI.dart';
 
 class TFC_InstallationApp extends StatelessWidget {
   static late TFC_Browser browser;
@@ -91,8 +91,8 @@ class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
                     "Install the app.",
                     textAlign: TextAlign.center,
                   ),
-                  TFC_Button.flat(
-                      onPressed: TFC_PlatformAPI.platformAPI.showInstallPrompt,
+                  TFC_Button.solid(
+                      onTap: TFC_PlatformAPI.platformAPI.showInstallPrompt,
                       child: TFC_Text.body(
                         "Install",
                         color: TFC_AppStyle.COLOR_BACKGROUND,

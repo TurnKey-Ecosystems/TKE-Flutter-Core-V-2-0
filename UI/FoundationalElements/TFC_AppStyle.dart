@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tke_simple_widget_bricks_flutter_qx9b/TKE-Flutter-Core/UI/FoundationalElements/TU.dart';
+import '../ConfigurationTypes/TFC_Shadow.dart';
 import 'TFC_IOSKeyboardDoneButton.dart';
 
 enum TFC_TextType { HEADING, SUBHEADING, TITLE, BODY }
@@ -6,6 +8,7 @@ enum TFC_BorderType {
   OUTLINED,
   UNDERLINED,
 }
+enum TFC_ShadowType { SMALL, MEDIUM, LARGE }
 
 class TFC_AppStyle {
   // Colors
@@ -21,6 +24,7 @@ class TFC_AppStyle {
   static const Color COLOR_TEXT_SUBHEADING = Color(0xff58595b);
   static const Color COLOR_TEXT_TITLE = Color(0xff5c5c5c);
   static const Color COLOR_TEXT_BODY = Color(0xff5c5c5c);
+  static const Color COLOR_SHADOW = COLOR_TEXT_BODY;
   static Map<TFC_TextType, Color> get textColors {
     return {
       TFC_TextType.HEADING: COLOR_TEXT_HEADING,
@@ -41,6 +45,7 @@ class TFC_AppStyle {
     buttonTheme: ButtonThemeData(
       minWidth: 0.0,
     ),
+    shadowColor: TFC_AppStyle.COLOR_SHADOW,
     dialogTheme: DialogTheme(
       titleTextStyle: TextStyle(
           fontSize: 12,
@@ -60,6 +65,36 @@ class TFC_AppStyle {
   // Sizing
   static const double SCREEN_WIDTH_IN_M2_UNITS = 24;
   static const double MARGINS_IN_M2_UNITS = 1;
+  
+  // Shadows
+  static TFC_Shadow getShadow(TFC_ShadowType shadowType) {
+    switch (shadowType) {
+      case TFC_ShadowType.SMALL:
+        return TFC_Shadow(
+          offset: Offset(
+            TU.toFU(-3)!,
+            TU.toFU(-3)!,
+          ),
+          blurRadius: TU.toFU(-2)!,
+        );
+      case TFC_ShadowType.MEDIUM:
+        return TFC_Shadow(
+          offset: Offset(
+            TU.toFU(-2)!,
+            TU.toFU(-2)!,
+          ),
+          blurRadius: TU.toFU(-1)!,
+        );
+      case TFC_ShadowType.LARGE:
+        return TFC_Shadow(
+          offset: Offset(
+            TU.toFU(-1)!,
+            TU.toFU(-1)!,
+          ),
+          blurRadius: TU.toFU(0)!,
+        );
+    }
+  }
 
   // Instance
   static late _TFC_AppStyleInstanceProperties instance;

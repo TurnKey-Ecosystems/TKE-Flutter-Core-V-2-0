@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../Serialization/TFC_AutoSaving.dart';
-import '../UI/TFC_AppStyle.dart';
-import '../UI/TFC_ReloadableWidget.dart';
+import '../UI/FoundationalElements/TFC_AppStyle.dart';
+import '../UI/FoundationalElements/TFC_ReloadableWidget.dart';
 import '../Utilities/TFC_Utilities.dart';
 import '../APIs/TFC_PlatformAPI.dart';
 import '../Utilities/TFC_ColorExtension.dart';

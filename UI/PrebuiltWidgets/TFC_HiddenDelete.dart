@@ -1,7 +1,7 @@
 //import '../DataStructures/TFC_Item.dart';
-import '../UI/TFC_AppStyle.dart';
-import '../UI/TFC_CustomWidgets.dart';
-import '../UI/TFC_DialogManager.dart';
+import '../FoundationalElements/TFC_AppStyle.dart';
+import './TFC_CustomWidgets.dart';
+import './TFC_DialogManager.dart';
 import 'package:flutter/material.dart';
 
 class TFC_HiddenDelete extends StatelessWidget {

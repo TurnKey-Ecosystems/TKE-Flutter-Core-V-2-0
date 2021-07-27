@@ -1,7 +1,7 @@
 //import 'TFC_LoadingPage.dart';
 import 'package:flutter/material.dart';
-import 'TFC_AppStyle.dart';
-import '../APIs/TFC_PlatformAPI.dart';
+import '../FoundationalElements/TFC_AppStyle.dart';
+import '../../APIs/TFC_PlatformAPI.dart';
 
 class TFC_PostLogInMaterialApp extends StatelessWidget {
   @override

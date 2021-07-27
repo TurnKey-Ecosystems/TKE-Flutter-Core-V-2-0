@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'TFC_AppStyle.dart';
+import '../FoundationalElements/TFC_AppStyle.dart';
 import 'TFC_CustomWidgets.dart';
 
 class TFC_StandardAppBar extends StatelessWidget {

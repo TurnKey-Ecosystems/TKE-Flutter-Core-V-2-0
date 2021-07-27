@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'TFC_CustomWidgets.dart';
-import 'TFC_ReloadableWidget.dart';
-import 'TFC_AppStyle.dart';
-import 'TFC_InputFields.dart';
-import '../APIs/TFC_PlatformAPI.dart';
+import '../PrebuiltWidgets/TFC_CustomWidgets.dart';
+import '../FoundationalElements/TFC_ReloadableWidget.dart';
+import '../FoundationalElements/TFC_AppStyle.dart';
+import '../PrebuiltWidgets/TFC_InputFields.dart';
+import '../../APIs/TFC_PlatformAPI.dart';
 
 class TFC_LogInMaterialApp extends StatelessWidget {
   static late String correctPasscode;

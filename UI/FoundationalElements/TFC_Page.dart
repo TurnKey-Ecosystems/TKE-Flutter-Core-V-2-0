@@ -1,23 +1,22 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
-import '../Utilities/TFC_BasicValueWrapper.dart';
-import 'TFC_PaddedColumn.dart';
-import 'TFC_AppBarBuilder.dart';
-import '../Utilities/TFC_Utilities.dart';
+import '../ConfigurationTypes/TFC_InterChildAlign.dart';
+import '../ConfigurationTypes/TFC_AxisSize.dart';
+import '../ConfigurationTypes/TFC_BoxToChildAlign.dart';
+import '../../Utilities/TFC_BasicValueWrapper.dart';
+import '../PrebuiltWidgets/TFC_AppBarBuilder.dart';
+import '../../Utilities/TFC_Utilities.dart';
 import 'TFC_AppStyle.dart';
-import 'TFC_LoadingPage.dart';
+import '../PrebuiltWidgets/TFC_LoadingPage.dart';
 import 'TFC_ReloadableWidget.dart';
+import 'TFC_Box.dart';
 
 abstract class TFC_Page extends TFC_ReloadableWidget {
   final IconData icon;
   final String loadingMessage;
   final bool Function() getShouldShowPage;
   final PreferredSizeWidget Function(BuildContext) _appBarBuilder;
-  final double pageMargins;
-  final double childPadding;
-  final double preferredChildHeight;
-  final TFC_TextType preferredChildTextType;
+  final double paddingBetweenBoxAndContents_tu;
+  final double paddingInbetweenChildren_tu;
   final TFC_BasicValueWrapper<Widget> floatingActionButton =
       TFC_BasicValueWrapper(Container());
   final TFC_BasicValueWrapper<BuildContext?> _pageContext =
@@ -37,22 +36,11 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     required this.getShouldShowPage,
     PreferredSizeWidget Function(BuildContext) appBarBuilder =
         TFC_AppBarBuilder.buildDefaultAppBar,
-    double pageMargins = -1,
-    double childPadding = -1,
-    double preferredChildHeight = -1,
-    this.preferredChildTextType = TFC_TextType.BODY,
+    this.paddingBetweenBoxAndContents_tu = 0,
+    this.paddingInbetweenChildren_tu = 0,
     bool Function()? mayReload,
     Key? key,
   })  : _appBarBuilder = appBarBuilder,
-        this.pageMargins = (pageMargins != -1)
-            ? pageMargins
-            : TFC_AppStyle.instance.pageMargins,
-        this.childPadding = (childPadding != -1)
-            ? childPadding
-            : TFC_AppStyle.instance.pageMargins / 2.0,
-        this.preferredChildHeight = (preferredChildHeight != -1)
-            ? preferredChildHeight
-            : 2.5 * TFC_AppStyle.instance.lineHeight,
         super(key: key, mayReload: mayReload);
 
   List<Widget> getPageContents(BuildContext context);
@@ -69,16 +57,19 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     if (getShouldShowPage()) {
       List<Widget> children = getPageContents(context);
 
-      body = ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.all(pageMargins),
-            child: TFC_PaddedColumn(
-              padding: childPadding,
-              children: children,
+      body = SingleChildScrollView(
+        child: TFC_Box(
+          mainAxis: TFC_Axis.VERTICAL,
+          width: TFC_AxisSize.shrinkToFitContents(),
+          height: TFC_AxisSize.shrinkToFitContents(),
+          boxToChildAlignmentConfiguration:
+            TFC_BoxToChildAlign.topCenter(
+              paddingBetweenBoxAndContents_tu: paddingBetweenBoxAndContents_tu,
             ),
-          ),
-        ],
+          interChildAlignmentVertical:
+            TFC_InterChildAlign.uniformPaddingTU(paddingInbetweenChildren_tu),
+          children: children,
+        ),
       );
     } else {
       body = TFC_LoadingPage.icon(icon, loadingMessage);

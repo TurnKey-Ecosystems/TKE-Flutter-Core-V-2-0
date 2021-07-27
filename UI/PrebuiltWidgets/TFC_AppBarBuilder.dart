@@ -1,5 +1,5 @@
-import '../AppManagment/TFC_FlutterApp.dart';
-import 'TFC_AppStyle.dart';
+import '../../AppManagment/TFC_FlutterApp.dart';
+import '../FoundationalElements/TFC_AppStyle.dart';
 import 'TFC_CustomWidgets.dart';
 import 'package:flutter/material.dart';
 

@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:math';
 //import 'dart:io';
-import '../UI/TFC_InstallationApp.dart';
-import '../UI/TFC_BrowserRedirectApp.dart';
+import '../UI/StartupWidgets/TFC_InstallationApp.dart';
+import '../UI/StartupWidgets/TFC_BrowserRedirectApp.dart';
 import '../APIs/TFC_PlatformAPI.dart';
 import '../Utilities/TFC_ColorExtension.dart';
-import '../UI/TFC_LogInMaterialApp.dart';
-import '../UI/TFC_PostLogInMaterialApp.dart';
+import '../UI/StartupWidgets/TFC_LogInMaterialApp.dart';
+import '../UI/StartupWidgets/TFC_PostLogInMaterialApp.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 //import 'package:device_info/device_info.dart';
@@ -14,13 +14,11 @@ import 'package:flutter/services.dart';
 import '../Serialization/TFC_AutoSaving.dart';
 import '../Utilities/TFC_Utilities.dart';
 //import 'TFC_SyncController.dart';
-import '../UI/TFC_AppStyle.dart';
-import '../UI/TFC_Page.dart';
+import '../UI/FoundationalElements/TFC_AppStyle.dart';
 import 'TFC_DiskController.dart';
 import '../Utilities/TFC_Event.dart';
 import 'TFC_FlutterApp.dart';
-import '../UI/TFC_StartupMaterialApp.dart';
-import 'dart:developer' as dev;
+import '../UI/StartupWidgets/TFC_StartupMaterialApp.dart';
 
 class TFC_StartupController {
   static final TFC_Event onTFCStartupComplete = TFC_Event();

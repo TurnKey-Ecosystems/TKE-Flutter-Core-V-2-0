@@ -1,11 +1,11 @@
-import '../AppManagment/TFC_SyncController.dart';
+import '../../AppManagment/TFC_SyncController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../AppManagment/TFC_FlutterApp.dart';
-import 'TFC_CustomWidgets.dart';
-import 'TFC_LoadingPage.dart';
-import 'TFC_ReloadableWidget.dart';
-import 'TFC_AppStyle.dart';
+import '../../AppManagment/TFC_FlutterApp.dart';
+import '../PrebuiltWidgets/TFC_CustomWidgets.dart';
+import '../PrebuiltWidgets/TFC_LoadingPage.dart';
+import '../FoundationalElements/TFC_ReloadableWidget.dart';
+import '../FoundationalElements/TFC_AppStyle.dart';
 //import '../AppManagment/TFC_DiskController.dart';
 
 class _Init_Properties {

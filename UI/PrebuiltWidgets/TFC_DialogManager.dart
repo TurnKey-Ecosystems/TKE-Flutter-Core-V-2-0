@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../Utilities/TFC_Utilities.dart';
-import 'TFC_AppStyle.dart';
+import '../../Utilities/TFC_Utilities.dart';
+import '../FoundationalElements/TFC_AppStyle.dart';
 import 'TFC_CustomWidgets.dart';
 
 class TFC_DialogManager {

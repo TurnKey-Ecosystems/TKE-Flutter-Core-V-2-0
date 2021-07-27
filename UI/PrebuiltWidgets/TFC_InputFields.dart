@@ -2,9 +2,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import '../DataStructures/TFC_Attribute.dart';
-import 'TFC_AppStyle.dart';
-import 'TFC_ReloadableWidget.dart';
+import '../../DataStructures/TFC_Attribute.dart';
+import '../FoundationalElements/TFC_AppStyle.dart';
+import '../FoundationalElements/TFC_ReloadableWidget.dart';
 import 'TFC_CustomWidgets.dart';
 
 // TODO: Make email and physical address input fields have input validation

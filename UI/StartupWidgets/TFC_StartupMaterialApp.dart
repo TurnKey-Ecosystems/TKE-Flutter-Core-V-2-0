@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'TFC_AppStyle.dart';
+import '../FoundationalElements/TFC_AppStyle.dart';
 import 'TFC_SplashScreen.dart';
-import '../APIs/TFC_PlatformAPI.dart';
+import '../../APIs/TFC_PlatformAPI.dart';
 
 class TFC_StartupMaterialApp extends StatelessWidget {
   @override

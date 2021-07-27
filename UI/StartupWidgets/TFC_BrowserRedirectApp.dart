@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../UI/TFC_Button.dart';
-import 'TFC_CustomWidgets.dart';
-import 'TFC_ReloadableWidget.dart';
-import 'TFC_AppStyle.dart';
-import '../APIs/TFC_PlatformAPI.dart';
+import '../PrebuiltWidgets/TFC_Button.dart';
+import '../PrebuiltWidgets/TFC_CustomWidgets.dart';
+import '../FoundationalElements/TFC_ReloadableWidget.dart';
+import '../FoundationalElements/TFC_AppStyle.dart';
+import '../../APIs/TFC_PlatformAPI.dart';
 //import 'dart:html' as html;
 
 class TFC_BrowserRedirectApp extends StatelessWidget {
@@ -85,8 +83,8 @@ class _TFC_BrowserRedirectScaffold extends TFC_ReloadableWidget {
             Container(
               height: TFC_AppStyle.instance.lineHeight,
             ),
-            TFC_Button.flat(
-              onPressed: () {
+            TFC_Button.solid(
+              onTap: () {
                 TFC_BrowserRedirectApp.shouldContinuePastThisPage = true;
               },
               child: TFC_Text.body(
@@ -137,8 +135,8 @@ class _TFC_BrowserRedirectScaffold extends TFC_ReloadableWidget {
                   textAlign: TextAlign.center,
                 ),
                 //TFC_Text.body(TFC_WebExclusiveAPI.getCurrentURL()),
-                TFC_Button.flat(
-                    onPressed: () {
+                TFC_Button.solid(
+                    onTap: () {
                       TFC_PlatformAPI.platformAPI.copyTextToClipBoard(
                           TFC_PlatformAPI.platformAPI.getCurrentURL());
                     },
