@@ -16,13 +16,13 @@ enum TFC_Axis { HORIZONTAL, VERTICAL, Z_AXIS }
 class TFC_Box extends StatefulWidget {
   final TFC_AxisSize width;
   final TFC_AxisSize height;
-  final TFC_BoxToChildAlign boxToChildAlignmentConfiguration;
+  final TFC_BoxToChildAlign boxToChildAlign;
   final TFC_Axis mainAxis;
   final TFC_InterChildAlign interChildAlignHorizontal;
   final TFC_InterChildAlign interChildAlignmentVertical;
   final List<Widget> children;
   final TFC_BoxDecoration boxDecoration;
-  final TFC_TouchInteractionConfig touchInteractionConfigurations;
+  final TFC_TouchInteractionConfig touchInteractionConfig;
   bool get shouldPadInbetweenContents {
     switch(mainAxis) {
       case TFC_Axis.HORIZONTAL:
@@ -38,7 +38,7 @@ class TFC_Box extends StatefulWidget {
   const TFC_Box({
     required this.width,
     required this.height,
-    this.boxToChildAlignmentConfiguration =
+    this.boxToChildAlign =
       const TFC_BoxToChildAlign.center(),
     this.mainAxis = TFC_Axis.VERTICAL,
     this.interChildAlignHorizontal =
@@ -48,7 +48,7 @@ class TFC_Box extends StatefulWidget {
     this.children = const [],
     this.boxDecoration =
       const TFC_BoxDecoration.undecorated(),
-    this.touchInteractionConfigurations =
+    this.touchInteractionConfig =
       const TFC_TouchInteractionConfig.notInteractable(),
   });
 
@@ -57,7 +57,7 @@ class TFC_Box extends StatefulWidget {
         const TFC_AxisSize.shrinkToFitContents(),
       this.height =
         const TFC_AxisSize.shrinkToFitContents(),
-      this.boxToChildAlignmentConfiguration =
+      this.boxToChildAlign =
         const TFC_BoxToChildAlign.center(),
       this.mainAxis = TFC_Axis.VERTICAL,
       this.interChildAlignHorizontal =
@@ -67,7 +67,7 @@ class TFC_Box extends StatefulWidget {
       this.children = const [],
       this.boxDecoration =
         const TFC_BoxDecoration.undecorated(),
-      this.touchInteractionConfigurations =
+      this.touchInteractionConfig =
         const TFC_TouchInteractionConfig.notInteractable();
 
   _TFC_BoxState createState() {
@@ -102,11 +102,13 @@ class _TFC_BoxState extends State<TFC_Box> {
           widget.interChildAlignmentVertical.axisAlignment
           ?? MainAxisAlignment.start,
         mainAxisSize: widget.height.axisSize ?? MainAxisSize.max,
+        crossAxisAlignment: widget.width.crossAxisAlignment ?? CrossAxisAlignment.center,
         children: [Row(
           mainAxisAlignment: 
             widget.interChildAlignHorizontal.axisAlignment
             ?? MainAxisAlignment.start,
           mainAxisSize: widget.width.axisSize ?? MainAxisSize.max,
+          crossAxisAlignment: widget.height.crossAxisAlignment ?? CrossAxisAlignment.center,
           children: childrenWithPaddingInbetween,
         )],
       );
@@ -116,11 +118,13 @@ class _TFC_BoxState extends State<TFC_Box> {
           widget.interChildAlignHorizontal.axisAlignment
           ?? MainAxisAlignment.start,
         mainAxisSize: widget.width.axisSize ?? MainAxisSize.max,
+        crossAxisAlignment: widget.height.crossAxisAlignment ?? CrossAxisAlignment.center,
         children: [Column(
           mainAxisAlignment: 
             widget.interChildAlignmentVertical.axisAlignment
             ?? MainAxisAlignment.start,
           mainAxisSize: widget.height.axisSize ?? MainAxisSize.max,
+          crossAxisAlignment: widget.width.crossAxisAlignment ?? CrossAxisAlignment.center,
           children: childrenWithPaddingInbetween,
         )],
           );
@@ -133,7 +137,7 @@ class _TFC_BoxState extends State<TFC_Box> {
     // Determine the padding in case of an outline
     EdgeInsetsGeometry? paddingForOutline = null;
     EdgeInsetsGeometry? potentialyReducedBoxedToChildrenPading =
-      widget.boxToChildAlignmentConfiguration.flutterPadding;
+      widget.boxToChildAlign.flutterPadding;
     if (widget.boxDecoration.isOutlined) {
       paddingForOutline = EdgeInsets.all(
         widget.boxDecoration.borderWidth_fu!
@@ -149,18 +153,18 @@ class _TFC_BoxState extends State<TFC_Box> {
     Widget container = Container(
       padding: paddingForOutline,
       child: Ink(
-        width: TU.toFU(widget.width.size),
-        height: TU.toFU(widget.height.size),
+        width: widget.width.size_fu,
+        height: widget.width.size_fu,
         child: Container(
           child: child,
           padding: potentialyReducedBoxedToChildrenPading,
-          alignment: widget.boxToChildAlignmentConfiguration.flutterAlignment,
+          alignment: widget.boxToChildAlign.flutterAlignment,
         ),
         decoration: widget.boxDecoration.flutterBoxDecoration,
       )
     );
 
     // Finally, add the gesture detector.
-    return widget.touchInteractionConfigurations.ifIntractableWrapInGestureDetector(child: container);
+    return widget.touchInteractionConfig.ifIntractableWrapInGestureDetector(child: container);
   }
 }

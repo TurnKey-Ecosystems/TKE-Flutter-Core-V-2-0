@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tke_simple_widget_bricks_flutter_qx9b/TKE-Flutter-Core/UI/FoundationalElements/TU.dart';
+import './TU.dart';
 import '../ConfigurationTypes/TFC_Shadow.dart';
 import 'TFC_IOSKeyboardDoneButton.dart';
 
@@ -72,26 +72,26 @@ class TFC_AppStyle {
       case TFC_ShadowType.SMALL:
         return TFC_Shadow(
           offset: Offset(
+            TU.toFU(-4)!,
+            TU.toFU(-4)!,
+          ),
+          blurRadius: TU.toFU(-3)!,
+        );
+      case TFC_ShadowType.MEDIUM:
+        return TFC_Shadow(
+          offset: Offset(
             TU.toFU(-3)!,
             TU.toFU(-3)!,
           ),
           blurRadius: TU.toFU(-2)!,
         );
-      case TFC_ShadowType.MEDIUM:
+      case TFC_ShadowType.LARGE:
         return TFC_Shadow(
           offset: Offset(
             TU.toFU(-2)!,
             TU.toFU(-2)!,
           ),
           blurRadius: TU.toFU(-1)!,
-        );
-      case TFC_ShadowType.LARGE:
-        return TFC_Shadow(
-          offset: Offset(
-            TU.toFU(-1)!,
-            TU.toFU(-1)!,
-          ),
-          blurRadius: TU.toFU(0)!,
         );
     }
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_BackgroundDecoration.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_BoxDecoration.dart';
 import '../ConfigurationTypes/TFC_InterChildAlign.dart';
 import '../ConfigurationTypes/TFC_AxisSize.dart';
 import '../ConfigurationTypes/TFC_BoxToChildAlign.dart';
@@ -60,15 +62,19 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
       body = SingleChildScrollView(
         child: TFC_Box(
           mainAxis: TFC_Axis.VERTICAL,
-          width: TFC_AxisSize.shrinkToFitContents(),
+          width: TFC_AxisSize.static_number_fu(TFC_AppStyle.instance.screenWidth),
           height: TFC_AxisSize.shrinkToFitContents(),
-          boxToChildAlignmentConfiguration:
+          This is not centering
+          boxToChildAlign:
             TFC_BoxToChildAlign.topCenter(
               paddingBetweenBoxAndContents_tu: paddingBetweenBoxAndContents_tu,
             ),
           interChildAlignmentVertical:
             TFC_InterChildAlign.uniformPaddingTU(paddingInbetweenChildren_tu),
           children: children,
+          boxDecoration: TFC_BoxDecoration.noOutline(
+            backgroundDecoration: TFC_BackgroundDecoration.color(Colors.red),
+          ),
         ),
       );
     } else {

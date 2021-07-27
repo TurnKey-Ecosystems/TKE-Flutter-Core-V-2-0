@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:tke_simple_widget_bricks_flutter_qx9b/TKE-Flutter-Core/UI/FoundationalElements/TFC_AppStyle.dart';
+import './TFC_AppStyle.dart';
 
 abstract class TU {
   /**

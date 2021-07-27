@@ -11,7 +11,7 @@ import '../ConfigurationTypes/TFC_BoxToChildAlign.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 
 class TFC_Button extends TFC_Box {
-  static _emptyFunction() {}
+  static emptyFunction() {}
 
   TFC_Button.solid({
     TFC_AxisSize width =
@@ -26,11 +26,11 @@ class TFC_Button extends TFC_Box {
     Color? color,
     TFC_Shadow shadow =
       const TFC_Shadow.noShadow(),
-    void Function() onTap = _emptyFunction,
+    void Function() onTap = emptyFunction,
   }) : super(
     width: width,
     height: height,
-    boxToChildAlignmentConfiguration:
+    boxToChildAlign:
       boxToChildAlignmentConfiguration,
     mainAxis: TFC_Axis.VERTICAL,
     interChildAlignHorizontal: const TFC_InterChildAlign.noPadding(),
@@ -41,7 +41,7 @@ class TFC_Button extends TFC_Box {
       cornerDecoration: TFC_CornerDecoration.rounded(radius_tu: -3),
       shadow: shadow,
     ),
-    touchInteractionConfigurations: TFC_TouchInteractionConfig(
+    touchInteractionConfig: TFC_TouchInteractionConfig(
         onTap: onTap
       ),
   );
@@ -63,11 +63,11 @@ class TFC_Button extends TFC_Box {
     TFC_Shadow shadow =
       const TFC_Shadow.noShadow(),
     Widget child = const TFC_Box.empty(),
-    void Function() onTap = _emptyFunction,
+    void Function() onTap = emptyFunction,
   }) : super(
     width: width,
     height: height,
-    boxToChildAlignmentConfiguration:
+    boxToChildAlign:
       boxToChildAlignmentConfiguration,
     mainAxis: TFC_Axis.VERTICAL,
     interChildAlignHorizontal: const TFC_InterChildAlign.noPadding(),
@@ -80,7 +80,7 @@ class TFC_Button extends TFC_Box {
       cornerDecoration: cornerDecoration,
       shadow: shadow,
     ),
-    touchInteractionConfigurations: TFC_TouchInteractionConfig(
+    touchInteractionConfig: TFC_TouchInteractionConfig(
         onTap: onTap
       ),
   );
