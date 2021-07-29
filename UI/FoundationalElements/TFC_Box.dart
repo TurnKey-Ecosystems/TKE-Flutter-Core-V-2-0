@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../ConfigurationTypes/TFC_BoxDecoration.dart';
@@ -19,6 +20,7 @@ class TFC_Box extends StatefulWidget {
   final TFC_ChildToChildSpacing childToChildSpacingVertical;
   final TFC_BoxDecoration boxDecoration;
   final TFC_TouchInteractionConfig touchInteractionConfig;
+  final String debugName;
   bool get shouldPadInbetweenContents {
     switch(mainAxis) {
       case TFC_Axis.HORIZONTAL:
@@ -46,6 +48,7 @@ class TFC_Box extends StatefulWidget {
       const TFC_BoxDecoration.undecorated(),
     this.touchInteractionConfig =
       const TFC_TouchInteractionConfig.notInteractable(),
+    this.debugName = "",
   });
 
   const TFC_Box.empty()
@@ -64,7 +67,8 @@ class TFC_Box extends StatefulWidget {
       this.boxDecoration =
         const TFC_BoxDecoration.undecorated(),
       this.touchInteractionConfig =
-        const TFC_TouchInteractionConfig.notInteractable();
+        const TFC_TouchInteractionConfig.notInteractable(),
+      this.debugName = "";
 
   _TFC_BoxState createState() {
     return _TFC_BoxState();
@@ -110,17 +114,21 @@ class _TFC_BoxState extends State<TFC_Box> {
 
       // Determine the constraints for the children
       double maxChildWidth = constraints.maxWidth;
-      if (widget.width.size_fu != null && widget.width.size_fu! > 0 && widget.width.size_fu! < constraints.maxWidth) {
+      if (widget.width.isScrollable) {
+        maxChildWidth = double.infinity;
+      } else if (widget.width.size_fu != null && widget.width.size_fu! > 0 && widget.width.size_fu! < constraints.maxWidth) {
         maxChildWidth = widget.width.size_fu!;
       }
       double maxChildHeight = constraints.maxHeight;
-      if (widget.height.size_fu != null && widget.height.size_fu! > 0 && widget.height.size_fu! < constraints.maxHeight) {
+      if (widget.height.isScrollable) {
+        maxChildHeight = double.infinity;
+      } else if (widget.height.size_fu != null && widget.height.size_fu! > 0 && widget.height.size_fu! < constraints.maxHeight) {
         maxChildHeight = widget.height.size_fu!;
       }
       BoxConstraints childConstraints = BoxConstraints(
-        minWidth: constraints.minWidth,
+        minWidth: min(constraints.minWidth, maxChildWidth),
         maxWidth: maxChildWidth,
-        minHeight: constraints.minHeight,
+        minHeight: min(constraints.minHeight, maxChildHeight),
         maxHeight: maxChildHeight,
       );
 
@@ -132,27 +140,66 @@ class _TFC_BoxState extends State<TFC_Box> {
         );
       }
 
+      // Detrimine if we need to use an alternate child structure for some reason
+      bool shouldUseRowForAlignment = false;
+      bool shouldUseColumnForAlignment = false;
+      if (children.length == 1) {
+        if (widget.width.size_tu != null && widget.height.size_tu == null) {
+          shouldUseRowForAlignment = true;
+        } else if (widget.width.size_tu == null && widget.height.size_tu != null) {
+          shouldUseColumnForAlignment = true;
+        }
+      }
+
       // Determine what structure to use for the children
       Widget? newWidget;
+      debugPrint("${widget.debugName} - child count: ${children.length}.");
       if (children.length == 0) {
         newWidget = null;
-      } else if (children.length == 1) {
+        debugPrint("${widget.debugName} - used null.");
+      } else if (children.length == 1 && !shouldUseRowForAlignment && !shouldUseColumnForAlignment) {
         newWidget = children[0];
+        debugPrint("${widget.debugName} - used child.");
       } else {
-        switch(widget.mainAxis) {
+        TFC_Axis mainAxis = widget.mainAxis;
+        
+        if (shouldUseRowForAlignment) {
+          mainAxis = TFC_Axis.HORIZONTAL;
+        } else if (shouldUseColumnForAlignment) {
+          mainAxis = TFC_Axis.VERTICAL;
+        }
+
+        switch(mainAxis) {
           case TFC_Axis.HORIZONTAL:
           newWidget = Row(
             mainAxisSize: widget.width.axisSize,
-            mainAxisAlignment: widget.childToChildSpacingHorizontal.axisAlignment ?? MainAxisAlignment.center,
+            mainAxisAlignment: 
+              widget.childToChildSpacingHorizontal.axisAlignment
+              ?? TFC_ChildToBoxSpacing.tfcAlignToMainAxisAlignment(
+                  widget.childToBoxSpacing.horizontalAlignment,
+                ),
+            crossAxisAlignment: TFC_ChildToBoxSpacing.tfcAlignToCrossAxisAlignment(
+              widget.childToBoxSpacing.verticalAlignment,
+            ),
             children: children,
           );
+          debugPrint("${widget.debugName} - used row.");
           break;
           case TFC_Axis.VERTICAL:
           newWidget = Column(
             mainAxisSize: widget.width.axisSize,
-            mainAxisAlignment: widget.childToChildSpacingHorizontal.axisAlignment ?? MainAxisAlignment.center,
+            mainAxisAlignment: 
+              widget.childToChildSpacingVertical.axisAlignment
+              ?? TFC_ChildToBoxSpacing.tfcAlignToMainAxisAlignment(
+                  widget.childToBoxSpacing.verticalAlignment,
+                ),
+            crossAxisAlignment: TFC_ChildToBoxSpacing.tfcAlignToCrossAxisAlignment(
+              widget.childToBoxSpacing.horizontalAlignment,
+            ),
+            //crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
           );
+          debugPrint("${widget.debugName} - used column.");
           break;
           case TFC_Axis.Z_AXIS:
           newWidget = Stack(
@@ -163,11 +210,16 @@ class _TFC_BoxState extends State<TFC_Box> {
       }
 
       // Setup child-to-box alingment
-      if (newWidget != null) {
+      if (
+        newWidget != null
+        && widget.width.size_tu != null
+        && widget.height.size_tu != null
+      ) {
         newWidget = Align(
           alignment: widget.childToBoxSpacing.flutterAlignment,
           child: newWidget,
         );
+        debugPrint("${widget.debugName} - used Align!.");
       }
 
       // Compute and add padding
@@ -224,6 +276,7 @@ class _TFC_BoxState extends State<TFC_Box> {
           child: newWidget,
         );
       }
+      debugPrint("${widget.debugName} - childConstraints: ${childConstraints.toString()}");
 
       // Finally, return the new widget
       return newWidget;

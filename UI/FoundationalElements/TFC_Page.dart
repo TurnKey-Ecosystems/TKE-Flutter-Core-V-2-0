@@ -58,6 +58,7 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
 
     if (getShouldShowPage()) {
       body = TFC_Box(
+        debugName: "Page",
         mainAxis: TFC_Axis.VERTICAL,
         width: TFC_AxisSize.fu(TFC_AppStyle.instance.screenWidth),
         height: TFC_AxisSize.scrollableShrinkToFitContents(),

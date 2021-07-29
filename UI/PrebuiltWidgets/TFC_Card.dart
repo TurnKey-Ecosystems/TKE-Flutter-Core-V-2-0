@@ -12,6 +12,7 @@ import '../FoundationalElements/TFC_Box.dart';
 
 class TFC_Card extends TFC_Box {
   TFC_Card({
+    String debugName = "",
     TFC_AxisSize width =
       const TFC_AxisSize.shrinkToFitContents(),
     TFC_AxisSize height =
@@ -31,6 +32,7 @@ class TFC_Card extends TFC_Box {
     TFC_Shadow? shadow,
     void Function()? onTap = null,
   }) : super(
+    debugName: debugName,
     width: width,
     height: height,
     childToBoxSpacing:
