@@ -8,6 +8,7 @@ class TFC_Shadow extends TFC_Configuration {
   final Color? color;
   final Offset? offset;
   final double? blurRadius;
+  final double? spreadRadius;
 
   List<BoxShadow>? get flutterShadow {
     if (hasShadow) {
@@ -15,6 +16,7 @@ class TFC_Shadow extends TFC_Configuration {
         color: color!,
         offset: offset!,
         blurRadius: blurRadius!,
+        spreadRadius: spreadRadius!,
       )];
     } else {
       return null;
@@ -26,7 +28,8 @@ class TFC_Shadow extends TFC_Configuration {
     : hasShadow = false,
       color = null,
       offset = null,
-      blurRadius = null;
+      blurRadius = null,
+      spreadRadius = null;
 
   factory TFC_Shadow.fromAppStyle(TFC_ShadowType shadowType) {
     return TFC_AppStyle.getShadow(shadowType);
@@ -36,6 +39,7 @@ class TFC_Shadow extends TFC_Configuration {
     this.color = TFC_AppStyle.COLOR_SHADOW,
     this.offset = Offset.zero,
     this.blurRadius = 0.0,
+    this.spreadRadius = 0.0,
   })
     : hasShadow = true;
 

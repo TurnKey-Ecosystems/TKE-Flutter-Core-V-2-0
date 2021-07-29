@@ -3,11 +3,11 @@ import '../ConfigurationTypes/TFC_AxisSize.dart';
 import '../ConfigurationTypes/TFC_BackgroundDecoration.dart';
 import '../ConfigurationTypes/TFC_BoxDecoration.dart';
 import '../ConfigurationTypes/TFC_CornerDecoration.dart';
-import '../ConfigurationTypes/TFC_InterChildAlign.dart';
+import '../ConfigurationTypes/TFC_ChildToChildSpacing.dart';
 import '../ConfigurationTypes/TFC_Shadow.dart';
 import '../ConfigurationTypes/TFC_TouchInteractionConfig.dart';
 import '../FoundationalElements/TFC_Box.dart';
-import '../ConfigurationTypes/TFC_BoxToChildAlign.dart';
+import '../ConfigurationTypes/TFC_ChildToBoxSpacing.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 
 class TFC_Button extends TFC_Box {
@@ -18,9 +18,9 @@ class TFC_Button extends TFC_Box {
       const TFC_AxisSize.shrinkToFitContents(),
     TFC_AxisSize height =
       const TFC_AxisSize.shrinkToFitContents(),
-    TFC_BoxToChildAlign boxToChildAlignmentConfiguration =
-      const TFC_BoxToChildAlign.center(
-        paddingBetweenBoxAndContents_tu: -1,
+    TFC_ChildToBoxSpacing boxToChildAlignmentConfiguration =
+      const TFC_ChildToBoxSpacing.center(
+        padding_tu: 6,
       ),
     Widget child = const TFC_Box.empty(),
     Color? color,
@@ -30,15 +30,15 @@ class TFC_Button extends TFC_Box {
   }) : super(
     width: width,
     height: height,
-    boxToChildAlign:
+    childToBoxSpacing:
       boxToChildAlignmentConfiguration,
     mainAxis: TFC_Axis.VERTICAL,
-    interChildAlignHorizontal: const TFC_InterChildAlign.noPadding(),
-    interChildAlignmentVertical: const TFC_InterChildAlign.noPadding(),
+    childToChildSpacingHorizontal: const TFC_ChildToChildSpacing.noPadding(),
+    childToChildSpacingVertical: const TFC_ChildToChildSpacing.noPadding(),
     children: [ child ],
     boxDecoration: TFC_BoxDecoration.noOutline(
       backgroundDecoration: TFC_BackgroundDecoration.color(color ?? TFC_AppStyle.colorPrimary),
-      cornerDecoration: TFC_CornerDecoration.rounded(radius_tu: -3),
+      cornerDecoration: TFC_CornerDecoration.rounded(radius_tu: 4),
       shadow: shadow,
     ),
     touchInteractionConfig: TFC_TouchInteractionConfig(
@@ -51,15 +51,15 @@ class TFC_Button extends TFC_Box {
       const TFC_AxisSize.shrinkToFitContents(),
     TFC_AxisSize height =
       const TFC_AxisSize.shrinkToFitContents(),
-    TFC_BoxToChildAlign boxToChildAlignmentConfiguration =
-      const TFC_BoxToChildAlign.center(
-        paddingBetweenBoxAndContents_tu: -1,
+    TFC_ChildToBoxSpacing boxToChildAlignmentConfiguration =
+      const TFC_ChildToBoxSpacing.center(
+        padding_tu: 6,
       ),
     Color? borderColor,
     Color backgroundColor = TFC_AppStyle.COLOR_BACKGROUND,
-    double borderWidth_tu = -3,
+    double borderWidth_tu = 4,
     TFC_CornerDecoration cornerDecoration =
-      const TFC_CornerDecoration.rounded(radius_tu: -3),
+      const TFC_CornerDecoration.rounded(radius_tu: 4),
     TFC_Shadow shadow =
       const TFC_Shadow.noShadow(),
     Widget child = const TFC_Box.empty(),
@@ -67,11 +67,11 @@ class TFC_Button extends TFC_Box {
   }) : super(
     width: width,
     height: height,
-    boxToChildAlign:
+    childToBoxSpacing:
       boxToChildAlignmentConfiguration,
     mainAxis: TFC_Axis.VERTICAL,
-    interChildAlignHorizontal: const TFC_InterChildAlign.noPadding(),
-    interChildAlignmentVertical: const TFC_InterChildAlign.noPadding(),
+    childToChildSpacingHorizontal: const TFC_ChildToChildSpacing.noPadding(),
+    childToChildSpacingVertical: const TFC_ChildToChildSpacing.noPadding(),
     children: [ child ],
     boxDecoration: TFC_BoxDecoration.outlined(
       borderColor: borderColor ?? TFC_AppStyle.colorPrimary,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_BackgroundDecoration.dart';
 import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_BoxDecoration.dart';
-import '../ConfigurationTypes/TFC_InterChildAlign.dart';
+import '../ConfigurationTypes/TFC_ChildToChildSpacing.dart';
 import '../ConfigurationTypes/TFC_AxisSize.dart';
-import '../ConfigurationTypes/TFC_BoxToChildAlign.dart';
+import '../ConfigurationTypes/TFC_ChildToBoxSpacing.dart';
 import '../../Utilities/TFC_BasicValueWrapper.dart';
 import '../PrebuiltWidgets/TFC_AppBarBuilder.dart';
 import '../../Utilities/TFC_Utilities.dart';
@@ -38,8 +38,8 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     required this.getShouldShowPage,
     PreferredSizeWidget Function(BuildContext) appBarBuilder =
         TFC_AppBarBuilder.buildDefaultAppBar,
-    this.paddingBetweenBoxAndContents_tu = 0,
-    this.paddingInbetweenChildren_tu = 0,
+    this.paddingBetweenBoxAndContents_tu = 7,
+    this.paddingInbetweenChildren_tu = 7,
     bool Function()? mayReload,
     Key? key,
   })  : _appBarBuilder = appBarBuilder,
@@ -57,25 +57,17 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     Widget body;
 
     if (getShouldShowPage()) {
-      List<Widget> children = getPageContents(context);
-
-      body = SingleChildScrollView(
-        child: TFC_Box(
-          mainAxis: TFC_Axis.VERTICAL,
-          width: TFC_AxisSize.static_number_fu(TFC_AppStyle.instance.screenWidth),
-          height: TFC_AxisSize.shrinkToFitContents(),
-          This is not centering
-          boxToChildAlign:
-            TFC_BoxToChildAlign.topCenter(
-              paddingBetweenBoxAndContents_tu: paddingBetweenBoxAndContents_tu,
-            ),
-          interChildAlignmentVertical:
-            TFC_InterChildAlign.uniformPaddingTU(paddingInbetweenChildren_tu),
-          children: children,
-          boxDecoration: TFC_BoxDecoration.noOutline(
-            backgroundDecoration: TFC_BackgroundDecoration.color(Colors.red),
+      body = TFC_Box(
+        mainAxis: TFC_Axis.VERTICAL,
+        width: TFC_AxisSize.fu(TFC_AppStyle.instance.screenWidth),
+        height: TFC_AxisSize.scrollableShrinkToFitContents(),
+        children: getPageContents(context),
+        childToBoxSpacing:
+          TFC_ChildToBoxSpacing.topCenter(
+            padding_tu: paddingBetweenBoxAndContents_tu,
           ),
-        ),
+        childToChildSpacingVertical:
+          TFC_ChildToChildSpacing.uniformPaddingTU(paddingInbetweenChildren_tu),
       );
     } else {
       body = TFC_LoadingPage.icon(icon, loadingMessage);

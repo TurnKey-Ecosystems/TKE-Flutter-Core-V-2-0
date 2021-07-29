@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/PrebuiltWidgets/TFC_Button.dart';
 import 'TFC_AppStyle.dart';
 import '../../Utilities/TFC_Utilities.dart';
 
@@ -16,8 +17,8 @@ class TFC_IOSKeyboardDoneButton extends StatelessWidget {
         child: Container(
           width: TFC_AppStyle.instance.iosKeyboardDoneButtonWidth,
           height: TFC_AppStyle.instance.iosKeyboardDoneButtonHeight,
-          child: FlatButton(
-            onPressed: () {
+          child: TFC_Button.solid(
+            onTap: () {
               TFC_Utilities.closeTheKeyboard(context);
             },
             child: Icon(Icons.done, color: TFC_AppStyle.COLOR_BACKGROUND,),

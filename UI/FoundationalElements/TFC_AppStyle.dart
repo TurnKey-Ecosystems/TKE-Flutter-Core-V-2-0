@@ -24,7 +24,7 @@ class TFC_AppStyle {
   static const Color COLOR_TEXT_SUBHEADING = Color(0xff58595b);
   static const Color COLOR_TEXT_TITLE = Color(0xff5c5c5c);
   static const Color COLOR_TEXT_BODY = Color(0xff5c5c5c);
-  static const Color COLOR_SHADOW = COLOR_TEXT_BODY;
+  static const Color COLOR_SHADOW = Color(0xffababab);
   static Map<TFC_TextType, Color> get textColors {
     return {
       TFC_TextType.HEADING: COLOR_TEXT_HEADING,
@@ -72,26 +72,29 @@ class TFC_AppStyle {
       case TFC_ShadowType.SMALL:
         return TFC_Shadow(
           offset: Offset(
-            TU.toFU(-4)!,
-            TU.toFU(-4)!,
+            TU.toFU(3),
+            TU.toFU(3),
           ),
-          blurRadius: TU.toFU(-3)!,
+          blurRadius: TU.toFU(2),
+          spreadRadius: TU.toFU(3),
         );
       case TFC_ShadowType.MEDIUM:
         return TFC_Shadow(
           offset: Offset(
-            TU.toFU(-3)!,
-            TU.toFU(-3)!,
+            TU.toFU(3.75),
+            TU.toFU(3.75),
           ),
-          blurRadius: TU.toFU(-2)!,
+          blurRadius: TU.toFU(4.5),
+          spreadRadius: TU.toFU(4),
         );
       case TFC_ShadowType.LARGE:
         return TFC_Shadow(
           offset: Offset(
-            TU.toFU(-2)!,
-            TU.toFU(-2)!,
+            TU.toFU(4),
+            TU.toFU(4),
           ),
-          blurRadius: TU.toFU(-1)!,
+          blurRadius: TU.toFU(6),
+          spreadRadius: TU.toFU(5),
         );
     }
   }
