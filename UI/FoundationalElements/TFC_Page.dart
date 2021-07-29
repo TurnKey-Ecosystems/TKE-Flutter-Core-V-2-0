@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_BackgroundDecoration.dart';
 import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_BoxDecoration.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TFC_AppBar.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TFC_BoxLimitations.dart';
 import '../ConfigurationTypes/TFC_ChildToChildSpacing.dart';
 import '../ConfigurationTypes/TFC_AxisSize.dart';
 import '../ConfigurationTypes/TFC_ChildToBoxSpacing.dart';
@@ -16,7 +18,7 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
   final IconData icon;
   final String loadingMessage;
   final bool Function() getShouldShowPage;
-  final PreferredSizeWidget Function(BuildContext) _appBarBuilder;
+  final TFC_Box<TFC_MustBeFixedSize>? Function(BuildContext) appBarBuilder;
   final double paddingBetweenBoxAndContents_tu;
   final double paddingInbetweenChildren_tu;
   final TFC_BasicValueWrapper<Widget> floatingActionButton =
@@ -36,14 +38,12 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     required this.icon,
     required this.loadingMessage,
     required this.getShouldShowPage,
-    PreferredSizeWidget Function(BuildContext) appBarBuilder =
-        TFC_AppBarBuilder.buildDefaultAppBar,
+    this.appBarBuilder = TFC_AppBar.blankAppBarBuilder,
     this.paddingBetweenBoxAndContents_tu = 7,
     this.paddingInbetweenChildren_tu = 7,
     bool Function()? mayReload,
     Key? key,
-  })  : _appBarBuilder = appBarBuilder,
-        super(key: key, mayReload: mayReload);
+  })  : super(key: key, mayReload: mayReload);
 
   List<Widget> getPageContents(BuildContext context);
 
@@ -56,37 +56,52 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
   Widget overrideableBuildWidget(BuildContext context) {
     Widget body;
 
+    debugPrint("Screen Height: ${TFC_AppStyle.instance.screenHeight}");
+    
+    // Grab the app bar now, because we'll use it multiple places later
+    TFC_Box<TFC_MustBeFixedSize>? appBar = appBarBuilder(context);
+    double appBarHeight_fu = 0.0;
+    if (appBar != null) {
+      appBarHeight_fu = appBar.height.size_fu!;
+    }
+
+    // Grab the bottom nav bar now, because we'll use it multiple places later
+    TFC_Box<TFC_MustBeFixedSize>? bottomNavBar = getBottomNavigationBar(context);
+    double bottomNavBarHeight_fu = 0.0;
+    if (bottomNavBar != null) {
+      bottomNavBarHeight_fu = bottomNavBar.height.size_fu!;
+    }
+
     if (getShouldShowPage()) {
-      List<Widget> pageParts = [];
-      pageParts.add(
-        TFC_Box(
-          debugName: "Page",
-          mainAxis: TFC_Axis.VERTICAL,
-          width: TFC_AxisSize.growToFillSpace(),
-          height: TFC_AxisSize.scrollableShrinkToFitContents(),
-          children: getPageContents(context),
-          childToBoxSpacing:
-            TFC_ChildToBoxSpacing.topCenter(
-              padding_tu: paddingBetweenBoxAndContents_tu,
-            ),
-          childToChildSpacingVertical:
-            TFC_ChildToChildSpacing.uniformPaddingTU(paddingInbetweenChildren_tu),
-        )
-      );
-
-      // Create the bottom nav bar
-      Widget? bottomNavBar = getBottomNavigationBar(context);
-      if (bottomNavBar != null) {
-        pageParts.add(bottomNavBar);
-      }
-
       // Compile the page parts
       body = TFC_Box(
         width: TFC_AxisSize.fu(TFC_AppStyle.instance.screenWidth),
         height: TFC_AxisSize.fu(TFC_AppStyle.instance.screenHeight),
+        mainAxis: TFC_Axis.VERTICAL,
         childToBoxSpacing: TFC_ChildToBoxSpacing.topCenter(),
-        childToChildSpacingVertical: TFC_ChildToChildSpacing.spaceBetween(),
-        children: pageParts,
+        childToChildSpacingVertical: TFC_ChildToChildSpacing.noPadding(),
+        children: [
+          // Add the app bar
+          appBar,
+          
+          // Add the Body
+          TFC_Box(
+            debugName: "Page",
+            mainAxis: TFC_Axis.VERTICAL,
+            width: TFC_AxisSize.growToFillSpace(),
+            height: TFC_AxisSize.fu(TFC_AppStyle.instance.screenHeight - bottomNavBarHeight_fu - appBarHeight_fu),
+            children: getPageContents(context),
+            childToBoxSpacing:
+              TFC_ChildToBoxSpacing.topCenter(
+                padding_tu: paddingBetweenBoxAndContents_tu,
+              ),
+            childToChildSpacingVertical:
+              TFC_ChildToChildSpacing.uniformPaddingTU(paddingInbetweenChildren_tu),
+          ),
+
+          // Add the bottom nav bar
+          bottomNavBar,
+        ],
       );
     } else {
       body = TFC_LoadingPage.icon(icon, loadingMessage);
@@ -115,7 +130,7 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     );
   }
 
-  Widget? getBottomNavigationBar(BuildContext context) {
+  TFC_Box<TFC_MustBeFixedSize>? getBottomNavigationBar(BuildContext context) {
     return null;
   }
 }

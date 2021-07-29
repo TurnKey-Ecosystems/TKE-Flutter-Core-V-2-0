@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TFC_BoxLimitations.dart';
 import '../ConfigurationTypes/TFC_BoxDecoration.dart';
 import '../ConfigurationTypes/TFC_ChildToChildSpacing.dart';
 import '../ConfigurationTypes/TFC_AxisSize.dart';
@@ -10,10 +12,11 @@ import './TU.dart';
 
 enum TFC_Axis { HORIZONTAL, VERTICAL, Z_AXIS }
 
-class TFC_Box extends StatefulWidget {
+class TFC_Box<LimitationType extends TFC_BoxLimitation> extends StatefulWidget {
+  final LimitationType? limitationType;
   final TFC_AxisSize width;
   final TFC_AxisSize height;
-  final List<Widget> children;
+  final List<Widget?> children;
   final TFC_Axis mainAxis;
   final TFC_ChildToBoxSpacing childToBoxSpacing;
   final TFC_ChildToChildSpacing childToChildSpacingHorizontal;
@@ -49,6 +52,63 @@ class TFC_Box extends StatefulWidget {
     this.touchInteractionConfig =
       const TFC_TouchInteractionConfig.notInteractable(),
     this.debugName = "",
+  }) : limitationType = null;
+
+  static TFC_Box<TFC_MustBeFixedSize> fixedSize({
+    required bool widthIsTU,
+    required double width_tuORfu,
+    required bool heightIsTU,
+    required double height_tuORfu,
+    List<Widget?> children = const [],
+    TFC_Axis mainAxis = TFC_Axis.VERTICAL,
+    TFC_ChildToBoxSpacing childToBoxSpacing =
+      const TFC_ChildToBoxSpacing.center(),
+    TFC_ChildToChildSpacing childToChildSpacingHorizontal =
+      const TFC_ChildToChildSpacing.noPadding(),
+    TFC_ChildToChildSpacing childToChildSpacingVertical =
+      const TFC_ChildToChildSpacing.noPadding(),
+    TFC_BoxDecoration boxDecoration =
+      const TFC_BoxDecoration.undecorated(),
+    TFC_TouchInteractionConfig touchInteractionConfig =
+      const TFC_TouchInteractionConfig.notInteractable(),
+    String debugName = "",
+  }) {
+    return TFC_Box._withLimitationType(
+      width: (widthIsTU)
+        ? TFC_AxisSize.tu(width_tuORfu)
+        : TFC_AxisSize.fu(width_tuORfu),
+      height: (heightIsTU)
+        ? TFC_AxisSize.tu(height_tuORfu)
+        : TFC_AxisSize.fu(height_tuORfu),
+      limitationType: const TFC_MustBeFixedSize(),
+      children: children,
+      mainAxis: mainAxis,
+      childToBoxSpacing: childToBoxSpacing,
+      childToChildSpacingHorizontal: childToChildSpacingHorizontal,
+      childToChildSpacingVertical: childToChildSpacingVertical,
+      boxDecoration: boxDecoration,
+      touchInteractionConfig: touchInteractionConfig,
+      debugName: debugName,
+    );
+  }
+
+  const TFC_Box._withLimitationType({
+    required this.width,
+    required this.height,
+    required this.limitationType,
+    this.children = const [],
+    this.mainAxis = TFC_Axis.VERTICAL,
+    this.childToBoxSpacing =
+      const TFC_ChildToBoxSpacing.center(),
+    this.childToChildSpacingHorizontal =
+      const TFC_ChildToChildSpacing.noPadding(),
+    this.childToChildSpacingVertical =
+      const TFC_ChildToChildSpacing.noPadding(),
+    this.boxDecoration =
+      const TFC_BoxDecoration.undecorated(),
+    this.touchInteractionConfig =
+      const TFC_TouchInteractionConfig.notInteractable(),
+    this.debugName = "",
   });
 
   const TFC_Box.empty()
@@ -68,7 +128,8 @@ class TFC_Box extends StatefulWidget {
         const TFC_BoxDecoration.undecorated(),
       this.touchInteractionConfig =
         const TFC_TouchInteractionConfig.notInteractable(),
-      this.debugName = "";
+      this.debugName = "",
+      limitationType = null;
 
   _TFC_BoxState createState() {
     return _TFC_BoxState();
@@ -79,6 +140,14 @@ class _TFC_BoxState extends State<TFC_Box> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+
+      // Discard all null children
+      List<Widget> children = [];
+      for (int i = 0; i < widget.children.length; i++) {
+        if (widget.children[i] != null) {
+          children.add(widget.children[i]!);
+        }
+      }
 
       // Decide whether or not to add uniform padding between children
       bool shouldPadBetweenChildren;
@@ -95,10 +164,10 @@ class _TFC_BoxState extends State<TFC_Box> {
       }
 
       // When applicable add uniform padding between children
-      List<Widget> children = [];
-      for (int i = 0; i < widget.children.length; i++) {
+      List<Widget> temporaryChildren = [];
+      for (int i = 0; i < children.length; i++) {
         if (shouldPadBetweenChildren && i > 0) {
-          children.add(
+          temporaryChildren.add(
             SizedBox(
               width: (widget.childToChildSpacingHorizontal.uniformPadding_tu != null)
                 ? TU.toFU(widget.childToChildSpacingHorizontal.uniformPadding_tu!)
@@ -109,8 +178,9 @@ class _TFC_BoxState extends State<TFC_Box> {
             ),
           );
         }
-        children.add(widget.children[i]);
+        temporaryChildren.add(children[i]);
       }
+      children = temporaryChildren;
 
       // Determine the constraints for the children
       double maxChildWidth = constraints.maxWidth;
@@ -134,10 +204,12 @@ class _TFC_BoxState extends State<TFC_Box> {
 
       // Wrap children in constraints
       for (int i = 0; i < children.length; i ++) {
-        children[i] = ConstrainedBox(
-          constraints: childConstraints,
-          child: children[i],
-        );
+        if (!(children[i] is Flexible)) {
+          children[i] = ConstrainedBox(
+            constraints: childConstraints,
+            child: children[i],
+          );
+        }
       }
 
       // Detrimine if we need to use an alternate child structure for some reason
