@@ -57,18 +57,36 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     Widget body;
 
     if (getShouldShowPage()) {
+      List<Widget> pageParts = [];
+      pageParts.add(
+        TFC_Box(
+          debugName: "Page",
+          mainAxis: TFC_Axis.VERTICAL,
+          width: TFC_AxisSize.growToFillSpace(),
+          height: TFC_AxisSize.scrollableShrinkToFitContents(),
+          children: getPageContents(context),
+          childToBoxSpacing:
+            TFC_ChildToBoxSpacing.topCenter(
+              padding_tu: paddingBetweenBoxAndContents_tu,
+            ),
+          childToChildSpacingVertical:
+            TFC_ChildToChildSpacing.uniformPaddingTU(paddingInbetweenChildren_tu),
+        )
+      );
+
+      // Create the bottom nav bar
+      Widget? bottomNavBar = getBottomNavigationBar(context);
+      if (bottomNavBar != null) {
+        pageParts.add(bottomNavBar);
+      }
+
+      // Compile the page parts
       body = TFC_Box(
-        debugName: "Page",
-        mainAxis: TFC_Axis.VERTICAL,
         width: TFC_AxisSize.fu(TFC_AppStyle.instance.screenWidth),
-        height: TFC_AxisSize.scrollableShrinkToFitContents(),
-        children: getPageContents(context),
-        childToBoxSpacing:
-          TFC_ChildToBoxSpacing.topCenter(
-            padding_tu: paddingBetweenBoxAndContents_tu,
-          ),
-        childToChildSpacingVertical:
-          TFC_ChildToChildSpacing.uniformPaddingTU(paddingInbetweenChildren_tu),
+        height: TFC_AxisSize.fu(TFC_AppStyle.instance.screenHeight),
+        childToBoxSpacing: TFC_ChildToBoxSpacing.topCenter(),
+        childToChildSpacingVertical: TFC_ChildToChildSpacing.spaceBetween(),
+        children: pageParts,
       );
     } else {
       body = TFC_LoadingPage.icon(icon, loadingMessage);
@@ -78,10 +96,9 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     }
 
     return Scaffold(
-      appBar: _appBarBuilder(context),
+      //appBar: _appBarBuilder(context),
       body: body,
       floatingActionButton: floatingActionButton.value,
-      bottomNavigationBar: getBottomNavigationBar(context),
     );
   }
 
