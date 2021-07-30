@@ -89,6 +89,7 @@ abstract class TFC_Page extends TFC_SelfReloadingWidget {
             mainAxis: TFC_Axis.VERTICAL,
             width: TFC_AxisSize.growToFillSpace(),
             height: TFC_AxisSize.fu(TFC_AppStyle.instance.screenHeight - bottomNavBarHeight_fu - appBarHeight_fu),
+            childToBoxSpacing: TFC_ChildToBoxSpacing.topCenter(),
             children: [ getPageBody(context) ],
           ),
 
@@ -114,13 +115,17 @@ abstract class TFC_Page extends TFC_SelfReloadingWidget {
     floatingActionButton.value = newFloatingActionButton;
   }
 
-  static void openPage(Widget page, BuildContext context) {
+  void open(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => page,
+        builder: (context) => this,
       ),
     );
+  }
+
+  static void openPage(TFC_Page page, BuildContext context) {
+    page.open(context);
   }
 
   TFC_Box<TFC_MustBeFixedSize>? getBottomNavigationBar(BuildContext context) {

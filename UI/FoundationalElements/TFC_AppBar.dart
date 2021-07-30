@@ -16,16 +16,17 @@ import '../../UI/PrebuiltWidgets/TFC_CustomWidgets.dart';
 class TFC_AppBar extends StatelessWidget {
   final Image? image;
   final String? text;
+  final void Function(BuildContext)? openTheSettingsPage;
 
-  const TFC_AppBar.image(Image image)
+  const TFC_AppBar.image(Image image, {this.openTheSettingsPage = null})
     : this.image = image,
       this.text = null;
 
-  const TFC_AppBar.text(String text)
+  const TFC_AppBar.text(String text, {this.openTheSettingsPage = null})
     : this.image = null,
       this.text = text;
 
-  const TFC_AppBar.blank()
+  const TFC_AppBar.blank({this.openTheSettingsPage = null})
     : this.image = null,
       this.text = null;
   
@@ -62,6 +63,27 @@ class TFC_AppBar extends StatelessWidget {
         children: [
           Icon(
             Icons.arrow_back_ios,
+            size: TU.toFU(7.5),
+            color: TFC_AppStyle.COLOR_BACKGROUND,
+          ),
+        ],
+      );
+    }
+
+    // Sometimes add a settings button
+    Widget? settingsButton = null;
+    if (openTheSettingsPage != null) {
+      settingsButton = TFC_Box(
+        width: TFC_AxisSize.growToFillSpace(),
+        height: TFC_AxisSize.growToFillSpace(),
+        touchInteractionConfig: TFC_TouchInteractionConfig(
+          onTap: () {
+            openTheSettingsPage!(context);
+          }
+        ),
+        children: [
+          Icon(
+            Icons.settings,
             size: TU.toFU(7.5),
             color: TFC_AppStyle.COLOR_BACKGROUND,
           ),
@@ -108,13 +130,8 @@ class TFC_AppBar extends StatelessWidget {
         TFC_Box(
           width: TFC_AxisSize.tu(sideButtonSize_tu),
           height: TFC_AxisSize.tu(sideButtonSize_tu),
-          childToBoxSpacing: TFC_ChildToBoxSpacing.center(),
           children: [
-            Icon(
-              Icons.settings,
-              size: TU.toFU(7.5),
-              color: TFC_AppStyle.COLOR_BACKGROUND,
-            ),
+            settingsButton,
           ],
         ),
       ],
