@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../PrebuiltWidgets/TFC_CustomWidgets.dart';
-import '../FoundationalElements/TFC_ReloadableWidget.dart';
+import '../FoundationalElements/TFC_SelfReloadingWidget.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 import '../PrebuiltWidgets/TFC_InputFields.dart';
 import '../../APIs/TFC_PlatformAPI.dart';
@@ -47,7 +47,9 @@ class TFC_LogInMaterialApp extends StatelessWidget {
   }
 }
 
-class _TFC_LogInScaffold extends TFC_ReloadableWidget {
+class _TFC_LogInScaffold extends TFC_SelfReloadingWidget {
+  _TFC_LogInScaffold() : super(reloadTriggers: []);
+
   @override
   void onInit() {
     super.onInit();

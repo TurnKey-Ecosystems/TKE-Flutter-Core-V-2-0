@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import '../../AppManagment/TFC_FlutterApp.dart';
 import '../PrebuiltWidgets/TFC_Button.dart';
 import '../PrebuiltWidgets/TFC_CustomWidgets.dart';
-import '../FoundationalElements/TFC_ReloadableWidget.dart';
+import '../FoundationalElements/TFC_SelfReloadingWidget.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 import '../../APIs/TFC_PlatformAPI.dart';
 
@@ -35,7 +35,9 @@ class TFC_InstallationApp extends StatelessWidget {
   }
 }
 
-class _TFC_InstallationScaffold extends TFC_ReloadableWidget {
+class _TFC_InstallationScaffold extends TFC_SelfReloadingWidget {
+  _TFC_InstallationScaffold() : super(reloadTriggers: []);
+
   TFC_Browser get browser {
     return TFC_InstallationApp.browser;
   }

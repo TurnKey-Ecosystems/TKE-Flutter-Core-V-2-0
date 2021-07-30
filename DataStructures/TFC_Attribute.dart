@@ -1,4 +1,5 @@
 import 'package:quiver/core.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/Utilities/TFC_Event.dart';
 import '../Serialization/TFC_SerializingContainers.dart';
 import 'TFC_Item.dart';
 import 'TFC_ItemInstances.dart';
@@ -8,6 +9,12 @@ class TFC_AttributeItem<ItemType extends TFC_Item> implements TFC_Attribute {
   final ItemType Function() _getDefaultItemOnCreateNew;
   final ItemType Function(String) _getItemFromItemID;
   late TFC_AttributeString _itemIDAttribute;
+  TFC_Event? get onBeforeGetEvent {
+    return _itemIDAttribute.onBeforeGetEvent;
+  }
+  TFC_Event? get onAfterSetEvent {
+    return _itemIDAttribute.onAfterSetEvent;
+  }
 
   String get _itemID {
     return _itemIDAttribute._itemID;
@@ -312,6 +319,12 @@ abstract class TFC_Attribute {
   late final String _itemID;
   late final String _itemType;
   final String _attributeKey;
+  TFC_Event? get onBeforeGetEvent {
+    return TFC_ItemInstances.getOnBeforeGetEvent(_itemID, _attributeKey);
+  }
+  TFC_Event? get onAfterSetEvent {
+    return TFC_ItemInstances.getOnAfterSetEvent(_itemID, _attributeKey);
+  }
 
   TFC_Attribute({
     required String attributeKey,

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/Utilities/TFC_Event.dart';
 import '../../Utilities/TFC_Utilities.dart';
 
-abstract class TFC_ReloadableWidget extends StatefulWidget {
+abstract class TFC_SelfReloadingWidget extends StatefulWidget {
+  // Props
+  final List<TFC_Event?> reloadTriggers;
+
   //_TFC_ReloadableWidgetState _state;
   final bool Function()? _mayReload;
   bool checkIfMayReload() {
@@ -12,9 +16,14 @@ abstract class TFC_ReloadableWidget extends StatefulWidget {
     }
   }
 
-  TFC_ReloadableWidget({Key? key, bool Function()? mayReload})
+  TFC_SelfReloadingWidget({Key? key, bool Function()? mayReload, required this.reloadTriggers})
       : _mayReload = mayReload,
         super(key: key) {
+    for (TFC_Event? event in reloadTriggers) {
+      if (event != null) {
+        event.addListener(reload);
+      }
+    }
     //_state = _TFC_ReloadableWidgetState(onInit, onDispose, buildWidget);
     //reload = _state.reload;
   }
@@ -25,8 +34,8 @@ abstract class TFC_ReloadableWidget extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    _TFC_ReloadableWidgetState _state =
-        _TFC_ReloadableWidgetState(onInit, onDispose, buildWidget);
+    _TFC_SelfReloadingWidgetState _state =
+        _TFC_SelfReloadingWidgetState(onInit, onDispose, buildWidget);
     _reloadWrapper.reload = _state.reload;
     return _state;
   }
@@ -38,14 +47,14 @@ abstract class TFC_ReloadableWidget extends StatefulWidget {
   }
 
   // Let the children have access to the state object at build time
-  static Map<int, _TFC_ReloadableWidgetState> _stateInstances = Map();
+  static Map<int, _TFC_SelfReloadingWidgetState> _stateInstances = Map();
 
-  _TFC_ReloadableWidgetState getStateInstance(BuildContext context) {
+  _TFC_SelfReloadingWidgetState getStateInstance(BuildContext context) {
     return _stateInstances[context.hashCode]!;
   }
 
   static void registerStateInstance(
-      BuildContext context, _TFC_ReloadableWidgetState stateInstance) {
+      BuildContext context, _TFC_SelfReloadingWidgetState stateInstance) {
     _stateInstances[context.hashCode] = stateInstance;
   }
 
@@ -58,14 +67,14 @@ class _TFC_ReloadFunctionWrapper {
   Future Function() reload = () async {};
 }
 
-class _TFC_ReloadableWidgetState extends State<TFC_ReloadableWidget>
+class _TFC_SelfReloadingWidgetState extends State<TFC_SelfReloadingWidget>
     with TickerProviderStateMixin {
   final Widget Function(BuildContext context) _buildWidget;
   bool _buildIsInProgress = false;
   void Function() _onInit;
   void Function() _onDispose;
 
-  _TFC_ReloadableWidgetState(this._onInit, this._onDispose, this._buildWidget);
+  _TFC_SelfReloadingWidgetState(this._onInit, this._onDispose, this._buildWidget);
 
   @override
   void initState() {
@@ -86,9 +95,9 @@ class _TFC_ReloadableWidgetState extends State<TFC_ReloadableWidget>
   @override
   Widget build(BuildContext context) {
     _buildIsInProgress = true;
-    TFC_ReloadableWidget.registerStateInstance(context, this);
+    TFC_SelfReloadingWidget.registerStateInstance(context, this);
     Widget widgetToReturn = _buildWidget(context);
-    TFC_ReloadableWidget.deregisterStateInstance(context);
+    TFC_SelfReloadingWidget.deregisterStateInstance(context);
     _buildIsInProgress = false;
     return widgetToReturn;
   }

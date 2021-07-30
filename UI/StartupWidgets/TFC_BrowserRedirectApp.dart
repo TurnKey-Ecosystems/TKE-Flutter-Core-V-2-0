@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../PrebuiltWidgets/TFC_Button.dart';
 import '../PrebuiltWidgets/TFC_CustomWidgets.dart';
-import '../FoundationalElements/TFC_ReloadableWidget.dart';
+import '../FoundationalElements/TFC_SelfReloadingWidget.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 import '../../APIs/TFC_PlatformAPI.dart';
 //import 'dart:html' as html;
@@ -35,7 +35,9 @@ class TFC_BrowserRedirectApp extends StatelessWidget {
   }
 }
 
-class _TFC_BrowserRedirectScaffold extends TFC_ReloadableWidget {
+class _TFC_BrowserRedirectScaffold extends TFC_SelfReloadingWidget {
+  _TFC_BrowserRedirectScaffold() : super(reloadTriggers: []);
+
   @override
   void onInit() {
     super.onInit();

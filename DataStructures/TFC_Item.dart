@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../Utilities/TFC_Event.dart';
 import 'package:flutter/foundation.dart';
 import 'TFC_Attribute.dart';

@@ -1,10 +1,12 @@
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/PrebuiltWidgets/TFC_Button.dart';
+
 import '../../AppManagment/TFC_SyncController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../AppManagment/TFC_FlutterApp.dart';
 import '../PrebuiltWidgets/TFC_CustomWidgets.dart';
 import '../PrebuiltWidgets/TFC_LoadingPage.dart';
-import '../FoundationalElements/TFC_ReloadableWidget.dart';
+import '../FoundationalElements/TFC_SelfReloadingWidget.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 //import '../AppManagment/TFC_DiskController.dart';
 
@@ -13,7 +15,8 @@ class _Init_Properties {
   static bool initHasTimedOut = false;
 }
 
-class TFC_SplashScreen extends TFC_ReloadableWidget {
+class TFC_SplashScreen extends TFC_SelfReloadingWidget {
+  TFC_SplashScreen() : super(reloadTriggers: []);
   @override
   void onInit() {
     _Init_Properties.isInInit = true;
@@ -87,8 +90,8 @@ class TFC_SplashScreen extends TFC_ReloadableWidget {
 
   Widget getErrorButton() {
     if (_Init_Properties.initHasTimedOut) {
-      return FlatButton(
-        onPressed: () {},
+      return TFC_Button.solid(
+        onTap: () {},
         color: TFC_AppStyle.COLOR_ERROR,
         child: Container(
           width: 12 * TFC_AppStyle.instance.lineHeight,

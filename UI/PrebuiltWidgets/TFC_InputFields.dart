@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import '../../DataStructures/TFC_Attribute.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
-import '../FoundationalElements/TFC_ReloadableWidget.dart';
+import '../FoundationalElements/TFC_SelfReloadingWidget.dart';
 import 'TFC_CustomWidgets.dart';
 
 // TODO: Make email and physical address input fields have input validation
@@ -308,7 +308,7 @@ class TFC_TextField extends TFC_InputField {
   }
 }
 
-abstract class TFC_InputField extends TFC_ReloadableWidget {
+abstract class TFC_InputField extends TFC_SelfReloadingWidget {
   static FocusNode? _focus;
   static FocusNode? get focus {
     return _focus;
@@ -384,7 +384,7 @@ abstract class TFC_InputField extends TFC_ReloadableWidget {
         style = (givenTextStyle != null)
             ? givenTextStyle
             : TFC_AppStyle.instance.textStyleBody,
-        super() {
+        super(reloadTriggers: []) {
     // Apply any external changes to the value
     if (defaultValue != null && getValueAsString() == defaultValue) {
       _controller.text = "";

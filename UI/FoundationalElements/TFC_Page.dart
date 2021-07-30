@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_BackgroundDecoration.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_BoxDecoration.dart';
 import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TFC_AppBar.dart';
 import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TFC_BoxLimitations.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/Utilities/TFC_Event.dart';
 import '../ConfigurationTypes/TFC_ChildToChildSpacing.dart';
 import '../ConfigurationTypes/TFC_AxisSize.dart';
 import '../ConfigurationTypes/TFC_ChildToBoxSpacing.dart';
 import '../../Utilities/TFC_BasicValueWrapper.dart';
-import '../PrebuiltWidgets/TFC_AppBarBuilder.dart';
 import '../../Utilities/TFC_Utilities.dart';
 import 'TFC_AppStyle.dart';
 import '../PrebuiltWidgets/TFC_LoadingPage.dart';
-import 'TFC_ReloadableWidget.dart';
+import 'TFC_SelfReloadingWidget.dart';
 import 'TFC_Box.dart';
 
-abstract class TFC_Page extends TFC_ReloadableWidget {
+abstract class TFC_Page extends TFC_SelfReloadingWidget {
   final IconData icon;
   final String loadingMessage;
   final bool Function() getShouldShowPage;
   final TFC_Box<TFC_MustBeFixedSize>? Function(BuildContext) appBarBuilder;
-  final double paddingBetweenBoxAndContents_tu;
-  final double paddingInbetweenChildren_tu;
   final TFC_BasicValueWrapper<Widget> floatingActionButton =
       TFC_BasicValueWrapper(Container());
   final TFC_BasicValueWrapper<BuildContext?> _pageContext =
@@ -39,13 +35,16 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
     required this.loadingMessage,
     required this.getShouldShowPage,
     this.appBarBuilder = TFC_AppBar.blankAppBarBuilder,
-    this.paddingBetweenBoxAndContents_tu = 7,
-    this.paddingInbetweenChildren_tu = 7,
     bool Function()? mayReload,
+    List<TFC_Event?> reloadTriggers = const [],
     Key? key,
-  })  : super(key: key, mayReload: mayReload);
+  })  : super(
+          key: key,
+          mayReload: mayReload,
+          reloadTriggers: reloadTriggers,
+        );
 
-  List<Widget> getPageContents(BuildContext context);
+  Widget? getPageBody(BuildContext context);
 
   @override
   Widget buildWidget(BuildContext context) {
@@ -90,13 +89,7 @@ abstract class TFC_Page extends TFC_ReloadableWidget {
             mainAxis: TFC_Axis.VERTICAL,
             width: TFC_AxisSize.growToFillSpace(),
             height: TFC_AxisSize.fu(TFC_AppStyle.instance.screenHeight - bottomNavBarHeight_fu - appBarHeight_fu),
-            children: getPageContents(context),
-            childToBoxSpacing:
-              TFC_ChildToBoxSpacing.topCenter(
-                padding_tu: paddingBetweenBoxAndContents_tu,
-              ),
-            childToChildSpacingVertical:
-              TFC_ChildToChildSpacing.uniformPaddingTU(paddingInbetweenChildren_tu),
+            children: [ getPageBody(context) ],
           ),
 
           // Add the bottom nav bar

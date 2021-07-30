@@ -205,6 +205,16 @@ abstract class TFC_ItemInstances {
     }
   }
 
+  static TFC_Event? getOnBeforeGetEvent(
+      String itemID, String attributeKey) {
+    if (_itemInstances.containsKey(itemID) &&
+        _itemInstances[itemID]!.containsKey(attributeKey)) {
+      return _onBeforeAttributeGetsByItemID[itemID]![attributeKey]!;
+    } else {
+      return null;
+    }
+  }
+
   static void addOnBeforeGetListener(
       String itemID, String attributeKey, void Function()? listener) {
     if (_itemInstances.containsKey(itemID) &&
@@ -220,6 +230,16 @@ abstract class TFC_ItemInstances {
         _itemInstances[itemID]!.containsKey(attributeKey)) {
       _onBeforeAttributeGetsByItemID[itemID]![attributeKey]!
           .removeListener(listener);
+    }
+  }
+
+  static TFC_Event? getOnAfterSetEvent(
+      String itemID, String attributeKey) {
+    if (_itemInstances.containsKey(itemID) &&
+        _itemInstances[itemID]!.containsKey(attributeKey)) {
+      return _onAfterAttributeSetsByItemID[itemID]![attributeKey]!;
+    } else {
+      return null;
     }
   }
 
