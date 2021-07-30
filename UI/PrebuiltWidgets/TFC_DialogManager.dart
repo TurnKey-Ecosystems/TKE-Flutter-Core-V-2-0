@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/AxisSize.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/ChildToBoxSpacing.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/ChildToChildSpacing.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/Box.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/PrebuiltWidgets/TFC_Button.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/PrebuiltWidgets/TFC_Card.dart';
 import '../../Utilities/TFC_Utilities.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 import 'TFC_CustomWidgets.dart';
@@ -12,10 +18,12 @@ class TFC_DialogManager {
   }) {
     showTwoButtonDialog(
       context: context,
-      content: TFC_Text.body(
-        description,
-        color: TFC_AppStyle.COLOR_TEXT_HEADING,
-      ),
+      contents: [
+        TFC_Text.body(
+          description,
+          color: TFC_AppStyle.COLOR_TEXT_HEADING,
+        ),
+      ],
       button1Text: "Yes",
       onButton1: onYes,
       button2Text: "No",
@@ -25,76 +33,69 @@ class TFC_DialogManager {
 
   static void showTwoButtonDialog({
     required BuildContext context,
-    required Widget content,
+    required List<Widget?> contents,
     required String button1Text,
     required void Function() onButton1,
     required String button2Text,
     required void Function() onButton2,
+    ChildToBoxSpacing childToBoxSpacing =
+      const ChildToBoxSpacing.center(
+        padding_tu: 7,
+      ),
+    ChildToChildSpacing childToChildSpacingVertical = const ChildToChildSpacing.uniformPaddingTU(7),
   }) {
+    // Compile the children
+    List<Widget?> children = List<Widget?>.from(contents);
+    children.add(
+      Box(
+        width: AxisSize.growToFillSpace(),
+        height: AxisSize.shrinkToFitContents(),
+        mainAxis: Axis3D.HORIZONTAL,
+        childToChildSpacingHorizontal:
+          ChildToChildSpacing.spaceEvenly(),
+        children: [
+          TFC_Button.outlined(
+            child: TFC_Text.body(
+              button1Text,
+              color: TFC_AppStyle.colorPrimary,
+            ),
+            borderColor: TFC_AppStyle.colorPrimary,
+            backgroundColor: TFC_AppStyle.COLOR_BACKGROUND,
+            onTap: onButton1,
+          ),
+          TFC_Button.solid(
+            child: TFC_Text.body(
+              button2Text,
+              color: TFC_AppStyle.COLOR_BACKGROUND,
+            ),
+            color: TFC_AppStyle.colorPrimary,
+            onTap: onButton2,
+          ),
+        ],
+      ),
+    );
+
+    // Create and open the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-                Radius.circular(0.25 * TFC_AppStyle.instance.pageMargins)),
-          ),
-          backgroundColor: TFC_AppStyle.COLOR_BACKGROUND,
-          contentPadding:
-              EdgeInsets.all(0.75 * TFC_AppStyle.instance.pageMargins),
-          children: [
-            content,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+        return Align(
+          alignment: Alignment.center,
+          child: Material(
+            color: Colors.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                FlatButton(
-                  child: TFC_Text.body(
-                    button1Text,
-                    color: TFC_AppStyle.colorPrimary,
-                  ),
-                  color: TFC_AppStyle.COLOR_BACKGROUND,
-                  hoverColor: TFC_Utilities.blendColors(
-                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                      color1Weight: 0.125),
-                  highlightColor: TFC_Utilities.blendColors(
-                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                      color1Weight: 0.25),
-                  splashColor: TFC_Utilities.blendColors(
-                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                      color1Weight: 0.25),
-                  onPressed: () {
-                    if (onButton1 != null) {
-                      onButton1();
-                    }
-                  },
-                ),
-                Container(
-                  width: 0.125 * TFC_AppStyle.instance.pageMargins,
-                ),
-                FlatButton(
-                  child: TFC_Text.body(
-                    button2Text,
-                    color: TFC_AppStyle.colorPrimary,
-                  ),
-                  color: TFC_AppStyle.COLOR_BACKGROUND,
-                  hoverColor: TFC_Utilities.blendColors(
-                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                      color1Weight: 0.125),
-                  highlightColor: TFC_Utilities.blendColors(
-                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                      color1Weight: 0.25),
-                  splashColor: TFC_Utilities.blendColors(
-                      TFC_AppStyle.colorPrimary, TFC_AppStyle.COLOR_BACKGROUND,
-                      color1Weight: 0.25),
-                  onPressed: () {
-                    if (onButton2 != null) {
-                      onButton2();
-                    }
-                  },
+                TFC_Card(
+                  width: AxisSize.tu(11),
+                  height: AxisSize.shrinkToFitContents(),
+                  childToBoxSpacing: childToBoxSpacing,
+                  childToChildSpacingVertical: childToChildSpacingVertical,
+                  children: children,
                 ),
               ],
             ),
-          ],
+          ),
         );
       },
     );

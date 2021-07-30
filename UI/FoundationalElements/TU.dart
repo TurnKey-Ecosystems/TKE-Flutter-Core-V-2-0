@@ -17,7 +17,13 @@ abstract class TU {
     } else if (tkeUnits == double.infinity) {
       return double.infinity;
     } else {
-      return TFC_AppStyle.instance.lineHeight * pow(2, tkeUnits - _offset);
+      int lesserTKEInt = tkeUnits.floor();
+      int greaterTKEInt = lesserTKEInt + 1;
+      double fractionTKE = tkeUnits - lesserTKEInt;
+      double lesserFlutterUnit = TFC_AppStyle.instance.lineHeight * pow(2, lesserTKEInt - _offset);
+      double greaterFlutterUnit = TFC_AppStyle.instance.lineHeight * pow(2, greaterTKEInt - _offset);
+      double fractionFlutter = fractionTKE * (greaterFlutterUnit - lesserFlutterUnit);
+      return lesserFlutterUnit + fractionFlutter;
     }
   }
 
@@ -29,7 +35,13 @@ abstract class TU {
     } else if (flutterUnits == double.infinity) {
       return double.infinity;
     } else {
-      return (log(flutterUnits / TFC_AppStyle.instance.lineHeight) / log(2)) + _offset;
+      int lesserTKEInt = ((log(flutterUnits / TFC_AppStyle.instance.lineHeight) / log(2)) + _offset).floor();
+      int greaterTKEInt = lesserTKEInt + 1;
+      double lesserFlutter = TU.toFU(lesserTKEInt.toDouble());
+      double greaterFlutter = TU.toFU(greaterTKEInt.toDouble());
+      double fractionFlutter = (flutterUnits - lesserFlutter);
+      double fractionTKE = fractionFlutter / (greaterFlutter - lesserFlutter);
+      return lesserTKEInt + fractionTKE;
     }
   }
 }

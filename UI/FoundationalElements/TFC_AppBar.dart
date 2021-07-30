@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../UI/ConfigurationTypes/TFC_AxisSize.dart';
+import '../ConfigurationTypes/AxisSize.dart';
 import '../../UI/ConfigurationTypes/TFC_BackgroundDecoration.dart';
 import '../../UI/ConfigurationTypes/TFC_BoxDecoration.dart';
-import '../../UI/ConfigurationTypes/TFC_ChildToBoxSpacing.dart';
-import '../../UI/ConfigurationTypes/TFC_ChildToChildSpacing.dart';
+import '../ConfigurationTypes/ChildToBoxSpacing.dart';
+import '../ConfigurationTypes/ChildToChildSpacing.dart';
 import '../../UI/ConfigurationTypes/TFC_Shadow.dart';
 import '../../UI/ConfigurationTypes/TFC_TouchInteractionConfig.dart';
 import '../../UI/FoundationalElements/TFC_AppStyle.dart';
-import '../../UI/FoundationalElements/TFC_Box.dart';
+import 'Box.dart';
 import '../../UI/FoundationalElements/TFC_BoxLimitations.dart';
 import '../../UI/FoundationalElements/TU.dart';
 import '../../UI/PrebuiltWidgets/TFC_CustomWidgets.dart';
@@ -30,12 +30,12 @@ class TFC_AppBar extends StatelessWidget {
     : this.image = null,
       this.text = null;
   
-  static TFC_Box<TFC_MustBeFixedSize> blankAppBarBuilder(BuildContext context) {
+  static Box<TFC_MustBeFixedSize> blankAppBarBuilder(BuildContext context) {
     return TFC_AppBar.blank().build(context);
   }
 
   @override
-  TFC_Box<TFC_MustBeFixedSize> build(BuildContext context) {
+  Box<TFC_MustBeFixedSize> build(BuildContext context) {
     const double sideButtonSize_tu = 8;
 
     // Determine what widget to make the title widget.
@@ -52,9 +52,9 @@ class TFC_AppBar extends StatelessWidget {
     // Sometimes add a back button
     Widget? backbutton = null;
     if (Navigator.of(context).canPop()) {
-      backbutton = TFC_Box(
-        width: TFC_AxisSize.growToFillSpace(),
-        height: TFC_AxisSize.growToFillSpace(),
+      backbutton = Box(
+        width: AxisSize.growToFillSpace(),
+        height: AxisSize.growToFillSpace(),
         touchInteractionConfig: TFC_TouchInteractionConfig(
           onTap: () {
             Navigator.of(context).pop();
@@ -73,9 +73,9 @@ class TFC_AppBar extends StatelessWidget {
     // Sometimes add a settings button
     Widget? settingsButton = null;
     if (openTheSettingsPage != null) {
-      settingsButton = TFC_Box(
-        width: TFC_AxisSize.growToFillSpace(),
-        height: TFC_AxisSize.growToFillSpace(),
+      settingsButton = Box(
+        width: AxisSize.growToFillSpace(),
+        height: AxisSize.growToFillSpace(),
         touchInteractionConfig: TFC_TouchInteractionConfig(
           onTap: () {
             openTheSettingsPage!(context);
@@ -92,44 +92,44 @@ class TFC_AppBar extends StatelessWidget {
     }
 
     // Construct the AppBar
-    return TFC_Box.fixedSize(
+    return Box.fixedSize(
       widthIsTU: false,
       width_tuORfu: TFC_AppStyle.instance.screenWidth,
       heightIsTU: false,
       height_tuORfu: TU.toFU(sideButtonSize_tu) + (2 * TU.toFU(6)),
-      mainAxis: TFC_Axis.HORIZONTAL,
-      childToBoxSpacing: TFC_ChildToBoxSpacing.center(
+      mainAxis: Axis3D.HORIZONTAL,
+      childToBoxSpacing: ChildToBoxSpacing.center(
         padding_tu: 6
       ),
-      childToChildSpacingHorizontal: TFC_ChildToChildSpacing.spaceBetween(),
+      childToChildSpacingHorizontal: ChildToChildSpacing.spaceBetween(),
       boxDecoration: TFC_BoxDecoration.noOutline(
         backgroundDecoration: TFC_BackgroundDecoration.color(TFC_AppStyle.colorPrimary),
         shadow: TFC_Shadow.fromAppStyle(TFC_ShadowType.MEDIUM),
       ),
       children: [
         // Back Button
-        TFC_Box(
-          width: TFC_AxisSize.tu(sideButtonSize_tu),
-          height: TFC_AxisSize.tu(sideButtonSize_tu),
+        Box(
+          width: AxisSize.tu(sideButtonSize_tu),
+          height: AxisSize.tu(sideButtonSize_tu),
           children: [
             backbutton
           ],
         ),
 
         // Title Widget
-        TFC_Box(
-          width: TFC_AxisSize.shrinkToFitContents(),
-          height: TFC_AxisSize.shrinkToFitContents(),
-          childToBoxSpacing: TFC_ChildToBoxSpacing.center(),
+        Box(
+          width: AxisSize.shrinkToFitContents(),
+          height: AxisSize.shrinkToFitContents(),
+          childToBoxSpacing: ChildToBoxSpacing.center(),
           children: [
             titleWidget,
           ],
         ),
 
         // Settings Button
-        TFC_Box(
-          width: TFC_AxisSize.tu(sideButtonSize_tu),
-          height: TFC_AxisSize.tu(sideButtonSize_tu),
+        Box(
+          width: AxisSize.tu(sideButtonSize_tu),
+          height: AxisSize.tu(sideButtonSize_tu),
           children: [
             settingsButton,
           ],

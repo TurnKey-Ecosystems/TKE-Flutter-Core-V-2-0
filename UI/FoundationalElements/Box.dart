@@ -1,52 +1,52 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image/image.dart';
 import '../../UI/FoundationalElements/TFC_BoxLimitations.dart';
 import '../ConfigurationTypes/TFC_BoxDecoration.dart';
-import '../ConfigurationTypes/TFC_ChildToChildSpacing.dart';
-import '../ConfigurationTypes/TFC_AxisSize.dart';
-import '../ConfigurationTypes/TFC_ChildToBoxSpacing.dart';
+import '../ConfigurationTypes/ChildToChildSpacing.dart';
+import '../ConfigurationTypes/AxisSize.dart';
+import '../ConfigurationTypes/ChildToBoxSpacing.dart';
 import '../ConfigurationTypes/TFC_TouchInteractionConfig.dart';
 import './TU.dart';
 
-enum TFC_Axis { HORIZONTAL, VERTICAL, Z_AXIS }
+enum Axis3D { HORIZONTAL, VERTICAL, Z_AXIS }
 
-class TFC_Box<LimitationType extends TFC_BoxLimitation> extends StatefulWidget {
+class Box<LimitationType extends TFC_BoxLimitation> extends StatefulWidget {
+  static const bool SHOULD_PRINT_DEBUG_LOGS = false;
   final LimitationType? limitationType;
-  final TFC_AxisSize width;
-  final TFC_AxisSize height;
+  final AxisSize width;
+  final AxisSize height;
   final List<Widget?> children;
-  final TFC_Axis mainAxis;
-  final TFC_ChildToBoxSpacing childToBoxSpacing;
-  final TFC_ChildToChildSpacing childToChildSpacingHorizontal;
-  final TFC_ChildToChildSpacing childToChildSpacingVertical;
+  final Axis3D mainAxis;
+  final ChildToBoxSpacing childToBoxSpacing;
+  final ChildToChildSpacing childToChildSpacingHorizontal;
+  final ChildToChildSpacing childToChildSpacingVertical;
   final TFC_BoxDecoration boxDecoration;
   final TFC_TouchInteractionConfig touchInteractionConfig;
   final String debugName;
   bool get shouldPadInbetweenContents {
     switch(mainAxis) {
-      case TFC_Axis.HORIZONTAL:
+      case Axis3D.HORIZONTAL:
         return childToChildSpacingHorizontal.uniformPadding_tu != null;
-      case TFC_Axis.VERTICAL:
+      case Axis3D.VERTICAL:
         return childToChildSpacingVertical.uniformPadding_tu != null;
-      case TFC_Axis.Z_AXIS:
+      case Axis3D.Z_AXIS:
         return false;
     }
   }
 
   @mustCallSuper
-  const TFC_Box({
+  const Box({
     required this.width,
     required this.height,
     this.children = const [],
-    this.mainAxis = TFC_Axis.VERTICAL,
+    this.mainAxis = Axis3D.VERTICAL,
     this.childToBoxSpacing =
-      const TFC_ChildToBoxSpacing.center(),
+      const ChildToBoxSpacing.center(),
     this.childToChildSpacingHorizontal =
-      const TFC_ChildToChildSpacing.noPadding(),
+      const ChildToChildSpacing.noPadding(),
     this.childToChildSpacingVertical =
-      const TFC_ChildToChildSpacing.noPadding(),
+      const ChildToChildSpacing.noPadding(),
     this.boxDecoration =
       const TFC_BoxDecoration.undecorated(),
     this.touchInteractionConfig =
@@ -54,32 +54,32 @@ class TFC_Box<LimitationType extends TFC_BoxLimitation> extends StatefulWidget {
     this.debugName = "",
   }) : limitationType = null;
 
-  static TFC_Box<TFC_MustBeFixedSize> fixedSize({
+  static Box<TFC_MustBeFixedSize> fixedSize({
     required bool widthIsTU,
     required double width_tuORfu,
     required bool heightIsTU,
     required double height_tuORfu,
     List<Widget?> children = const [],
-    TFC_Axis mainAxis = TFC_Axis.VERTICAL,
-    TFC_ChildToBoxSpacing childToBoxSpacing =
-      const TFC_ChildToBoxSpacing.center(),
-    TFC_ChildToChildSpacing childToChildSpacingHorizontal =
-      const TFC_ChildToChildSpacing.noPadding(),
-    TFC_ChildToChildSpacing childToChildSpacingVertical =
-      const TFC_ChildToChildSpacing.noPadding(),
+    Axis3D mainAxis = Axis3D.VERTICAL,
+    ChildToBoxSpacing childToBoxSpacing =
+      const ChildToBoxSpacing.center(),
+    ChildToChildSpacing childToChildSpacingHorizontal =
+      const ChildToChildSpacing.noPadding(),
+    ChildToChildSpacing childToChildSpacingVertical =
+      const ChildToChildSpacing.noPadding(),
     TFC_BoxDecoration boxDecoration =
       const TFC_BoxDecoration.undecorated(),
     TFC_TouchInteractionConfig touchInteractionConfig =
       const TFC_TouchInteractionConfig.notInteractable(),
     String debugName = "",
   }) {
-    return TFC_Box._withLimitationType(
+    return Box._withLimitationType(
       width: (widthIsTU)
-        ? TFC_AxisSize.tu(width_tuORfu)
-        : TFC_AxisSize.fu(width_tuORfu),
+        ? AxisSize.tu(width_tuORfu)
+        : AxisSize.fu(width_tuORfu),
       height: (heightIsTU)
-        ? TFC_AxisSize.tu(height_tuORfu)
-        : TFC_AxisSize.fu(height_tuORfu),
+        ? AxisSize.tu(height_tuORfu)
+        : AxisSize.fu(height_tuORfu),
       limitationType: const TFC_MustBeFixedSize(),
       children: children,
       mainAxis: mainAxis,
@@ -92,18 +92,18 @@ class TFC_Box<LimitationType extends TFC_BoxLimitation> extends StatefulWidget {
     );
   }
 
-  const TFC_Box._withLimitationType({
+  const Box._withLimitationType({
     required this.width,
     required this.height,
     required this.limitationType,
     this.children = const [],
-    this.mainAxis = TFC_Axis.VERTICAL,
+    this.mainAxis = Axis3D.VERTICAL,
     this.childToBoxSpacing =
-      const TFC_ChildToBoxSpacing.center(),
+      const ChildToBoxSpacing.center(),
     this.childToChildSpacingHorizontal =
-      const TFC_ChildToChildSpacing.noPadding(),
+      const ChildToChildSpacing.noPadding(),
     this.childToChildSpacingVertical =
-      const TFC_ChildToChildSpacing.noPadding(),
+      const ChildToChildSpacing.noPadding(),
     this.boxDecoration =
       const TFC_BoxDecoration.undecorated(),
     this.touchInteractionConfig =
@@ -111,18 +111,18 @@ class TFC_Box<LimitationType extends TFC_BoxLimitation> extends StatefulWidget {
     this.debugName = "",
   });
 
-  const TFC_Box.empty()
+  const Box.empty()
     : this.width =
-        const TFC_AxisSize.shrinkToFitContents(),
+        const AxisSize.shrinkToFitContents(),
       this.height =
-        const TFC_AxisSize.shrinkToFitContents(),
+        const AxisSize.shrinkToFitContents(),
       this.childToBoxSpacing =
-        const TFC_ChildToBoxSpacing.center(),
-      this.mainAxis = TFC_Axis.VERTICAL,
+        const ChildToBoxSpacing.center(),
+      this.mainAxis = Axis3D.VERTICAL,
       this.childToChildSpacingHorizontal =
-        const TFC_ChildToChildSpacing.noPadding(),
+        const ChildToChildSpacing.noPadding(),
       this.childToChildSpacingVertical =
-        const TFC_ChildToChildSpacing.noPadding(),
+        const ChildToChildSpacing.noPadding(),
       this.children = const [],
       this.boxDecoration =
         const TFC_BoxDecoration.undecorated(),
@@ -131,15 +131,17 @@ class TFC_Box<LimitationType extends TFC_BoxLimitation> extends StatefulWidget {
       this.debugName = "",
       limitationType = null;
 
-  _TFC_BoxState createState() {
-    return _TFC_BoxState();
+  _BoxState createState() {
+    return _BoxState();
   }
 }
 
-class _TFC_BoxState extends State<TFC_Box> {
+class _BoxState extends State<Box> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      logToConsole("");
+      logToConsole("Starting Build");
 
       // Discard all null children
       List<Widget> children = [];
@@ -152,13 +154,13 @@ class _TFC_BoxState extends State<TFC_Box> {
       // Decide whether or not to add uniform padding between children
       bool shouldPadBetweenChildren;
       switch(widget.mainAxis) {
-        case TFC_Axis.HORIZONTAL:
+        case Axis3D.HORIZONTAL:
           shouldPadBetweenChildren = widget.childToChildSpacingHorizontal.uniformPadding_tu != null;
           break;
-        case TFC_Axis.VERTICAL:
+        case Axis3D.VERTICAL:
           shouldPadBetweenChildren = widget.childToChildSpacingVertical.uniformPadding_tu != null;
           break;
-        case TFC_Axis.Z_AXIS:
+        case Axis3D.Z_AXIS:
           shouldPadBetweenChildren = false;
           break;
       }
@@ -186,12 +188,14 @@ class _TFC_BoxState extends State<TFC_Box> {
       double maxChildWidth = constraints.maxWidth;
       if (widget.width.isScrollable) {
         maxChildWidth = double.infinity;
+        logToConsole("Gave children infinite width.");
       } else if (widget.width.size_fu != null && widget.width.size_fu! > 0 && widget.width.size_fu! < constraints.maxWidth) {
         maxChildWidth = widget.width.size_fu!;
       }
       double maxChildHeight = constraints.maxHeight;
       if (widget.height.isScrollable) {
         maxChildHeight = double.infinity;
+        logToConsole("Gave children infinite height.");
       } else if (widget.height.size_fu != null && widget.height.size_fu! > 0 && widget.height.size_fu! < constraints.maxHeight) {
         maxChildHeight = widget.height.size_fu!;
       }
@@ -225,55 +229,55 @@ class _TFC_BoxState extends State<TFC_Box> {
 
       // Determine what structure to use for the children
       Widget? newWidget;
-      debugPrint("${widget.debugName} - child count: ${children.length}.");
+      logToConsole("child count: ${children.length}.");
       if (children.length == 0) {
         newWidget = null;
-        debugPrint("${widget.debugName} - used null.");
+        logToConsole("used null.");
       } else if (children.length == 1 && !shouldUseRowForAlignment && !shouldUseColumnForAlignment) {
         newWidget = children[0];
-        debugPrint("${widget.debugName} - used child.");
+        logToConsole("used child.");
       } else {
-        TFC_Axis mainAxis = widget.mainAxis;
+        Axis3D mainAxis = widget.mainAxis;
         
         if (shouldUseRowForAlignment) {
-          mainAxis = TFC_Axis.HORIZONTAL;
+          mainAxis = Axis3D.HORIZONTAL;
         } else if (shouldUseColumnForAlignment) {
-          mainAxis = TFC_Axis.VERTICAL;
+          mainAxis = Axis3D.VERTICAL;
         }
 
         switch(mainAxis) {
-          case TFC_Axis.HORIZONTAL:
+          case Axis3D.HORIZONTAL:
           newWidget = Row(
             mainAxisSize: widget.width.axisSize,
             mainAxisAlignment: 
               widget.childToChildSpacingHorizontal.axisAlignment
-              ?? TFC_ChildToBoxSpacing.tfcAlignToMainAxisAlignment(
+              ?? ChildToBoxSpacing.tfcAlignToMainAxisAlignment(
                   widget.childToBoxSpacing.horizontalAlignment,
                 ),
-            crossAxisAlignment: TFC_ChildToBoxSpacing.tfcAlignToCrossAxisAlignment(
+            crossAxisAlignment: ChildToBoxSpacing.tfcAlignToCrossAxisAlignment(
               widget.childToBoxSpacing.verticalAlignment,
             ),
             children: children,
           );
-          debugPrint("${widget.debugName} - used row.");
+          logToConsole("used row.");
           break;
-          case TFC_Axis.VERTICAL:
+          case Axis3D.VERTICAL:
           newWidget = Column(
             mainAxisSize: widget.width.axisSize,
             mainAxisAlignment: 
               widget.childToChildSpacingVertical.axisAlignment
-              ?? TFC_ChildToBoxSpacing.tfcAlignToMainAxisAlignment(
+              ?? ChildToBoxSpacing.tfcAlignToMainAxisAlignment(
                   widget.childToBoxSpacing.verticalAlignment,
                 ),
-            crossAxisAlignment: TFC_ChildToBoxSpacing.tfcAlignToCrossAxisAlignment(
+            crossAxisAlignment: ChildToBoxSpacing.tfcAlignToCrossAxisAlignment(
               widget.childToBoxSpacing.horizontalAlignment,
             ),
             //crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
           );
-          debugPrint("${widget.debugName} - used column.");
+          logToConsole("used column.");
           break;
-          case TFC_Axis.Z_AXIS:
+          case Axis3D.Z_AXIS:
           newWidget = Stack(
             children: children,
           );
@@ -291,7 +295,7 @@ class _TFC_BoxState extends State<TFC_Box> {
           alignment: widget.childToBoxSpacing.flutterAlignment,
           child: newWidget,
         );
-        debugPrint("${widget.debugName} - used Align!.");
+        logToConsole("used Align!.");
       }
 
       // Compute and add padding
@@ -348,10 +352,16 @@ class _TFC_BoxState extends State<TFC_Box> {
           child: newWidget,
         );
       }
-      debugPrint("${widget.debugName} - childConstraints: ${childConstraints.toString()}");
+      logToConsole("childConstraints: ${childConstraints.toString()}");
 
       // Finally, return the new widget
       return newWidget;
     });
+  }
+
+  void logToConsole(String text) {
+    if (Box.SHOULD_PRINT_DEBUG_LOGS) {
+      debugPrint("${widget.debugName} - ${text}");
+    }
   }
 }

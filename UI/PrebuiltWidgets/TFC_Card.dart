@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
-import '../../UI/ConfigurationTypes/TFC_AxisSize.dart';
+import '../ConfigurationTypes/AxisSize.dart';
 import '../../UI/ConfigurationTypes/TFC_BackgroundDecoration.dart';
 import '../../UI/ConfigurationTypes/TFC_BoxDecoration.dart';
-import '../ConfigurationTypes/TFC_ChildToBoxSpacing.dart';
+import '../ConfigurationTypes/ChildToBoxSpacing.dart';
 import '../../UI/ConfigurationTypes/TFC_CornerDecoration.dart';
-import '../ConfigurationTypes/TFC_ChildToChildSpacing.dart';
+import '../ConfigurationTypes/ChildToChildSpacing.dart';
 import '../../UI/ConfigurationTypes/TFC_Shadow.dart';
 import '../../UI/ConfigurationTypes/TFC_TouchInteractionConfig.dart';
 import '../../UI/FoundationalElements/TFC_AppStyle.dart';
-import '../FoundationalElements/TFC_Box.dart';
+import '../FoundationalElements/Box.dart';
 
-class TFC_Card extends TFC_Box {
+class TFC_Card extends Box {
   TFC_Card({
     String debugName = "",
-    TFC_AxisSize width =
-      const TFC_AxisSize.shrinkToFitContents(),
-    TFC_AxisSize height =
-      const TFC_AxisSize.shrinkToFitContents(),
-    List<Widget> children = const [],
-    TFC_Axis mainAxis = TFC_Axis.VERTICAL,
-    TFC_ChildToBoxSpacing boxToChildAlign =
-      const TFC_ChildToBoxSpacing.center(
+    AxisSize width =
+      const AxisSize.shrinkToFitContents(),
+    AxisSize height =
+      const AxisSize.shrinkToFitContents(),
+    List<Widget?> children = const [],
+    Axis3D mainAxis = Axis3D.VERTICAL,
+    ChildToBoxSpacing childToBoxSpacing =
+      const ChildToBoxSpacing.center(
         padding_tu: 6,
       ),
-    TFC_ChildToChildSpacing interChildAlignHorizontal = const TFC_ChildToChildSpacing.uniformPaddingTU(6),
-    TFC_ChildToChildSpacing interChildAlignmentVertical = const TFC_ChildToChildSpacing.uniformPaddingTU(6),
+    ChildToChildSpacing childToChildSpacingHorizontal = const ChildToChildSpacing.uniformPaddingTU(6),
+    ChildToChildSpacing childToChildSpacingVertical = const ChildToChildSpacing.uniformPaddingTU(6),
     TFC_BackgroundDecoration backgroundDecoration =
       const TFC_BackgroundDecoration.color(TFC_AppStyle.COLOR_BACKGROUND),
     TFC_CornerDecoration cornerDecoration =
@@ -36,10 +36,10 @@ class TFC_Card extends TFC_Box {
     width: width,
     height: height,
     childToBoxSpacing:
-      boxToChildAlign,
+      childToBoxSpacing,
     mainAxis: mainAxis,
-    childToChildSpacingHorizontal: interChildAlignHorizontal,
-    childToChildSpacingVertical: interChildAlignmentVertical,
+    childToChildSpacingHorizontal: childToChildSpacingHorizontal,
+    childToChildSpacingVertical: childToChildSpacingVertical,
     children: children,
     boxDecoration: TFC_BoxDecoration.noOutline(
       backgroundDecoration: backgroundDecoration,

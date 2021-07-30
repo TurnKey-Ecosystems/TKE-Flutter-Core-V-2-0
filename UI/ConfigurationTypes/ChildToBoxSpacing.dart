@@ -3,7 +3,7 @@ import '../FoundationalElements/TU.dart';
 
 enum _TFC_Alignment { START, CENTER, END }
 
-class TFC_ChildToBoxSpacing {
+class ChildToBoxSpacing {
   // Properties
   /**
    * Left=-1.0, Center=0.0, Right=1.0
@@ -38,55 +38,55 @@ class TFC_ChildToBoxSpacing {
     this.padding_tu,
   });*/
 
-  const TFC_ChildToBoxSpacing.topLeft({
+  const ChildToBoxSpacing.topLeft({
     this.padding_tu,
   })
     : this.horizontalAlignment = _TFC_Alignment.START,
       this.verticalAlignment = _TFC_Alignment.START;
 
-  const TFC_ChildToBoxSpacing.topCenter({
+  const ChildToBoxSpacing.topCenter({
     this.padding_tu,
   })
     : this.horizontalAlignment = _TFC_Alignment.CENTER,
       this.verticalAlignment = _TFC_Alignment.START;
 
-  const TFC_ChildToBoxSpacing.topRight({
+  const ChildToBoxSpacing.topRight({
     this.padding_tu,
   })
     : this.horizontalAlignment = _TFC_Alignment.END,
       this.verticalAlignment = _TFC_Alignment.START;
 
-  const TFC_ChildToBoxSpacing.centerLeft({
+  const ChildToBoxSpacing.centerLeft({
     this.padding_tu,
   })
     : this.horizontalAlignment = _TFC_Alignment.START,
       this.verticalAlignment = _TFC_Alignment.CENTER;
 
-  const TFC_ChildToBoxSpacing.center({
+  const ChildToBoxSpacing.center({
     this.padding_tu,
   })
     : this.horizontalAlignment = _TFC_Alignment.CENTER,
       this.verticalAlignment = _TFC_Alignment.CENTER;
 
-  const TFC_ChildToBoxSpacing.centerRight({
+  const ChildToBoxSpacing.centerRight({
     this.padding_tu,
   })
     : this.horizontalAlignment = _TFC_Alignment.END,
       this.verticalAlignment = _TFC_Alignment.CENTER;
 
-  const TFC_ChildToBoxSpacing.bottomLeft({
+  const ChildToBoxSpacing.bottomLeft({
     this.padding_tu,
   })
     : this.horizontalAlignment = _TFC_Alignment.START,
       this.verticalAlignment = _TFC_Alignment.END;
 
-  const TFC_ChildToBoxSpacing.bottomCenter({
+  const ChildToBoxSpacing.bottomCenter({
     this.padding_tu,
   })
     : this.horizontalAlignment = _TFC_Alignment.CENTER,
       this.verticalAlignment = _TFC_Alignment.END;
 
-  const TFC_ChildToBoxSpacing.bottomRight({
+  const ChildToBoxSpacing.bottomRight({
     this.padding_tu,
   })
     : this.horizontalAlignment = _TFC_Alignment.END,
