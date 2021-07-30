@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TFC_BoxLimitations.dart';
+import '../../UI/FoundationalElements/TFC_BoxLimitations.dart';
 import '../ConfigurationTypes/TFC_BoxDecoration.dart';
 import '../ConfigurationTypes/TFC_ChildToChildSpacing.dart';
 import '../ConfigurationTypes/TFC_AxisSize.dart';

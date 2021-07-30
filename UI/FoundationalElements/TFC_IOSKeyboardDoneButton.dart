@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/PrebuiltWidgets/TFC_Button.dart';
+import '../../UI/PrebuiltWidgets/TFC_Button.dart';
 import 'TFC_AppStyle.dart';
 import '../../Utilities/TFC_Utilities.dart';
 

@@ -1,4 +1,4 @@
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/PrebuiltWidgets/TFC_Button.dart';
+import '../../UI/PrebuiltWidgets/TFC_Button.dart';
 
 import '../../AppManagment/TFC_SyncController.dart';
 import 'package:flutter/material.dart';

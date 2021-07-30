@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TFC_AppBar.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TFC_BoxLimitations.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/Utilities/TFC_Event.dart';
+import '../../UI/FoundationalElements/TFC_AppBar.dart';
+import '../../UI/FoundationalElements/TFC_BoxLimitations.dart';
+import '../../Utilities/TFC_Event.dart';
 import '../ConfigurationTypes/TFC_ChildToChildSpacing.dart';
 import '../ConfigurationTypes/TFC_AxisSize.dart';
 import '../ConfigurationTypes/TFC_ChildToBoxSpacing.dart';

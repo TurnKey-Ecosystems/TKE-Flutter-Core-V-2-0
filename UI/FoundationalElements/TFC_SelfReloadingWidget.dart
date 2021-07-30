@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/Utilities/TFC_Event.dart';
+import '../../Utilities/TFC_Event.dart';
 import '../../Utilities/TFC_Utilities.dart';
 
 abstract class TFC_SelfReloadingWidget extends StatefulWidget {

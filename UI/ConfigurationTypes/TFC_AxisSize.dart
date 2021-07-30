@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TU.dart';
+import '../../UI/FoundationalElements/TU.dart';
 import './TFC_Configuration.dart';
 
 class TFC_AxisSize extends TFC_Configuration {

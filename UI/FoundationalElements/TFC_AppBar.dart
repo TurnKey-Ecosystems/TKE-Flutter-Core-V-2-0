@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_AxisSize.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_BackgroundDecoration.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_BoxDecoration.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_ChildToBoxSpacing.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_ChildToChildSpacing.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_Shadow.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/TFC_TouchInteractionConfig.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TFC_AppStyle.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TFC_Box.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TFC_BoxLimitations.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/TU.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/PrebuiltWidgets/TFC_CustomWidgets.dart';
+import '../../UI/ConfigurationTypes/TFC_AxisSize.dart';
+import '../../UI/ConfigurationTypes/TFC_BackgroundDecoration.dart';
+import '../../UI/ConfigurationTypes/TFC_BoxDecoration.dart';
+import '../../UI/ConfigurationTypes/TFC_ChildToBoxSpacing.dart';
+import '../../UI/ConfigurationTypes/TFC_ChildToChildSpacing.dart';
+import '../../UI/ConfigurationTypes/TFC_Shadow.dart';
+import '../../UI/ConfigurationTypes/TFC_TouchInteractionConfig.dart';
+import '../../UI/FoundationalElements/TFC_AppStyle.dart';
+import '../../UI/FoundationalElements/TFC_Box.dart';
+import '../../UI/FoundationalElements/TFC_BoxLimitations.dart';
+import '../../UI/FoundationalElements/TU.dart';
+import '../../UI/PrebuiltWidgets/TFC_CustomWidgets.dart';
 
 class TFC_AppBar extends StatelessWidget {
   final Image? image;

@@ -1,5 +1,5 @@
 import 'package:quiver/core.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/Utilities/TFC_Event.dart';
+import '../Utilities/TFC_Event.dart';
 import '../Serialization/TFC_SerializingContainers.dart';
 import 'TFC_Item.dart';
 import 'TFC_ItemInstances.dart';
