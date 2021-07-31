@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mel_apptbook_app_flutter_fvzk/TKE-Flutter-Core/APIs/TFC_PlatformAPI.dart';
 import '../ConfigurationTypes/AxisSize.dart';
 import '../../UI/ConfigurationTypes/TFC_BackgroundDecoration.dart';
 import '../../UI/ConfigurationTypes/TFC_BoxDecoration.dart';
@@ -92,47 +94,53 @@ class TFC_AppBar extends StatelessWidget {
       );
     }
 
+    // On mobile devices, leave some space for the notch and indicators
+    double notchAreaHeight_tu = (kIsWeb) ? 0 : 7.35;
+
     // Construct the AppBar
     return Box.fixedSize(
       widthIsTU: false,
       width_tuORfu: TFC_AppStyle.instance.screenWidth,
       heightIsTU: false,
-      height_tuORfu: TU.toFU(sideButtonSize_tu),// + (2 * TU.toFU(6)),
-      mainAxis: Axis3D.HORIZONTAL,
-      /*childToBoxSpacing: ChildToBoxSpacing.center(
-        padding_tu: 6
-      ),*/
-      childToChildSpacingHorizontal: ChildToChildSpacing.spaceBetween(),
+      height_tuORfu: TU.toFU(sideButtonSize_tu) + TU.toFU(notchAreaHeight_tu),
       boxDecoration: TFC_BoxDecoration.noOutline(
         backgroundDecoration: TFC_BackgroundDecoration.color(TFC_AppStyle.colorPrimary),
         shadow: TFC_AppStyle.APP_BAR_SHADOW_STANDARD,
       ),
+      childToBoxSpacing: ChildToBoxSpacing.bottomCenter(),
       children: [
-        // Back Button
         Box(
-          width: AxisSize.tu(sideButtonSize_tu),
-          height: AxisSize.tu(sideButtonSize_tu),
+          width: AxisSize.growToFillSpace(),
+          mainAxis: Axis3D.HORIZONTAL,
+          childToChildSpacingHorizontal: ChildToChildSpacing.spaceBetween(),
           children: [
-            backbutton
-          ],
-        ),
+            // Back Button
+            Box(
+              width: AxisSize.tu(sideButtonSize_tu),
+              height: AxisSize.tu(sideButtonSize_tu),
+              children: [
+                backbutton
+              ],
+            ),
 
-        // Title Widget
-        Box(
-          width: AxisSize.shrinkToFitContents(),
-          height: AxisSize.shrinkToFitContents(),
-          childToBoxSpacing: ChildToBoxSpacing.center(),
-          children: [
-            titleWidget,
-          ],
-        ),
+            // Title Widget
+            Box(
+              width: AxisSize.shrinkToFitContents(),
+              height: AxisSize.shrinkToFitContents(),
+              childToBoxSpacing: ChildToBoxSpacing.center(),
+              children: [
+                titleWidget,
+              ],
+            ),
 
-        // Settings Button
-        Box(
-          width: AxisSize.tu(sideButtonSize_tu),
-          height: AxisSize.tu(sideButtonSize_tu),
-          children: [
-            settingsButton,
+            // Settings Button
+            Box(
+              width: AxisSize.tu(sideButtonSize_tu),
+              height: AxisSize.tu(sideButtonSize_tu),
+              children: [
+                settingsButton,
+              ],
+            ),
           ],
         ),
       ],
