@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/AxisSize.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/ChildToBoxSpacing.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/ConfigurationTypes/ChildToChildSpacing.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/FoundationalElements/Box.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/PrebuiltWidgets/TFC_Button.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/PrebuiltWidgets/TFC_Card.dart';
+import '../../UI/ConfigurationTypes/AxisSize.dart';
+import '../../UI/ConfigurationTypes/ChildToBoxSpacing.dart';
+import '../../UI/ConfigurationTypes/ChildToChildSpacing.dart';
+import '../../UI/FoundationalElements/Box.dart';
+import '../../UI/PrebuiltWidgets/TFC_Button.dart';
+import '../../UI/PrebuiltWidgets/TFC_Card.dart';
 import '../../Utilities/TFC_Utilities.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 import 'TFC_CustomWidgets.dart';

@@ -1,4 +1,4 @@
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/Utilities/TFC_Event.dart';
+import './TFC_Event.dart';
 
 class TFC_BasicValueWrapper<ValueType> {
   // On changed event
