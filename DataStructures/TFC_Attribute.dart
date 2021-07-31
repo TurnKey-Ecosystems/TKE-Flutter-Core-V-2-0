@@ -228,6 +228,9 @@ abstract class TFC_AttributeProperty<AttributeType> extends TFC_Attribute {
 
 class TFC_AttributeItemSet<ItemType extends TFC_Item> extends TFC_Attribute {
   final ItemType Function(String) _getItemFromItemID;
+  TFC_SerializingSet get value {
+    return _getSerializingSet();
+  }
 
   TFC_AttributeItemSet({
     required String attributeKey,
@@ -283,6 +286,10 @@ class TFC_AttributeSet extends TFC_Attribute {
     return getSet();
   }
 
+  TFC_SerializingSet get value {
+    return getSet();
+  }
+
   TFC_AttributeSet({
     required String attributeKey,
     void Function()? onBeforeGetListener,
@@ -326,6 +333,8 @@ abstract class TFC_Attribute {
     return TFC_ItemInstances.getOnAfterSetEvent(_itemID, _attributeKey);
   }
 
+  dynamic get value;
+
   TFC_Attribute({
     required String attributeKey,
     void Function()? onBeforeGetListener,
@@ -347,6 +356,7 @@ abstract class TFC_Attribute {
   }) {
     _itemID = itemID;
     _itemType = itemType;
+    TFC_ItemInstances.setAttributeValue(_itemID, _itemType, this._attributeKey, value, shouldLogChange: false, shouldNotifyListeners: false);
   }
 
   void addOnBeforeGetListener(void Function() listener) {

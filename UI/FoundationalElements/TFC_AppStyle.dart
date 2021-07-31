@@ -24,7 +24,7 @@ class TFC_AppStyle {
   static const Color COLOR_TEXT_SUBHEADING = Color(0xff58595b);
   static const Color COLOR_TEXT_TITLE = Color(0xff5c5c5c);
   static const Color COLOR_TEXT_BODY = Color(0xff5c5c5c);
-  static const Color COLOR_SHADOW = Color(0x5b000000);//7f?
+  static const Color COLOR_SHADOW = Color(0x30000000);//7f?
   static Map<TFC_TextType, Color> get textColors {
     return {
       TFC_TextType.HEADING: COLOR_TEXT_HEADING,
@@ -67,6 +67,20 @@ class TFC_AppStyle {
   static const double MARGINS_IN_M2_UNITS = 1;
   
   // Shadows
+  static TFC_Shadow get APP_BAR_SHADOW_STANDARD {
+    return TFC_Shadow(
+      offset: Offset(TU.toFU(4.5), TU.toFU(4.5)),
+      blurRadius: TU.toFU(6),
+      spreadRadius: TU.toFU(2),
+    );
+  }
+  static TFC_Shadow get NAV_BAR_SHADOW_STANDARD {
+    return TFC_Shadow(
+      offset: Offset(TU.toFU(4.5), -1 * TU.toFU(4.5)),
+      blurRadius: TU.toFU(6),
+      spreadRadius: TU.toFU(2),
+    );
+  }
   static TFC_Shadow getShadow(TFC_ShadowType shadowType) {
     switch (shadowType) {
       case TFC_ShadowType.SMALL:
@@ -75,26 +89,26 @@ class TFC_AppStyle {
             TU.toFU(3),
             TU.toFU(3),
           ),
-          blurRadius: TU.toFU(3.5),
-          spreadRadius: TU.toFU(3),
+          blurRadius: TU.toFU(4.5),
+          spreadRadius: TU.toFU(0.5),
         );
       case TFC_ShadowType.MEDIUM:
         return TFC_Shadow(
           offset: Offset(
-            TU.toFU(4),
-            TU.toFU(4),
+            TU.toFU(4.5),
+            TU.toFU(4.5),
           ),
-          blurRadius: TU.toFU(4.5),
-          spreadRadius: TU.toFU(4),
+          blurRadius: TU.toFU(6),
+          spreadRadius: TU.toFU(2),
         );
       case TFC_ShadowType.LARGE:
         return TFC_Shadow(
           offset: Offset(
-            TU.toFU(5),
-            TU.toFU(5),
+            TU.toFU(5.5),
+            TU.toFU(5.5),
           ),
-          blurRadius: TU.toFU(5.5),
-          spreadRadius: TU.toFU(5),
+          blurRadius: TU.toFU(7),
+          spreadRadius: TU.toFU(3),
         );
     }
   }

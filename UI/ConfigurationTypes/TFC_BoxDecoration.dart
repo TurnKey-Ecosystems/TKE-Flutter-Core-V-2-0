@@ -57,7 +57,7 @@ class TFC_BoxDecoration extends TFC_Configuration {
     this.backgroundDecoration =
       const TFC_BackgroundDecoration.color(Colors.transparent),
     this.borderColor = TFC_AppStyle.COLOR_HINT,
-    this.borderWidth_tu = -3,
+    this.borderWidth_tu = 4,
     this.cornerDecoration = const TFC_CornerDecoration.none(),
     this.shadow = const TFC_Shadow.noShadow(),
   }) : this.isDecorated = true;

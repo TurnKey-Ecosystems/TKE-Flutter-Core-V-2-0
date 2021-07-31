@@ -37,8 +37,8 @@ class Box<LimitationType extends TFC_BoxLimitation> extends StatefulWidget {
 
   @mustCallSuper
   const Box({
-    required this.width,
-    required this.height,
+    this.width = const AxisSize.shrinkToFitContents(),
+    this.height = const AxisSize.shrinkToFitContents(),
     this.children = const [],
     this.mainAxis = Axis3D.VERTICAL,
     this.childToBoxSpacing =
@@ -192,12 +192,29 @@ class _BoxState extends State<Box> {
       } else if (widget.width.size_fu != null && widget.width.size_fu! > 0 && widget.width.size_fu! < constraints.maxWidth) {
         maxChildWidth = widget.width.size_fu!;
       }
+      if (maxChildWidth != double.infinity) {
+        double amountToTakeOffForPadding = 0.0;
+        if (widget.childToBoxSpacing.flutterPadding != null) {
+          amountToTakeOffForPadding = widget.childToBoxSpacing.flutterPadding!.horizontal;
+        }
+        logToConsole("Took ${amountToTakeOffForPadding} off of horizontal for padding.");
+        maxChildWidth = max(0, maxChildWidth - amountToTakeOffForPadding);
+      }
+
       double maxChildHeight = constraints.maxHeight;
       if (widget.height.isScrollable) {
         maxChildHeight = double.infinity;
         logToConsole("Gave children infinite height.");
       } else if (widget.height.size_fu != null && widget.height.size_fu! > 0 && widget.height.size_fu! < constraints.maxHeight) {
         maxChildHeight = widget.height.size_fu!;
+      }
+      if (maxChildHeight != double.infinity) {
+        double amountToTakeOffForPadding = 0.0;
+        if (widget.childToBoxSpacing.flutterPadding != null) {
+          amountToTakeOffForPadding = widget.childToBoxSpacing.flutterPadding!.horizontal;
+        }
+        logToConsole("Took ${amountToTakeOffForPadding} off of vertical for padding.");
+        maxChildHeight = max(0, maxChildHeight - amountToTakeOffForPadding);
       }
       BoxConstraints childConstraints = BoxConstraints(
         minWidth: min(constraints.minWidth, maxChildWidth),
@@ -245,6 +262,7 @@ class _BoxState extends State<Box> {
           mainAxis = Axis3D.VERTICAL;
         }
 
+        // Horizontal
         switch(mainAxis) {
           case Axis3D.HORIZONTAL:
           newWidget = Row(
@@ -261,10 +279,12 @@ class _BoxState extends State<Box> {
           );
           logToConsole("used row.");
           break;
+
+          // Vertical
           case Axis3D.VERTICAL:
           newWidget = Column(
-            mainAxisSize: widget.width.axisSize,
-            mainAxisAlignment: 
+            mainAxisSize: widget.height.axisSize,
+            mainAxisAlignment:
               widget.childToChildSpacingVertical.axisAlignment
               ?? ChildToBoxSpacing.tfcAlignToMainAxisAlignment(
                   widget.childToBoxSpacing.verticalAlignment,
@@ -272,7 +292,6 @@ class _BoxState extends State<Box> {
             crossAxisAlignment: ChildToBoxSpacing.tfcAlignToCrossAxisAlignment(
               widget.childToBoxSpacing.horizontalAlignment,
             ),
-            //crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
           );
           logToConsole("used column.");
@@ -324,6 +343,8 @@ class _BoxState extends State<Box> {
       }
 
       // Add the sized box
+      logToConsole("width: ${widget.width.size_fu}");
+      logToConsole("height: ${widget.height.size_fu}");
       newWidget = SizedBox(
         width: widget.width.size_fu,
         height: widget.height.size_fu,

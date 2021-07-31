@@ -435,9 +435,7 @@ abstract class TFC_InputField extends TFC_SelfReloadingWidget {
       if (_focus == _focusNode) {
         _focus = null;
       }
-      if (reload != null) {
-        reload();
-      }
+      reload();
       if (shouldSubmitOnFocusLost && onSubmitted != null) {
         onSubmitted!();
       }
@@ -486,6 +484,7 @@ abstract class TFC_InputField extends TFC_SelfReloadingWidget {
       cursorColor: TFC_AppStyle.COLOR_HINT,
       //key: inputKey,
       decoration: InputDecoration(
+        isDense: true,
         //prefixIcon: icon,
         contentPadding: EdgeInsets.all(0.0),
         hintText: hintText,
@@ -497,6 +496,8 @@ abstract class TFC_InputField extends TFC_SelfReloadingWidget {
         enabledBorder: getInputBorder(),
         focusedBorder: getFocusedInputBorder(),
         counterText: "",
+        //filled: true,
+        //fillColor: Colors.red,
       ),
       key: key,
     );

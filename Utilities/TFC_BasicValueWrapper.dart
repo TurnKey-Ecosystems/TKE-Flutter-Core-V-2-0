@@ -1,5 +1,18 @@
-class TFC_BasicValueWrapper<ValueType> {
-  ValueType value;
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/Utilities/TFC_Event.dart';
 
-  TFC_BasicValueWrapper(ValueType value) : this.value = value;
+class TFC_BasicValueWrapper<ValueType> {
+  // On changed event
+  final TFC_Event onChanged = TFC_Event();
+
+  // Values
+  ValueType _value;
+  ValueType get value {
+    return _value;
+  }
+  void set value(ValueType newValue) {
+    _value = newValue;
+    onChanged.trigger();
+  }
+
+  TFC_BasicValueWrapper(this._value);
 }

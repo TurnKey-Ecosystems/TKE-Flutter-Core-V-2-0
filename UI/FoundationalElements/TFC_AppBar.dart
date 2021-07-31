@@ -5,7 +5,6 @@ import '../../UI/ConfigurationTypes/TFC_BackgroundDecoration.dart';
 import '../../UI/ConfigurationTypes/TFC_BoxDecoration.dart';
 import '../ConfigurationTypes/ChildToBoxSpacing.dart';
 import '../ConfigurationTypes/ChildToChildSpacing.dart';
-import '../../UI/ConfigurationTypes/TFC_Shadow.dart';
 import '../../UI/ConfigurationTypes/TFC_TouchInteractionConfig.dart';
 import '../../UI/FoundationalElements/TFC_AppStyle.dart';
 import 'Box.dart';
@@ -36,7 +35,7 @@ class TFC_AppBar extends StatelessWidget {
 
   @override
   Box<TFC_MustBeFixedSize> build(BuildContext context) {
-    const double sideButtonSize_tu = 8;
+    const double sideButtonSize_tu = 8.25;
 
     // Determine what widget to make the title widget.
     Widget? titleWidget;
@@ -60,9 +59,10 @@ class TFC_AppBar extends StatelessWidget {
             Navigator.of(context).pop();
           }
         ),
+        childToBoxSpacing: ChildToBoxSpacing.center(),
         children: [
           Icon(
-            Icons.arrow_back_ios,
+            Icons.arrow_back,
             size: TU.toFU(7.5),
             color: TFC_AppStyle.COLOR_BACKGROUND,
           ),
@@ -81,6 +81,7 @@ class TFC_AppBar extends StatelessWidget {
             openTheSettingsPage!(context);
           }
         ),
+        childToBoxSpacing: ChildToBoxSpacing.center(),
         children: [
           Icon(
             Icons.settings,
@@ -96,15 +97,15 @@ class TFC_AppBar extends StatelessWidget {
       widthIsTU: false,
       width_tuORfu: TFC_AppStyle.instance.screenWidth,
       heightIsTU: false,
-      height_tuORfu: TU.toFU(sideButtonSize_tu) + (2 * TU.toFU(6)),
+      height_tuORfu: TU.toFU(sideButtonSize_tu),// + (2 * TU.toFU(6)),
       mainAxis: Axis3D.HORIZONTAL,
-      childToBoxSpacing: ChildToBoxSpacing.center(
+      /*childToBoxSpacing: ChildToBoxSpacing.center(
         padding_tu: 6
-      ),
+      ),*/
       childToChildSpacingHorizontal: ChildToChildSpacing.spaceBetween(),
       boxDecoration: TFC_BoxDecoration.noOutline(
         backgroundDecoration: TFC_BackgroundDecoration.color(TFC_AppStyle.colorPrimary),
-        shadow: TFC_Shadow.fromAppStyle(TFC_ShadowType.MEDIUM),
+        shadow: TFC_AppStyle.APP_BAR_SHADOW_STANDARD,
       ),
       children: [
         // Back Button

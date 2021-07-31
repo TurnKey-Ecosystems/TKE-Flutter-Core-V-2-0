@@ -51,7 +51,7 @@ class TFC_Button extends Box {
       const AxisSize.shrinkToFitContents(),
     AxisSize height =
       const AxisSize.shrinkToFitContents(),
-    ChildToBoxSpacing boxToChildAlignmentConfiguration =
+    ChildToBoxSpacing childToBoxSpacing =
       const ChildToBoxSpacing.center(
         padding_tu: 6,
       ),
@@ -68,7 +68,7 @@ class TFC_Button extends Box {
     width: width,
     height: height,
     childToBoxSpacing:
-      boxToChildAlignmentConfiguration,
+      childToBoxSpacing,
     mainAxis: Axis3D.VERTICAL,
     childToChildSpacingHorizontal: const ChildToChildSpacing.noPadding(),
     childToChildSpacingVertical: const ChildToChildSpacing.noPadding(),

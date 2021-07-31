@@ -3,6 +3,13 @@ import '../../Utilities/TFC_Event.dart';
 import '../../Utilities/TFC_Utilities.dart';
 
 abstract class TFC_SelfReloadingWidget extends StatefulWidget {
+  static const int _MAX_KEY_INT = 1000000000;
+  static int _nextKeyValue = 0;
+  static Key _getNewKey() {
+    Key newKey = Key(_nextKeyValue.toString());
+    _nextKeyValue = (_nextKeyValue + 1) % _MAX_KEY_INT;
+    return newKey;
+  }
   // Props
   final List<TFC_Event?> reloadTriggers;
 
@@ -18,7 +25,7 @@ abstract class TFC_SelfReloadingWidget extends StatefulWidget {
 
   TFC_SelfReloadingWidget({Key? key, bool Function()? mayReload, required this.reloadTriggers})
       : _mayReload = mayReload,
-        super(key: key) {
+        super(key: key ?? _getNewKey()) {
     for (TFC_Event? event in reloadTriggers) {
       if (event != null) {
         event.addListener(reload);
@@ -42,6 +49,7 @@ abstract class TFC_SelfReloadingWidget extends StatefulWidget {
   
   // This is janky, but it works
   final _TFC_ReloadFunctionWrapper _reloadWrapper = _TFC_ReloadFunctionWrapper();
+  @deprecated
   Future reload() async {
     _reloadWrapper.reload();
   }

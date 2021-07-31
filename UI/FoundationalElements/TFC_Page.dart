@@ -70,7 +70,7 @@ abstract class TFC_Page extends TFC_SelfReloadingWidget {
         width: AxisSize.growToFillSpace(),
         height: AxisSize.growToFillSpace(),
         childToBoxSpacing: ChildToBoxSpacing.bottomRight(
-          padding_tu: 8
+          padding_tu: 8,
         ),
         children: [
           floatingActionButton,
@@ -83,38 +83,73 @@ abstract class TFC_Page extends TFC_SelfReloadingWidget {
       body = Box(
         width: AxisSize.fu(TFC_AppStyle.instance.screenWidth),
         height: AxisSize.fu(TFC_AppStyle.instance.screenHeight),
-        mainAxis: Axis3D.VERTICAL,
-        childToBoxSpacing: ChildToBoxSpacing.topCenter(),
-        childToChildSpacingVertical: ChildToChildSpacing.noPadding(),
+        mainAxis: Axis3D.Z_AXIS,
         children: [
-          // Add the app bar
-          appBar,
-          
-          // Add the body area
           Box(
-            debugName: "Page",
-            mainAxis: Axis3D.Z_AXIS,
             width: AxisSize.growToFillSpace(),
-            height: AxisSize.fu(TFC_AppStyle.instance.screenHeight - bottomNavBarHeight_fu - appBarHeight_fu),
+            height: AxisSize.growToFillSpace(),
+            mainAxis: Axis3D.VERTICAL,
             childToBoxSpacing: ChildToBoxSpacing.topCenter(),
+            childToChildSpacingVertical: ChildToChildSpacing.noPadding(),
             children: [
-              // Scollable Bod Box
+              // Add a spacer for the app bar
               Box(
                 width: AxisSize.growToFillSpace(),
-                height: AxisSize.scrollableShrinkToFitContents(),
+                height: AxisSize.fu(appBarHeight_fu),
+              ),
+              
+              // Add the body area
+              Box(
+                debugName: "Page Body",
+                mainAxis: Axis3D.Z_AXIS,
+                width: AxisSize.growToFillSpace(),
+                height: AxisSize.fu(TFC_AppStyle.instance.screenHeight - bottomNavBarHeight_fu - appBarHeight_fu),
                 childToBoxSpacing: ChildToBoxSpacing.topCenter(),
                 children: [
-                  getPageBody(context)
+                  // Scollable Bod Box
+                  Box(
+                    width: AxisSize.growToFillSpace(),
+                    height: AxisSize.scrollableShrinkToFitContents(),
+                    childToBoxSpacing: ChildToBoxSpacing.topCenter(),
+                    children: [
+                      getPageBody(context)
+                    ],
+                  ),
                 ],
               ),
 
-              // Add the floating action button
-              floatingActionButtonBox,
+              // Add a spacer for the bottom nav bar
+              Box(
+                width: AxisSize.growToFillSpace(),
+                height: AxisSize.fu(bottomNavBarHeight_fu),
+              ),
             ],
           ),
 
-          // Add the bottom nav bar
-          bottomNavBar,
+          Box(
+            width: AxisSize.growToFillSpace(),
+            height: AxisSize.growToFillSpace(),
+            mainAxis: Axis3D.VERTICAL,
+            childToBoxSpacing: ChildToBoxSpacing.topCenter(),
+            childToChildSpacingVertical: ChildToChildSpacing.noPadding(),
+            children: [
+              // Add the app bar
+              appBar,
+              
+              // Add the floating action button and body spacer
+              Box(
+                mainAxis: Axis3D.Z_AXIS,
+                width: AxisSize.growToFillSpace(),
+                height: AxisSize.fu(TFC_AppStyle.instance.screenHeight - bottomNavBarHeight_fu - appBarHeight_fu),
+                children: [
+                  floatingActionButtonBox,
+                ],
+              ),
+
+              // Add the bottom nav bar
+              bottomNavBar,
+            ],
+          ),
         ],
       );
     } else {
