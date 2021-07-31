@@ -29,6 +29,9 @@ abstract class TFC_SelfReloadingWidget extends StatefulWidget {
     for (TFC_Event? event in reloadTriggers) {
       if (event != null) {
         event.addListener(reload);
+        /*event.addListener(() {
+          debugPrint("Event triggerd!");
+        });*/
       }
     }
     //_state = _TFC_ReloadableWidgetState(onInit, onDispose, buildWidget);

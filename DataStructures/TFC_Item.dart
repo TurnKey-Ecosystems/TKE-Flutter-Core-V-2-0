@@ -4,15 +4,16 @@ import 'TFC_Attribute.dart';
 import 'TFC_ItemUtilities.dart';
 import 'TFC_ItemInstances.dart';
 
+@immutable
 abstract class TFC_Item {
   static const int MAX_ITEM_ID_LENGTH = 256;
-  late String _itemID;
+  late final String _itemID;
   String get itemID {
     return _itemID;
   }
 
   String get itemType;
-  List<TFC_Attribute> _attributes = [];
+  late final List<TFC_Attribute> _attributes;
   String get fileName {
     return TFC_ItemUtilities.generateFileName(itemID);
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../Utilities/TFC_Event.dart';
+import '../FoundationalElements/TFC_SelfReloadingWidget.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 
 // Tab Widget
@@ -15,70 +17,78 @@ class TFC_Tab extends Tab {
 }
 
 // Text widget factory
-class TFC_Text extends Text {
+class TFC_Text extends TFC_SelfReloadingWidget {
+  final String text;
+  final TFC_TextType textType;
+  final TextAlign? textAlign;
+  final Color? color;
+  final bool isUnderlined;
+
   TFC_Text(
-    String text,
-    TFC_TextType textType, {
+    this.text,
+    this.textType, {
     Key? key,
-    TextAlign? textAlign,
-    Color? color,
-    bool isUnderlined = false,
-  }) : super(
-          text,
-          key: key,
-          textAlign: (textAlign != null)
-              ? textAlign
-              : TFC_AppStyle.instance.textAlignments[textType],
-          style: TFC_AppStyle.instance.textStyle[textType]!.apply(
-              color:
-                  (color != null) ? color : TFC_AppStyle.textColors[textType],
-              decoration: (isUnderlined) ? TextDecoration.underline : null),
-        );
+    this.textAlign,
+    this.color,
+    this.isUnderlined = false,
+    List<TFC_Event?> reloadTriggers = const [],
+  }) : super(key: key, reloadTriggers: reloadTriggers);
 
-  factory TFC_Text.heading(
-    String text, {
+  TFC_Text.heading(
+    this.text, {
     Key? key,
-    TextAlign? textAlign,
-    Color? color,
-  }) {
-    return TFC_Text(text, TFC_TextType.HEADING,
-        key: key, textAlign: textAlign, color: color);
-  }
+    this.textAlign,
+    this.color,
+    this.isUnderlined = false,
+    List<TFC_Event?> reloadTriggers = const [],
+  }) :  this.textType = TFC_TextType.HEADING,
+        super(key: key, reloadTriggers: reloadTriggers);
 
-  factory TFC_Text.subheading(
-    String text, {
-    Key? key,
-    TextAlign? textAlign,
-    Color? color,
-  }) {
-    return TFC_Text(text, TFC_TextType.SUBHEADING,
-        key: key, textAlign: textAlign, color: color);
-  }
 
-  factory TFC_Text.title(
-    String text, {
+  TFC_Text.subheading(
+    this.text, {
     Key? key,
-    TextAlign? textAlign,
-    Color? color,
-  }) {
-    return TFC_Text(text, TFC_TextType.TITLE,
-        key: key, textAlign: textAlign, color: color);
-  }
+    this.textAlign,
+    this.color,
+    this.isUnderlined = false,
+    List<TFC_Event?> reloadTriggers = const [],
+  }) :  this.textType = TFC_TextType.SUBHEADING,
+        super(key: key, reloadTriggers: reloadTriggers);
 
-  factory TFC_Text.body(
-    String text, {
+
+  TFC_Text.title(
+    this.text, {
     Key? key,
-    TextAlign? textAlign,
-    Color? color,
-    bool isUnderlined = false,
-  }) {
-    return TFC_Text(
+    this.textAlign,
+    this.color,
+    this.isUnderlined = false,
+    List<TFC_Event?> reloadTriggers = const [],
+  }) :  this.textType = TFC_TextType.TITLE,
+        super(key: key, reloadTriggers: reloadTriggers);
+
+
+  TFC_Text.body(
+    this.text, {
+    Key? key,
+    this.textAlign,
+    this.color,
+    this.isUnderlined = false,
+    List<TFC_Event?> reloadTriggers = const [],
+  }) :  this.textType = TFC_TextType.BODY,
+        super(key: key, reloadTriggers: reloadTriggers);
+
+  @override
+  Widget buildWidget(BuildContext context) {
+    return Text(
       text,
-      TFC_TextType.BODY,
       key: key,
-      textAlign: textAlign,
-      color: color,
-      isUnderlined: isUnderlined,
+      textAlign: (textAlign != null)
+          ? textAlign
+          : TFC_AppStyle.instance.textAlignments[textType],
+      style: TFC_AppStyle.instance.textStyle[textType]!.apply(
+          color:
+              (color != null) ? color : TFC_AppStyle.textColors[textType],
+          decoration: (isUnderlined) ? TextDecoration.underline : null),
     );
   }
 }
