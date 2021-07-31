@@ -46,7 +46,7 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
     } else if (Platform.isAndroid) {
       _directories[FileLocation.LOCAL] =
           await getApplicationDocumentsDirectory();
-      _directories[FileLocation.EXPORT] = await getExternalStorageDirectory();
+      _directories[FileLocation.EXPORT] = (await getExternalStorageDirectory())!;
     } else {
       throw ("TFC_MobileStorageAPI.setup() does not handle this platform!");
     }
@@ -234,7 +234,7 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
 
     // Zip up and export all local files
     encoder.create(zipFileExportPath);
-    encoder.addDirectory(_directories[FileLocation.LOCAL]);
+    encoder.addDirectory(_directories[FileLocation.LOCAL]!);
     encoder.close();
     return zipFileExportPath;
   }

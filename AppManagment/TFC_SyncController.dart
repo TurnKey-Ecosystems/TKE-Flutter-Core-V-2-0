@@ -133,7 +133,7 @@ class TFC_SyncController {
 
     // Sync with the server3
     HTTP.Response response = await HTTP.post(
-      "$REST_GATEWAY_URL/download_all",
+      Uri.parse("$REST_GATEWAY_URL/download_all"),
       //"https://k75gaw97rf.execute-api.us-west-2.amazonaws.com/dev/download_all",
       //"https://8fg44b1i7l.execute-api.us-west-2.amazonaws.com/alpha/downloadall",
       headers: <String, String>{
@@ -284,7 +284,7 @@ class TFC_SyncController {
     Map<String, dynamic>? decodedSyncJson;
     try {
       HTTP.Response syncResponse = await HTTP.post(
-        "$REST_GATEWAY_URL/sync",
+        Uri.parse("$REST_GATEWAY_URL/sync"),
         //"https://8fg44b1i7l.execute-api.us-west-2.amazonaws.com/alpha/sync",
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -559,7 +559,7 @@ class TFC_SyncController {
     try {
       // Get an S3 put url
       HTTP.Response getURLResponse = await HTTP.post(
-        "$REST_GATEWAY_URL/get_image_upload_url",
+        Uri.parse("$REST_GATEWAY_URL/get_image_upload_url"),
         //"https://mrg881k84f.execute-api.us-west-2.amazonaws.com/alpha/upload",
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -571,7 +571,7 @@ class TFC_SyncController {
       if (getURLResponse.statusCode == 200) {
         String putURL = jsonDecode(getURLResponse.body)["putURL"];
         HTTP.Response uploadResponse = await HTTP.put(
-          putURL,
+          Uri.parse(putURL),
           headers: <String, String>{
             'Content-Type': '',
           },
@@ -623,7 +623,7 @@ class TFC_SyncController {
     try {
       // Get an S3 get url
       HTTP.Response getURLResponse = await HTTP.post(
-        "$REST_GATEWAY_URL/get_image_download_url",
+        Uri.parse("$REST_GATEWAY_URL/get_image_download_url"),
         //"https://d3gzz3g4nh55ox.cloudfront.net/" + fileName,
         //"https://8fg44b1i7l.execute-api.us-west-2.amazonaws.com/alpha/requestiamgegeturl",
         headers: <String, String>{
@@ -648,7 +648,7 @@ class TFC_SyncController {
 
       if (getURLResponse.statusCode == 200) {
         String getURL = jsonDecode(getURLResponse.body)["getURL"];
-        HTTP.Response downloadResponse = await HTTP.get(getURL);
+        HTTP.Response downloadResponse = await HTTP.get(Uri.parse(getURL));
         if (downloadResponse != null) {
           if (downloadResponse.statusCode == 200) {
             TFC_DiskController.writeFileAsBytes(
