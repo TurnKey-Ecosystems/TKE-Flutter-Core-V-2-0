@@ -17,17 +17,18 @@ import '../../UI/PrebuiltWidgets/TFC_CustomWidgets.dart';
 class TFC_AppBar extends StatelessWidget {
   final Image? image;
   final String? text;
-  final void Function(BuildContext)? openTheSettingsPage;
+  final IconData rightButtonIcon;
+  final void Function(BuildContext)? onRightButtonTapped;
 
-  const TFC_AppBar.image(Image image, {this.openTheSettingsPage = null})
+  const TFC_AppBar.image(Image image, {this.rightButtonIcon = Icons.settings, this.onRightButtonTapped = null})
     : this.image = image,
       this.text = null;
 
-  const TFC_AppBar.text(String text, {this.openTheSettingsPage = null})
+  const TFC_AppBar.text(String text, {this.rightButtonIcon = Icons.settings, this.onRightButtonTapped = null})
     : this.image = null,
       this.text = text;
 
-  const TFC_AppBar.blank({this.openTheSettingsPage = null})
+  const TFC_AppBar.blank({this.rightButtonIcon = Icons.settings, this.onRightButtonTapped = null})
     : this.image = null,
       this.text = null;
   
@@ -72,21 +73,21 @@ class TFC_AppBar extends StatelessWidget {
       );
     }
 
-    // Sometimes add a settings button
-    Widget? settingsButton = null;
-    if (openTheSettingsPage != null) {
-      settingsButton = Box(
+    // Sometimes add a right button
+    Widget? rightButton = null;
+    if (onRightButtonTapped != null) {
+      rightButton = Box(
         width: AxisSize.growToFillSpace(),
         height: AxisSize.growToFillSpace(),
         touchInteractionConfig: TFC_TouchInteractionConfig(
           onTap: () {
-            openTheSettingsPage!(context);
+            onRightButtonTapped!(context);
           }
         ),
         childToBoxSpacing: ChildToBoxSpacing.center(),
         children: [
           Icon(
-            Icons.settings,
+            rightButtonIcon,
             size: TU.toFU(7.5),
             color: TFC_AppStyle.COLOR_BACKGROUND,
           ),
@@ -138,7 +139,7 @@ class TFC_AppBar extends StatelessWidget {
               width: AxisSize.tu(sideButtonSize_tu),
               height: AxisSize.tu(sideButtonSize_tu),
               children: [
-                settingsButton,
+                rightButton,
               ],
             ),
           ],

@@ -35,6 +35,12 @@ class TFC_AppStyle {
   }
 
   static final ThemeData themeData = ThemeData(
+    colorScheme: ColorScheme.light().copyWith(
+      primary: Colors.green.shade700,
+      primaryVariant:  Colors.green.shade700,
+      secondary: Colors.green.shade700,
+      secondaryVariant: Colors.green.shade700,
+    ),
     primaryColor: TFC_AppStyle.colorPrimary,
     accentColor: TFC_AppStyle.COLOR_ACCENT,
     backgroundColor: TFC_AppStyle.COLOR_BACKGROUND,

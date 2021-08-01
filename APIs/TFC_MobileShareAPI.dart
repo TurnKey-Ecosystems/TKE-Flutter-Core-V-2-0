@@ -7,10 +7,6 @@ import '../APIs/TFC_PlatformAPI.dart';
 
 class TFC_MobileShareAPI extends TFC_IShareAPI {
   void shareFile(String title, String body, List<String> fileNames) {
-    if (title == null || title.isEmpty) {
-      title = "share";
-    }
-
     TFC_MobileStorageAPI storageAPI = TFC_PlatformAPI.platformAPI.deviceStorageAPI as TFC_MobileStorageAPI;
     List<String> filePaths = [];
     for (String fileName in fileNames) {
