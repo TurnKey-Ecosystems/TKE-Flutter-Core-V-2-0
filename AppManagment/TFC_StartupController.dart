@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 //import 'dart:io';
+import '../DataStructures/TFC_AllItemsManager.dart';
 import '../UI/StartupWidgets/TFC_InstallationApp.dart';
 import '../UI/StartupWidgets/TFC_BrowserRedirectApp.dart';
 import '../APIs/TFC_PlatformAPI.dart';
@@ -51,10 +52,13 @@ class TFC_StartupController {
     runApp(TFC_StartupMaterialApp());
 
     // We delay to let the app logo load
-    //await Future.delayed(Duration(milliseconds: 250));
+    await Future.delayed(Duration(milliseconds: 250));
 
     // Setup the disk controller
     await TFC_DiskController.setupTFCDiskController();
+
+    // Setup the items manager
+    TFC_AllItemsManager.setupAllItemsManager();
 
     // Setup device properties
     if (TFC_FlutterApp.deviceID.value == null ||

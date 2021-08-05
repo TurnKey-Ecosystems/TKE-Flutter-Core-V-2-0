@@ -2,7 +2,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import '../../DataStructures/TFC_Attribute.dart';
+import '../../Utilities/TFC_BasicValueWrapper.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 import '../FoundationalElements/TFC_SelfReloadingWidget.dart';
 import 'TFC_CustomWidgets.dart';
@@ -57,7 +57,8 @@ class TFC_NumericField extends TFC_InputField {
         );
 
   TFC_NumericField.fromNumAttribute({
-    required TFC_AttributeProperty<num> source,
+    required TFC_BasicValueWrapper<num> source,
+    required this.defaultValueAsNum,
     Color defaultValueColor = TFC_AppStyle.COLOR_HINT,
     Color nonDefaultValueColor = TFC_AppStyle.COLOR_BLACK,
     bool shouldChangeColorIfNotEqualToDefaultValue = true,
@@ -74,13 +75,12 @@ class TFC_NumericField extends TFC_InputField {
   })  : _specficNumType = null,
         getSourceValue = source.getValue,
         setSourceValue = source.setValue,
-        defaultValueAsNum = source.getDefaultValue(),
         super(
-          defaultValue: source.getDefaultValue().toStringAsFixed(decimalCount),
+          defaultValue: defaultValueAsNum.toString(),
           onSubmitted: onSubmitted,
           onFocused: onFocused,
           shouldSubmitOnFocusLost: shouldSubmitOnFocusLost,
-          hintText: source.getDefaultValue().toStringAsFixed(decimalCount),
+          hintText: defaultValueAsNum.toString(),
           textColor: nonDefaultValueColor,
           hintColor: defaultValueColor,
           autocorrect: false,
@@ -212,7 +212,7 @@ class TFC_TextField extends TFC_InputField {
         );
 
   TFC_TextField.fromStringAttribute({
-    required TFC_AttributeString source,
+    required TFC_BasicValueWrapper<String> source,
     void Function()? onSubmitted,
     void Function()? onFocused,
     bool shouldSubmitOnFocusLost = true,

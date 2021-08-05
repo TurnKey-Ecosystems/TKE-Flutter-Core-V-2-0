@@ -1,4 +1,4 @@
-import 'dart:developer';
+/*import 'dart:developer';
 import 'dart:convert';
 import 'dart:typed_data';
 import '../Utilities/TFC_ImageUtilities.dart';
@@ -632,18 +632,18 @@ class TFC_SyncController {
         },
         body: jsonEncode({"fileName": fileName, "clientID": clientID}),
       );
-      /*HTTP.Response getURLResponse = await HTTP.get(
+      /-HTTP.Response getURLResponse = await HTTP.get(
         "$REST_GATEWAY_URL/get_image_download_url",
         //"https://d2b92sufjxs5yt.cloudfront.net/" + fileName,
         //"https://8fg44b1i7l.execute-api.us-west-2.amazonaws.com/alpha/requestiamgegeturl",
         //headers: <String, String> { 'Content-Type': 'application/json; charset=UTF-8', },
         //body: jsonEncode({ "fileName": fileName }),
-      );*/
+      );-/
 
-      /*if (getURLResponse.statusCode == 200) {
+      /-if (getURLResponse.statusCode == 200) {
         TFC_DiskController.writeFileAsBytes(
             fileName, getURLResponse.bodyBytes);
-      }*/
+      }-/
       downloadWasSuccessful = getURLResponse.statusCode == 200;
 
       if (getURLResponse.statusCode == 200) {
@@ -663,4 +663,4 @@ class TFC_SyncController {
     }
     return downloadWasSuccessful;
   }
-}
+}*/

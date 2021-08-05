@@ -33,11 +33,7 @@ class TFC_SplashScreen extends TFC_SelfReloadingWidget {
 
     if (_Init_Properties.isInInit == true &&
         !_Init_Properties.initHasTimedOut) {
-      if (!TFC_SyncController.downloadAllIsInProgress) {
-        // Regular startup time out
-        _Init_Properties.initHasTimedOut = true;
-        reload();
-      } else {
+      if (false /*TFC_SyncController.downloadAllIsInProgress*/) {
         // Download all time out
         reload();
 
@@ -48,6 +44,10 @@ class TFC_SplashScreen extends TFC_SelfReloadingWidget {
           _Init_Properties.initHasTimedOut = true;
           reload();
         }
+      } else {
+        // Regular startup time out
+        _Init_Properties.initHasTimedOut = true;
+        reload();
       }
     }
   }
@@ -70,7 +70,7 @@ class TFC_SplashScreen extends TFC_SelfReloadingWidget {
   }
 
   Widget getSplashScreen() {
-    if (TFC_SyncController.downloadAllIsInProgress) {
+    if (false /*TFC_SyncController.downloadAllIsInProgress*/) {
       return TFC_LoadingPage.icon(
         Icons.cloud_download,
         "Download in Progress",

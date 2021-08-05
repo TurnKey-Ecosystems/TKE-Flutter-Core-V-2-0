@@ -1,11 +1,8 @@
-//import 'dart:io';
-import 'dart:math';
+/*import 'dart:math';
 import 'dart:ui' as DartUI;
 import 'package:flutter/foundation.dart';
 import '../AppManagment/TFC_DiskController.dart';
 import '../AppManagment/TFC_SyncController.dart';
-import '../DataStructures/TFC_ItemUtilities.dart';
-//import 'package:axiom_nameplate_data/items/AND_PictureInfo.dart';
 import 'package:image/image.dart' as DartImg;
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter/material.dart';
@@ -164,4 +161,4 @@ class TFC_ImageSize {
   int height;
 
   TFC_ImageSize(this.width, this.height);
-}
+}*/
