@@ -1,5 +1,5 @@
 # Setup Sync Controller
- 1. Load stuff
+ 1. TODO: Figure out startup
 
 # Sync Algorithm
  1. Retrieve and apply changes from the cloud.
