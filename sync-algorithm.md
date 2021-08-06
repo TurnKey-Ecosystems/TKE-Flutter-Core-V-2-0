@@ -11,8 +11,9 @@
     6. Apply all the attribute changes. (Don't bother applying any attribute changes for which the item does not exits).
     7. Add the names of the now applied-change logs to the list of applied change log file names.
  2. Commit local changes.
-     1. Update the auto-saving property `changesThatAreActivelyBeingCommited` to reference the other change list. (There are two, one empty and the other full of changes. Point it at the one that is full of changes.)
-    1. Update the `changesToCommitInNextSync` pointer to point to the empty list.
+    1. Swap change buckets.
+        1. Update the auto-saving property `changesThatAreActivelyBeingCommited` to reference the other change list. (There are two, one empty and the other full of changes. Point it at the one that is full of changes.)
+        1. Update the `changesToCommitInNextSync` pointer to point to the empty list.
     2. Compile all the changes in the `changesThatAreActivelyBeingCommited` list into a change log json, and give it the current posix time.
     3. Upload this new change log file.
     4. Add this new change log's file name to the list of applied change log file names.
