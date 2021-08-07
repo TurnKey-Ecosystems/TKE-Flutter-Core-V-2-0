@@ -156,6 +156,27 @@ class TFC_SerializingSet extends TFC_SerializingContainer implements Iterable {
     }
   }
 
+  void addAll(
+    List<dynamic> elements, {
+    bool shouldTriggerOnSet = true,
+    bool shouldTriggerOnElementAdded = true,
+    bool shouldLogChange = true,
+  }) {
+    List<dynamic> serializedElemnts = [];
+    for (dynamic element in elements) {
+      serializedElemnts.add(_valueFromJson(element));
+    }
+    _set.addAll(serializedElemnts);
+    if (shouldTriggerOnSet) {
+      _onSet();
+    }
+    if (shouldTriggerOnElementAdded) {
+      for (dynamic element in elements) {
+        triggerOnElementAdded(element, shouldLogChange);
+      }
+    }
+  }
+
   bool remove(
     dynamic element, {
     bool shouldTriggerOnSet = true,

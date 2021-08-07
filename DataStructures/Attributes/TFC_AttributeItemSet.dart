@@ -1,19 +1,19 @@
-import '../TFC_Item.dart';
 import '../TFC_AllItemsManager.dart';
-import '../TFC_SyncLevel.dart';
+import '../TFC_Change.dart';
+import '../TFC_Item.dart';
+import '../TFC_SyncDepth.dart';
 import 'TFC_Attribute.dart';
-import 'TFC_InstanceOfAttribute.dart';
 
 
 // Provides a control pannel for an instance of an item attribute
-class TFC_AttributeItemSet<ItemClassType extends TFC_Item> extends TFC_Attribute<TFC_InstanceOfAttributeSet<dynamic>> {
+class TFC_AttributeItemSet<ItemClassType extends TFC_Item> extends TFC_Attribute {
   // We can't require constructors on items, so we will us this instead.
   final ItemClassType Function(String) getItemFromItemID;
 
   // Allow devs to access the items in this set
   Set<ItemClassType> get allItems {
     Set<ItemClassType> allItems = {};
-    for (String itemID in attributeInstance.allValues) {
+    for (String itemID in attributeInstance.getAllValuesAsSet<String>()) {
       allItems.add(
         getItemFromItemID(itemID),
       );
@@ -24,23 +24,31 @@ class TFC_AttributeItemSet<ItemClassType extends TFC_Item> extends TFC_Attribute
 
   // Changes to the attribute made through this class are considered local changes
   void add(ItemClassType newItem) {
-    attributeInstance.addValue(
-      addedValue: newItem.itemID,
-      changeSource: TFC_ChangeSource.DEVICE,
+    TFC_AllItemsManager.applyChangesIfRelevant(
+      changes: [
+        TFC_ChangeAttributeAddValue(
+          changeApplicationDepth: syncDepth,
+          itemID: attributeInstance.itemID,
+          attributeKey: attributeKey,
+          value: newItem.itemID,
+        ),
+      ],
     );
   }
 
   // Changes to the attribute made through this class are considered local changes
   void remove(ItemClassType itemToRemove) {
-    attributeInstance.removeValue(
-      removedValue: itemToRemove.itemID,
-      changeSource: TFC_ChangeSource.DEVICE,
+    TFC_AllItemsManager.applyChangesIfRelevant(
+      changes: [
+        TFC_ChangeAttributeRemoveValue(
+          changeApplicationDepth: syncDepth,
+          itemID: attributeInstance.itemID,
+          attributeKey: attributeKey,
+          value: itemToRemove.itemID,
+        ),
+      ],
     );
   }
-
-
-  // By default Item sets should start empty
-  final List<String> valueOnCreateNew = [];
 
 
   // Whether or not to delete all children when the parent object is deleted
@@ -76,21 +84,34 @@ class TFC_AttributeItemSet<ItemClassType extends TFC_Item> extends TFC_Attribute
   // Creates a new attribute item set
   TFC_AttributeItemSet({
     required String attributeKey,
-    required TFC_SyncLevel syncLevel,
+    required TFC_SyncDepth syncDepth,
     required this.getItemFromItemID,
     required this.shouldDeleteContentsWhenItemIsDeleted,
   }) : super(
     attributeKey: attributeKey,
-    syncLevel: syncLevel,
+    syncDepth: syncDepth,
   );
+
+
+  /** Gets the attribute init change object for this attribute. */
+  @override
+  TFC_ChangeAttributeInit getAttributeInitChange({
+    required String itemID,
+  }) {
+    return TFC_ChangeAttributeInit.set(
+      changeApplicationDepth: syncDepth,
+      itemID: itemID,
+      attributeKey: attributeKey,
+    );
+  }
   
 
-  // After the attributes are setup, then we want to listen for the item being deleted
+  /** After the attributes are setup, then we want to listen for the item being deleted */
   @override
-  void injectSetupDataFromItemInstance({
-    required TFC_InstanceOfAttributeSet<dynamic> attributeInstance,
+  void connectToAttributeInstance({
+    required TFC_SingleItemManager itemManager,
   }) {
-    super.injectSetupDataFromItemInstance(attributeInstance: attributeInstance);
+    super.connectToAttributeInstance(itemManager: itemManager);
 
     // If this is a defining relationship, then delete the contents of this Set when the item is deleted
     if (shouldDeleteContentsWhenItemIsDeleted) {

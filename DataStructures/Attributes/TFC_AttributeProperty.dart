@@ -1,15 +1,15 @@
 import '../../Utilities/TFC_BasicValueWrapper.dart';
 import '../TFC_AllItemsManager.dart';
-import '../TFC_SyncLevel.dart';
+import '../TFC_Change.dart';
+import '../TFC_SyncDepth.dart';
 import 'TFC_Attribute.dart';
-import 'TFC_InstanceOfAttribute.dart';
 
 
 // Provides a control pannel for an instance of a property type attribute
-abstract class _TFC_AttributeProperty<PropertyType> extends TFC_Attribute<TFC_InstanceOfAttributeProperty<dynamic>> implements TFC_BasicValueWrapper<PropertyType> {
+abstract class _TFC_AttributeProperty<PropertyType> extends TFC_Attribute implements TFC_BasicValueWrapper<PropertyType> {
   // Expose the value of the attribute
   PropertyType get value {
-    return attributeInstance.value;
+    return attributeInstance.valueAsProperty;
   }
   PropertyType getValue() {
     return value;
@@ -18,9 +18,15 @@ abstract class _TFC_AttributeProperty<PropertyType> extends TFC_Attribute<TFC_In
 
   // Changes to the attribute made through this class are considered local changes
   void set value(PropertyType newValue) {
-    attributeInstance.setValue(
-      newValue: newValue,
-      changeSource: TFC_ChangeSource.DEVICE,
+    TFC_AllItemsManager.applyChangesIfRelevant(
+      changes: [
+        TFC_ChangeAttributeSetValue(
+          changeApplicationDepth: syncDepth,
+          itemID: attributeInstance.itemID,
+          attributeKey: attributeKey,
+          value: newValue,
+        ),
+      ],
     );
   }
   void setValue(PropertyType newValue) {
@@ -35,12 +41,26 @@ abstract class _TFC_AttributeProperty<PropertyType> extends TFC_Attribute<TFC_In
   // Creates a new property attribute
   _TFC_AttributeProperty({
     required String attributeKey,
-    required TFC_SyncLevel syncLevel,
+    required TFC_SyncDepth syncDepth,
     required this.valueOnCreateNew,
   }) : super(
     attributeKey: attributeKey,
-    syncLevel: syncLevel,
+    syncDepth: syncDepth,
   );
+
+
+  /** Gets the attribute init change object for this attribute. */
+  @override
+  TFC_ChangeAttributeInit getAttributeInitChange({
+    required String itemID,
+  }) {
+    return TFC_ChangeAttributeInit.property(
+      changeApplicationDepth: syncDepth,
+      itemID: itemID,
+      attributeKey: attributeKey,
+      value: valueOnCreateNew,
+    );
+  }
 }
 
 
@@ -49,11 +69,11 @@ abstract class _TFC_AttributeProperty<PropertyType> extends TFC_Attribute<TFC_In
 class TFC_AttributeBool extends _TFC_AttributeProperty<bool> {
   TFC_AttributeBool({
     required String attributeKey,
-    required TFC_SyncLevel syncLevel,
+    required TFC_SyncDepth syncDepth,
     required bool valueOnCreateNew,
   }) : super(
     attributeKey: attributeKey,
-    syncLevel: syncLevel,
+    syncDepth: syncDepth,
     valueOnCreateNew: valueOnCreateNew
   );
 }
@@ -64,11 +84,11 @@ class TFC_AttributeBool extends _TFC_AttributeProperty<bool> {
 class TFC_AttributeInt extends _TFC_AttributeProperty<int> {
   TFC_AttributeInt({
     required String attributeKey,
-    required TFC_SyncLevel syncLevel,
+    required TFC_SyncDepth syncDepth,
     required int valueOnCreateNew,
   }) : super(
     attributeKey: attributeKey,
-    syncLevel: syncLevel,
+    syncDepth: syncDepth,
     valueOnCreateNew: valueOnCreateNew
   );
 }
@@ -79,11 +99,11 @@ class TFC_AttributeInt extends _TFC_AttributeProperty<int> {
 class TFC_AttributeDouble extends _TFC_AttributeProperty<double> {
   TFC_AttributeDouble({
     required String attributeKey,
-    required TFC_SyncLevel syncLevel,
+    required TFC_SyncDepth syncDepth,
     required double valueOnCreateNew,
   }) : super(
     attributeKey: attributeKey,
-    syncLevel: syncLevel,
+    syncDepth: syncDepth,
     valueOnCreateNew: valueOnCreateNew
   );
 }
@@ -94,11 +114,11 @@ class TFC_AttributeDouble extends _TFC_AttributeProperty<double> {
 class TFC_AttributeString extends _TFC_AttributeProperty<String> {
   TFC_AttributeString({
     required String attributeKey,
-    required TFC_SyncLevel syncLevel,
+    required TFC_SyncDepth syncDepth,
     required String valueOnCreateNew,
   }) : super(
     attributeKey: attributeKey,
-    syncLevel: syncLevel,
+    syncDepth: syncDepth,
     valueOnCreateNew: valueOnCreateNew
   );
 }
@@ -112,7 +132,7 @@ class TFC_AttributeSessionObject<ObjectType> extends _TFC_AttributeProperty<Obje
     required ObjectType valueOnCreateNew,
   }) : super(
     attributeKey: attributeKey,
-    syncLevel: TFC_SyncLevel.SESSION,
+    syncDepth: TFC_SyncDepth.SESSION,
     valueOnCreateNew: valueOnCreateNew
   );
 }

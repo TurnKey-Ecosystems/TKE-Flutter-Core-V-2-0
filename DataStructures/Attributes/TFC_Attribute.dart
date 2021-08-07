@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:quiver/core.dart';
 import '../../UI/FoundationalElements/TFC_OnAfterChange.dart';
-import '../TFC_SyncLevel.dart';
-import 'TFC_InstanceOfAttribute.dart';
+import '../TFC_AllItemsManager.dart';
+import '../TFC_Change.dart';
+import '../TFC_SyncDepth.dart';
 import '../../Utilities/TFC_Event.dart';
 
 
 // Models an attribute instance
-abstract class TFC_Attribute<AttributeInstanceType extends TFC_InstanceOfAttribute> implements TFC_OnAfterChange {
+abstract class TFC_Attribute implements TFC_OnAfterChange {
   // The attribute instance that this TFC_Attribute models
   @protected
-  late final AttributeInstanceType attributeInstance;
+  late final TFC_InstanceOfAttribute attributeInstance;
 
 
   // We'll expose the on-after-change event of the attribute instance.
@@ -23,28 +24,40 @@ abstract class TFC_Attribute<AttributeInstanceType extends TFC_InstanceOfAttribu
   final String attributeKey;
 
 
-  // This is mainly used for storing the syncLevel while the attribute is being initialized
-  final TFC_SyncLevel syncLevel;
-
-
-  // We'll let TFC_Attribute subtypes use their own way to get this.
-  dynamic get valueOnCreateNew;
+  // This is mainly used for storing the syncDepth while the attribute is being initialized
+  final TFC_SyncDepth syncDepth;
 
 
   // Create a new control panel for an attribute instance
   TFC_Attribute({
     required this.attributeKey,
-    required this.syncLevel,
+    required this.syncDepth,
   });
 
 
 
-  // This should only be called by TFC_Item
-  void injectSetupDataFromItemInstance({
-    required AttributeInstanceType attributeInstance,
+  /** This should only be called by TFC_Item */
+  void connectToAttributeInstance({
+    required TFC_SingleItemManager itemManager,
   }) {
-    this.attributeInstance = attributeInstance;
+    // Ensure that an instance of this attribute exists
+    if (itemManager.getAttributeInstance(attributeKey: attributeKey) == null) {
+      TFC_AllItemsManager.applyChangesIfRelevant(
+        changes: [
+          getAttributeInitChange(itemID: itemManager.itemID),
+        ]
+      );
+    }
+
+    // Connect thist attribute to its isnstance
+    this.attributeInstance = itemManager.getAttributeInstance(attributeKey: attributeKey)!;
   }
+
+
+  /** Gets the attribute init change object for this attribute. */
+  TFC_ChangeAttributeInit getAttributeInitChange({
+    required String itemID,
+  });
 
 
   // An attribute has a unique attributeKey within its assocaited item.

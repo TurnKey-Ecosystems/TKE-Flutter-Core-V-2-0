@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 //import 'dart:io';
+import '../APIs/TFC_ICloudSyncInterface.dart';
 import '../DataStructures/TFC_AllItemsManager.dart';
 import '../UI/StartupWidgets/TFC_InstallationApp.dart';
 import '../UI/StartupWidgets/TFC_BrowserRedirectApp.dart';
@@ -30,6 +31,8 @@ class TFC_StartupController {
     void Function()? onAfterStartUpComplete,
     required Widget Function() homePageBuilder,
     required Widget Function() settingsPageBuilder,
+    /** Override this class with your own syncing interface. */
+    required TFC_ICloudSyncInterface? cloudSyncInterface,
     bool shouldStartSync = true,
   }) async {
     // We have to have a flutter app running before we can access assets where our app config file resides
@@ -111,8 +114,10 @@ class TFC_StartupController {
 
     // Show the passcode page
     if (kIsWeb && kReleaseMode && caseInsensitivePasscode != null) {
-      TFC_AutoSavingProperty<String> lastPasscodeAttempt =
-          TFC_AutoSavingProperty("", "lastPasscodeAttempt");
+      TFC_AutoSavingProperty<String> lastPasscodeAttempt = TFC_AutoSavingProperty(
+        initialValue: "",
+        fileNameWithoutExtension: "lastPasscodeAttempt",
+      );
       bool lastPasscodeAttemptIsCorrect =
           lastPasscodeAttempt.value.toLowerCase() ==
               caseInsensitivePasscode.toLowerCase();

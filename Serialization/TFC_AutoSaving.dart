@@ -29,9 +29,10 @@ class TFC_AutoSavingProperty<PropertyType> extends TFC_AutoSaving {
     _saveValue();
   }
 
-  TFC_AutoSavingProperty(
-      PropertyType initialValue, String fileNameWithoutExtension)
-      : super(fileNameWithoutExtension) {
+  TFC_AutoSavingProperty({
+    required PropertyType initialValue,
+    required String fileNameWithoutExtension,
+  }) : super(fileNameWithoutExtension) {
     _attemptLoadValue(initialValue);
   }
 

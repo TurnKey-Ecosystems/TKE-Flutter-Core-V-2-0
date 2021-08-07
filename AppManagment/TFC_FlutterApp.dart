@@ -11,8 +11,10 @@ class TFC_FlutterApp extends TFC_SelfReloadingWidget {
   static late String appName;
   static late Widget homePage;
   static late Widget settingsPage;
-  static TFC_AutoSavingProperty<String> deviceID =
-      TFC_AutoSavingProperty("", "deviceID");
+  static TFC_AutoSavingProperty<String> deviceID = TFC_AutoSavingProperty(
+    initialValue: "",
+    fileNameWithoutExtension: "deviceID",
+  );
   static late void Function()? _onAfterStartUpComplete;
 
   TFC_FlutterApp({void Function()? onAfterStartUpComplete}) : super(reloadTriggers: []) {

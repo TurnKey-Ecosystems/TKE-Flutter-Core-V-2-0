@@ -59,7 +59,7 @@ class TFC_Button extends Box {
     Color backgroundColor = TFC_AppStyle.COLOR_BACKGROUND,
     double borderWidth_tu = 4,
     TFC_CornerDecoration cornerDecoration =
-      const TFC_CornerDecoration.rounded(radius_tu: 4),
+      const TFC_CornerDecoration.rounded(radius_tu: 5),
     TFC_Shadow shadow =
       const TFC_Shadow.noShadow(),
     Widget child = const Box.empty(),

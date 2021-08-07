@@ -1,0 +1,1 @@
+enum TFC_SyncDepth { SESSION, DEVICE, CLOUD,  }
