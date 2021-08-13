@@ -29,7 +29,8 @@ class TFC_LoadingPage extends StatelessWidget {
                   width: loadingAnimationWidth,
                   height: loadingAnimationHeight,
                   child: CircularProgressIndicator(
-                    backgroundColor: _color,
+                    backgroundColor: Colors.transparent,
+                    color: _color,
                     strokeWidth: TFC_AppStyle.instance.pageMargins / 2.5,
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'TFC_Failable.dart';
 import '../DataStructures/TFC_Change.dart';
 
 
@@ -7,17 +8,26 @@ abstract class TFC_ICloudSyncInterface {
   static const TFC_ICloudSyncInterface? cloudSyncDisabled = null;
 
 
+  /** */
+  Future<void> setupSyncInterface();
+
+
   /** Get all the changes that have showed up in the cloud since the last sync
    * event. It is okay to retrieve changes that have already been applied on 
    * this device, just make sure all the new changes are returned. */ 
-  Future<List<TFC_Change>> getAllChangesSinceLastSyncEventAndPossiblySomExtraChangesAsWell();
+  Future<TFC_Failable<List<TFC_Change>>> getAllChangesSinceLastSyncEventAndPossiblySomExtraChangesAsWell();
   
 
-  /** Performs any nessecary actions that take palce after the push has happened,
-   * but before the pull has happened. */ 
-  Future<void> performSomeActionsAfterPushingButBeforePulling();
+  /** Performs any nessecary actions that take palce after new changes from the
+   * cloud have been successfully applied. */ 
+  Future<TFC_Failable<void>?> performSomeActionsAfterNewChangesAreSuccessfullyApplied({
+    required List<TFC_Change> changes,
+  });
 
 
   /** Pushes a batch of changes to the cloud. */
-  Future<bool> pushChanges(List<TFC_Change> itemChanges);
+  Future<TFC_Failable<void>> pushChanges({
+    required int pushBatchIndex,
+    required List<TFC_Change> changes,
+  });
 }

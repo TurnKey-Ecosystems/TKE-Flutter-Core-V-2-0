@@ -1,5 +1,6 @@
 //import 'TFC_LoadingPage.dart';
 import 'package:flutter/material.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/StartupWidgets/TFC_SplashScreen.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 import '../../APIs/TFC_PlatformAPI.dart';
 
@@ -11,27 +12,8 @@ class TFC_PostLogInMaterialApp extends StatelessWidget {
 
     return MaterialApp(
       theme: TFC_AppStyle.themeData,
-      home: _TFC_PostLogInScaffold(),
+      home: TFC_SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
-}
-
-class _TFC_PostLogInScaffold extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(),
-    );
-  }
-  /*@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: TFC_LoadingPage.icon(
-        Icons.cloud_download,
-        "Syncing...",
-        color: TFC_AppStyle.colorPrimary,
-      ),
-    );
-  }*/
 }

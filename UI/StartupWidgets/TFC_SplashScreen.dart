@@ -1,6 +1,5 @@
+import '../../Utilities/TFC_BasicValueWrapper.dart';
 import '../../UI/PrebuiltWidgets/TFC_Button.dart';
-
-import '../../AppManagment/TFC_SyncController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../AppManagment/TFC_FlutterApp.dart';
@@ -15,8 +14,15 @@ class _Init_Properties {
   static bool initHasTimedOut = false;
 }
 
+enum TFC_SplashScreenType { LOGO, DOWNLOADING }
+
 class TFC_SplashScreen extends TFC_SelfReloadingWidget {
-  TFC_SplashScreen() : super(reloadTriggers: []);
+  /** What type of splash screen to show */
+  static TFC_BasicValueWrapper<TFC_SplashScreenType> splashScreenType =
+    TFC_BasicValueWrapper(TFC_SplashScreenType.LOGO);
+
+  TFC_SplashScreen()
+    : super(reloadTriggers: [splashScreenType.onAfterChange]);
   @override
   void onInit() {
     _Init_Properties.isInInit = true;
@@ -33,7 +39,7 @@ class TFC_SplashScreen extends TFC_SelfReloadingWidget {
 
     if (_Init_Properties.isInInit == true &&
         !_Init_Properties.initHasTimedOut) {
-      if (false /*TFC_SyncController.downloadAllIsInProgress*/) {
+      if (splashScreenType.value == TFC_SplashScreenType.DOWNLOADING) {
         // Download all time out
         reload();
 
@@ -70,13 +76,17 @@ class TFC_SplashScreen extends TFC_SelfReloadingWidget {
   }
 
   Widget getSplashScreen() {
-    if (false /*TFC_SyncController.downloadAllIsInProgress*/) {
+    debugPrint("Reloading!");
+    debugPrint("splashScreenType.value: ${splashScreenType.value}");
+    if (splashScreenType.value == TFC_SplashScreenType.DOWNLOADING) {
+      debugPrint("Building the downloading page.");
       return TFC_LoadingPage.icon(
         Icons.cloud_download,
-        "Download in Progress",
+        "Downloading Files",
         color: TFC_AppStyle.colorPrimary,
       );
     } else if (TFC_AppStyle.appLoadingLogoAssetPath != null) {
+      debugPrint("Building the logo page.");
       return TFC_LoadingPage.image(
         TFC_AppStyle.appLoadingLogoAssetPath,
         //"Loading " + TFC_FlutterApp.appName + "...",
@@ -84,6 +94,7 @@ class TFC_SplashScreen extends TFC_SelfReloadingWidget {
         color: TFC_AppStyle.colorPrimary,
       );
     } else {
+      debugPrint("Building the blank page.");
       return Container();
     }
   }

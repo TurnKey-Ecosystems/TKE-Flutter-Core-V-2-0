@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
 //import 'dart:io';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/StartupWidgets/TFC_SplashScreen.dart';
+
 import '../APIs/TFC_ICloudSyncInterface.dart';
 import '../DataStructures/TFC_AllItemsManager.dart';
 import '../UI/StartupWidgets/TFC_InstallationApp.dart';
@@ -21,6 +23,7 @@ import 'TFC_DiskController.dart';
 import '../Utilities/TFC_Event.dart';
 import 'TFC_FlutterApp.dart';
 import '../UI/StartupWidgets/TFC_StartupMaterialApp.dart';
+import 'TFC_SyncController.dart';
 
 class TFC_StartupController {
   static final TFC_Event onTFCStartupComplete = TFC_Event();
@@ -137,11 +140,17 @@ class TFC_StartupController {
       }
     }
 
-    // Set up the database sync controller
-    /*await TFC_SyncController.setupDatabaseSyncController(
-        clientSettings["clientID"], itemTypesInThisApp,
-        shouldStartSync: shouldStartSync);*/
-
+    // Setup the sync controller and start the sync loop
+    if (cloudSyncInterface != null) {
+      //Future.delayed(Duration());
+      TFC_SplashScreen.splashScreenType.value = TFC_SplashScreenType.DOWNLOADING;
+      TFC_PlatformAPI.platformAPI.setWebBackgroundColor("#ffffff");
+      TFC_PlatformAPI.platformAPI.hideHTMLSplashScreen();
+      await TFC_SyncController.startTheSyncLoops(syncInterface: cloudSyncInterface);
+      TFC_SplashScreen.splashScreenType.value = TFC_SplashScreenType.LOGO;
+      debugPrint("Sync loop has been started.");
+    }
+    
     // Actually start the app
     TFC_FlutterApp.homePage = homePageBuilder();
     TFC_FlutterApp.settingsPage = settingsPageBuilder();

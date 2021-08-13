@@ -51,73 +51,154 @@ class TFC_AutoSavingProperty<PropertyType> extends TFC_AutoSaving {
   }
 }
 
-class TFC_AutoSavingMap extends TFC_AutoSaving {
-  late TFC_SerializingMap _map;
-  TFC_SerializingMap get map {
-    return _map;
+
+
+/** An auto-saving Map */
+class TFC_AutoSavingMap<ValueType> extends TFC_AutoSaving {
+  /** The map of entries */
+  final Map<String, ValueType> _map = Map();
+
+  /** Returns a copy of the map */
+  Map<String, ValueType> get allEntries {
+    return Map.from(_map);
   }
 
-  TFC_AutoSavingMap(String fileNameWithoutExtension)
-      : super(fileNameWithoutExtension) {
-    _attemptLoadMap();
-  }
-
-  void _saveMap() {
-    save(jsonEncode(_map));
-  }
-
-  void _attemptLoadMap() {
-    String? encodedJson = TFC_DiskController.readFileAsString(fileName);
-
-    if (encodedJson != null) {
-      _map = TFC_SerializingMap.fromJson(_saveMap, json.decode(encodedJson));
-    } else {
-      _map = TFC_SerializingMap(_saveMap);
-    }
-  }
-
-  void setFromJson(Map<String, dynamic> newMap) {
-    _map = TFC_SerializingMap.fromJson(_saveMap, newMap);
+  /** Sts the given entry to the given value */
+  void set(String key, ValueType value) {
+    _map[key] = value;
     _saveMap();
   }
 
-  Map<String, dynamic> getAsJson() {
-    return _map.toJson();
+  /** Adds all the given entries to the set */
+  void addAll(Map<String, ValueType> entries) {
+    _map.addAll(entries);
+    _saveMap();
+  }
+
+  /** Removes the given entry from the set */
+  void remove(String key) {
+    _map.remove(key);
+    _saveMap();
+  }
+
+  /** Removes all the given entries from the set */
+  void removeAll(Set<String> keys) {
+    for (String key in keys) {
+      _map.remove(key);
+    }
+    _saveMap();
+  }
+
+  /** Convert the given value into a json value. */
+  dynamic Function(ValueType) valueToJson;
+
+  /** Saves the map to its file */
+  void _saveMap() {
+    // Turn each entry into a json value
+    Map<String, dynamic> json = {};
+    for (String key in _map.keys) {
+      json[key] = valueToJson(_map[key]!);
+    }
+
+    // Save the map to the file
+    save(jsonEncode(json));
+  }
+
+
+  /** Load an value from the given json value. */
+  ValueType Function(dynamic) valueFromJson;
+
+  /** Initializes an auto-saving Map */
+  TFC_AutoSavingMap({
+    required String fileNameWithoutExtension,
+    required this.valueToJson,
+    required this.valueFromJson,
+  }) : super(fileNameWithoutExtension) {
+    // Attempt to load the map from a file
+    if (TFC_DiskController.fileExists(fileName)) {
+      // Read in the json
+      dynamic json = jsonDecode(TFC_DiskController.readFileAsString(fileName)!);
+
+      // Extract each entry
+      for (dynamic key in json.keys) {
+        _map[key] = valueFromJson(json[key]);
+      }
+    }
   }
 }
 
-class TFC_AutoSavingSet extends TFC_AutoSaving {
-  late TFC_SerializingSet _set;
-  TFC_SerializingSet get serializingSet {
-    return _set;
+
+
+/** An auto-saving Set */
+class TFC_AutoSavingSet<ContentType> extends TFC_AutoSaving {
+  /** The set of elements */
+  final Set<ContentType> _set = Set();
+
+  /** Returns a copy of the set */
+  Set<ContentType> get allElements {
+    return Set.from(_set);
   }
 
-  TFC_AutoSavingSet(String fileNameWithoutExtension)
-      : super(fileNameWithoutExtension) {
-    _attemptLoadList();
+  /** Adds the given element to the set */
+  void add(ContentType element) {
+    _set.add(element);
+    _saveSet();
   }
 
-  void _saveList() {
-    save(jsonEncode(_set));
+  /** Adds all the given element to the set */
+  void addAll(List<ContentType> elements) {
+    _set.addAll(elements);
+    _saveSet();
   }
 
-  void _attemptLoadList() {
-    String? encodedJson = TFC_DiskController.readFileAsString(fileName);
+  /** Removes the given element from the set */
+  void remove(ContentType element) {
+    _set.remove(element);
+    _saveSet();
+  }
 
-    if (encodedJson != null) {
-      _set = TFC_SerializingSet.fromJson(
-          onSet: _saveList, json: json.decode(encodedJson));
-    } else {
-      _set = TFC_SerializingSet(_saveList);
+  /** Removes all the given elements from the set */
+  void removeAll(List<ContentType> elements) {
+    _set.removeAll(elements);
+    _saveSet();
+  }
+
+  /** Convert the given element into a json value. */
+  dynamic Function(ContentType) elementToJson;
+
+  /** Saves the set to its file */
+  void _saveSet() {
+    // Turn each elment into a json value
+    List<dynamic> json = [];
+    for (ContentType element in _set) {
+      json.add(
+        elementToJson(element),
+      );
     }
+
+    // Save the set to the file
+    save(jsonEncode(json));
   }
 
-  void setFromJson(List newSet) {
-    _set = TFC_SerializingSet.fromJson(onSet: _saveList, json: newSet);
-    _saveList();
-  }
 
-  List<dynamic> getAsJson() {
-    return _set.toJson();
+  /** Load an element from the given json value. */
+  ContentType Function(dynamic) elementFromJson;
+
+  /** Initializes an auto-saving Set */
+  TFC_AutoSavingSet({
+    required String fileNameWithoutExtension,
+    required this.elementToJson,
+    required this.elementFromJson,
+  }) : super(fileNameWithoutExtension) {
+    // Attempt to load the set from a file
+    if (TFC_DiskController.fileExists(fileName)) {
+      // Read in the json
+      dynamic json = jsonDecode(TFC_DiskController.readFileAsString(fileName)!);
+
+      // Extract each element
+      for (dynamic elementAsJson in json) {
+        _set.add(elementFromJson(elementAsJson));
+      }
+    }
   }
 }

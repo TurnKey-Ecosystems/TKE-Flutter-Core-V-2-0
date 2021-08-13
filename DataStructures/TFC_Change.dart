@@ -32,7 +32,7 @@ abstract class TFC_Change {
 
   // The sync depth of this change
   static const String _CHANGE_APPLICATION_DEPTH_KEY = "syncDepth";
-  final TFC_SyncDepth changeApplicationDepth;
+  TFC_SyncDepth changeApplicationDepth;
 
 
   // The time, in milliseconds since epoch, this change was made
@@ -55,7 +55,8 @@ abstract class TFC_Change {
   /** Creates a change object fron a json */
   TFC_Change._fromJson(dynamic json)
     : this.apiVersion = json[_API_VERSION_KEY],
-      this.changeType = json[_CHANGE_TYPE_KEY],
+      this.changeType =
+        TFC_ChangeType.values[json[_CHANGE_TYPE_KEY]],
       this.changeApplicationDepth =
         TFC_SyncDepth.values[json[_CHANGE_APPLICATION_DEPTH_KEY]],
       this.itemID = json[TFC_SingleItemManager.ITEM_ID_KEY],
@@ -76,7 +77,7 @@ abstract class TFC_Change {
 
   /** Load a change object from a json as the correct dart class.  */
   static TFC_Change fromJson(dynamic json) {
-    TFC_ChangeType changeType = json[_CHANGE_TYPE_KEY];
+    TFC_ChangeType changeType = TFC_ChangeType.values[json[_CHANGE_TYPE_KEY]];
     switch(changeType) {
       case TFC_ChangeType.ITEM_CREATION:
         return TFC_ChangeItemCreation.fromJson(json);

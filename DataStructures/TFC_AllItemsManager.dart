@@ -623,14 +623,14 @@ class TFC_InstanceOfAttribute {
       // Setup a set attribute
       case TFC_AttributeType.PROPERTY:
       _attributeAsJson[_VALUE_JSON_KEY] = attributeInitDetails.value;
-      _attributeAsJson[_TIME_OF_LAST_CHANGE_JSON_KEY] = attributeInitDetails.changeTimePosix;
+      _attributeAsJson[_TIME_OF_LAST_CHANGE_JSON_KEY] = 0;
       break;
 
       // Setup a basic value attribute
       case TFC_AttributeType.SET:
       _attributeAsJson[_VALUE_JSON_KEY] = Map();
       _attributeAsJson[_REMOVED_VALUES_JSON_KEY] = Map();
-      _attributeAsJson[_TIME_OF_LAST_CHANGE_JSON_KEY] = attributeInitDetails.changeTimePosix;
+      _attributeAsJson[_TIME_OF_LAST_CHANGE_JSON_KEY] = 0;
       break;
     }
   }
