@@ -89,11 +89,9 @@ class TFC_SyncController {
 
     // Return once the first pull finishes (regardless of whether or not it was successful).
     await TFC_Utilities.when(() => _firstPullOfTheSessionHasBeenCompleted);
+    debugPrint("Returnning from startTheSyncLoops().");
   }
 
-
-  /** The number of seconds to wait between each pull loop. */
-  static const double _SECONDS_TO_WAIT_BETWEEN_PULL_LOOPS = 5.0;
 
   /** This is set to true when the first pull of this session completes successfully or times out. */
   static bool _firstPullOfTheSessionHasBeenCompleted = false;
@@ -103,51 +101,47 @@ class TFC_SyncController {
     while (true) {
       debugPrint("Starting pull.");
       // Pull any new changes from the cloud
-      TFC_Failable<List<TFC_Change>> getNewChangesFromCloud_Response =
+      TFC_Failable<TFC_PullResults?> getNewChangesFromCloud_Response =
         await _syncInterface.getAllChangesSinceLastSyncEventAndPossiblySomExtraChangesAsWell();
+      debugPrint("Returned from Basic sync implementation.");
 
-      // As of yet, we do not care whether or not getting new changes fails
-      List<TFC_Change> newChangesFromCloud = getNewChangesFromCloud_Response.returnValue;
+      // If everything looks good, then apply the changes.
+      if (getNewChangesFromCloud_Response.succeeded) {
+        // As of yet, we do not care whether or not getting new changes fails
+        TFC_PullResults getNewChanges_Results = getNewChangesFromCloud_Response.returnValue!;
 
-      // All changes from the cloud need to be applied at the device level
-      for (TFC_Change change in newChangesFromCloud) {
-        change.changeApplicationDepth = TFC_SyncDepth.DEVICE;
+        // All changes from the cloud need to be applied at the device level
+        for (TFC_Change change in getNewChanges_Results.changes) {
+          change.changeApplicationDepth = TFC_SyncDepth.DEVICE;
+        }
+        
+        // Apply all the new changes from the cloud
+        TFC_AllItemsManager.applyChangesIfRelevant(changes: getNewChanges_Results.changes);
+        
+        // Let the api implementation do anything it wants to now that these changes have been applied.
+        await getNewChanges_Results.afterTheseChangesAreAppledDoThis();
       }
-      
-      // Apply all the new changes from the cloud
-      TFC_AllItemsManager.applyChangesIfRelevant(changes: newChangesFromCloud);
 
-      // Perform any nessecary actions that need to take place after the successful application
-      _syncInterface.performSomeActionsAfterNewChangesAreSuccessfullyApplied(changes: newChangesFromCloud);
+      // Get up to date as fast as possible, and then slow down to save money.
+      bool shouldRerunImmediately = getNewChangesFromCloud_Response.succeeded
+        && getNewChangesFromCloud_Response.returnValue!.thereAreMoreChangesToPull;
+      if (!shouldRerunImmediately) {
+        // We'll wait until we're up to date before we say that the first pull of the session has been completed.
+        _firstPullOfTheSessionHasBeenCompleted = true;
 
-      // Regardless of whether or not this pull was successful or not, the first pull is done.
-      _firstPullOfTheSessionHasBeenCompleted = true;
-
-      // The app shouldn't be constantly syncing, so wait a few seconds before syncing again.
-      await Future.delayed(Duration(milliseconds: (_SECONDS_TO_WAIT_BETWEEN_PULL_LOOPS * 1000).round()));
+        // So conserve the cost of querying databases, we'll wait a bit between pull loops.
+        await Future.delayed(Duration(milliseconds: (_syncInterface.secondsToWaitBetweenPullLoops * 1000).round()));
+      }
     }
   }
 
 
-  /** This is the number of seconds to sleep between each push loop. */
-  static final double _SECONDS_TO_WAIT_BETWEEN_PUSH_LOOPS = 5 / 4;
-  
-  static final TFC_AutoSavingProperty<int> _pushBatchIndex =
-    TFC_AutoSavingProperty(
-      initialValue: 0,
-      fileNameWithoutExtension: "tfc_pushBatchIndex",
-    );
-  
   /** Whether or not the changes in _changesBeingPushed have been successfully pushed to the cloud. */
   static final TFC_AutoSavingProperty<bool> _changesBeingPushedHaveBeenSuccessfullyPushed =
     TFC_AutoSavingProperty(
       initialValue: false,
       fileNameWithoutExtension: "tfc_changesBeingPushedHaveBeenSuccessfullyPushed",
     );
-  
-  /** Baring problems when pushing _changesBeingPushed, this is the maximum number
-   *  push loops to wait before attempting to push changes in _changesToPush. */
-  static final int _MAX_PUSH_DELAY_LOOP_COUNT = 4;
   
   /** This is the number of push loops that there have been unpushed changes in
    *  the _changesToPush list. */
@@ -172,7 +166,7 @@ class TFC_SyncController {
       // If changes are still coming in, then it might make sense to wait a little bit longer before we push.
       bool shouldDelayPushingChangesToPush =
         changesHaveBeenCommittedSinceLastLoop
-        && _numberOfPushLoopsNewChangesHaveBeenDelayed < _MAX_PUSH_DELAY_LOOP_COUNT;
+        && _numberOfPushLoopsNewChangesHaveBeenDelayed < _syncInterface.maxPushLoopsToDelayPushingWhileChangesAreContinuingToBeMade;
       debugPrint("_numberOfPushLoopsNewChangesHaveBeenDelayed: ${_numberOfPushLoopsNewChangesHaveBeenDelayed}");
       debugPrint("shouldDelayPushingChangesToPush: ${shouldDelayPushingChangesToPush}");
 
@@ -203,15 +197,11 @@ class TFC_SyncController {
       // Push the changes in the _changesBeingPushed list.
       if (_changesBeingPushed.allElements.length > 0) {
         _changesBeingPushedHaveBeenSuccessfullyPushed.value = (await _syncInterface.pushChanges(
-          pushBatchIndex: _pushBatchIndex.value,
-          changes: _changesBeingPushed.allElements.toList(),
+          _changesBeingPushed.allElements.toList(),
         )).succeeded;
       
         // If everything looks good, then perform some clean up.
         if (_changesBeingPushedHaveBeenSuccessfullyPushed.value) {
-          // Increment the batch counter
-          _pushBatchIndex.value += 1;
-          
           // Now that the changes have been pushed, empty the change list.
           List<TFC_Change> changesToDelete = _changesBeingPushed.allElements.toList();
           for (TFC_Change change in changesToDelete) {
@@ -224,7 +214,7 @@ class TFC_SyncController {
       }
 
       // Wait a little bit to let changes keep accumulating or stop accumulating
-      await Future.delayed(Duration(milliseconds: (_SECONDS_TO_WAIT_BETWEEN_PUSH_LOOPS * 1000).round()));
+      await Future.delayed(Duration(milliseconds: (_syncInterface.secondsToWaitBetweenPushLoops * 1000).round()));
     }
   }
 }
