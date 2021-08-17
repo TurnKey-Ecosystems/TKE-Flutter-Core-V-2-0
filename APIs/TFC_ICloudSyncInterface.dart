@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'TFC_Failable.dart';
 import '../DataStructures/TFC_Change.dart';
 
@@ -28,9 +30,25 @@ abstract class TFC_ICloudSyncInterface {
    * this device, just make sure all the new changes are returned. */ 
   Future<TFC_Failable<TFC_PullResults?>> getAllChangesSinceLastSyncEventAndPossiblySomExtraChangesAsWell();
 
-
   /** Pushes a batch of changes to the cloud. */
   Future<TFC_Failable<void>> pushChanges(List<TFC_Change> changes);
+
+
+  /** Download an image. */
+  Future<TFC_Failable<Uint8List?>> downloadImage({
+    required String fileName,
+  });
+
+  /** Upload an image. */
+  Future<TFC_Failable<void>> uploadImage({
+    required String fileName,
+    required Uint8List bytes,
+  });
+
+  /** Delete an image. */
+  Future<TFC_Failable<void>> deleteImage({
+    required String fileName,
+  });
 }
 
 

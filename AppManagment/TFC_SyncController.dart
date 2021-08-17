@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/APIs/TFC_Failable.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/APIs/TFC_IDeviceStorageAPI.dart';
+import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/AppManagment/TFC_DiskController.dart';
 import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/Utilities/TFC_Utilities.dart';
 
 import '../DataStructures/TFC_AllItemsManager.dart';
@@ -86,6 +91,9 @@ class TFC_SyncController {
     // Run the sync loop
     _runPullLoop();
     _runPushLoop();
+    imageDownloader.runFulfillmentLoop();
+    imageUploader.runFulfillmentLoop();
+    imageDeleter.runFulfillmentLoop();
 
     // Return once the first pull finishes (regardless of whether or not it was successful).
     await TFC_Utilities.when(() => _firstPullOfTheSessionHasBeenCompleted);
@@ -215,6 +223,165 @@ class TFC_SyncController {
 
       // Wait a little bit to let changes keep accumulating or stop accumulating
       await Future.delayed(Duration(milliseconds: (_syncInterface.secondsToWaitBetweenPushLoops * 1000).round()));
+    }
+  }
+
+
+  /** Download an image. */
+  static final TFC_AsyncQueueManager<Uint8List> imageDownloader = 
+    TFC_AsyncQueueManager(
+      queueSaveName: "tfc_namesOfImageFilesToDownload",
+      fulfillRequest: (String key) => _syncInterface.downloadImage(fileName: key),
+    );
+
+  /** These are the images that need to get uploaded. */
+  static final TFC_AsyncQueueManagerWithLargeFile<void, Uint8List> imageUploader = 
+    TFC_AsyncQueueManagerWithLargeFile(
+      queueSaveName: "tfc_namesOfImageFilesToUpload",
+      valueToString: (Uint8List value) => base64Encode(value),
+      valueFromString: (String string) => base64Decode(string),
+      fulfillRequest: (String key, Uint8List value) => _syncInterface.uploadImage(fileName: key, bytes: value),
+    );
+
+  /** Delete an image. */
+  static final TFC_AsyncQueueManager<void> imageDeleter = 
+    TFC_AsyncQueueManager(
+      queueSaveName: "tfc_namesOfImageFilesToDelete",
+      fulfillRequest: (String key) => _syncInterface.deleteImage(fileName: key),
+    );
+}
+
+
+
+
+
+/** */
+class TFC_AsyncQueueManager<ReturnType> {
+  final TFC_AutoSavingSet<String> _requestKeys;
+  final Future<TFC_Failable<ReturnType?>> Function(String) fulfillRequest;
+  final Map<int, ReturnType> _returnedValues = Map();
+  int _nextRequestIndex = 0;
+    
+  TFC_AsyncQueueManager({
+    required String queueSaveName,
+    required this.fulfillRequest,
+  })
+    : _requestKeys = TFC_AutoSavingSet(
+        fileNameWithoutExtension: queueSaveName,
+        elementToJson: (String element) => element,
+        elementFromJson: (dynamic json) => json,
+      );
+  
+  Future<ReturnType> makeRequest({required String key}) async {
+    int requestIndex = _nextRequestIndex;
+    _nextRequestIndex++;
+    _requestKeys.add(key);
+    return Future(() async {
+      await TFC_Utilities.when(() => _returnedValues.containsKey(requestIndex));
+      ReturnType returnedValue = _returnedValues[requestIndex]!;
+      _returnedValues.remove(requestIndex);
+      return returnedValue;
+    });
+  }
+
+  void runFulfillmentLoop() async {
+    while (true) {
+      // Upload all the images
+      Set<String> requestKeys = _requestKeys.allElements;
+      for (String key in requestKeys) {
+        // Prepare for the worst
+        TFC_Failable<ReturnType?> fulfillmentResults = TFC_Failable.failed(
+          returnValue: null,
+          errorObject: Exception("Something went wrong."),
+        );
+
+        // Upload the image
+        fulfillmentResults = await fulfillRequest(key);
+
+        // Clean up
+        if (fulfillmentResults.succeeded) {
+          TFC_DiskController.deleteFile(key, fileLocation: FileLocation.SYNC_CACHE);
+          _requestKeys.remove(key);
+        }
+      }
+
+      // Sleep for a little bit
+      await Future.delayed(Duration(milliseconds: 500));
+    }
+  }
+}
+
+class TFC_AsyncQueueManagerWithLargeFile<ReturnType, ParamValueType> {
+  final TFC_AutoSavingSet<String> _requestKeys;
+  final String Function(ParamValueType) _valueToString;
+  final ParamValueType Function(String) _valueFromString;
+  final Future<TFC_Failable<ReturnType?>> Function(String, ParamValueType) fulfillRequest;
+  final Map<int, ReturnType> _returnedValues = Map();
+  int _nextRequestIndex = 0;
+    
+  TFC_AsyncQueueManagerWithLargeFile({
+    required String queueSaveName,
+    required String Function(ParamValueType) valueToString,
+    required ParamValueType Function(String) valueFromString,
+    required this.fulfillRequest,
+  })
+    : _requestKeys = TFC_AutoSavingSet(
+        fileNameWithoutExtension: queueSaveName,
+        elementToJson: (String element) => element,
+        elementFromJson: (dynamic json) => json,
+      ),
+      _valueToString = valueToString,
+      _valueFromString = valueFromString;
+  
+  Future<ReturnType> makeRequest({required String key, required ParamValueType value}) async {
+    int requestIndex = _nextRequestIndex;
+    _nextRequestIndex++;
+    TFC_DiskController.writeFileAsString(
+      key,
+      _valueToString(value),
+      fileLocation: FileLocation.SYNC_CACHE,
+    );
+    _requestKeys.add(key);
+    return Future(() async {
+      await TFC_Utilities.when(() => _returnedValues.containsKey(requestIndex));
+      ReturnType returnedValue = _returnedValues[requestIndex]!;
+      _returnedValues.remove(requestIndex);
+      return returnedValue;
+    });
+  }
+
+  void runFulfillmentLoop() async {
+    while (true) {
+      // Upload all the images
+      Set<String> requestKeys = _requestKeys.allElements;
+      for (String key in requestKeys) {
+        // Prepare for the worst
+        TFC_Failable<ReturnType?> fulfillmentResults = TFC_Failable.failed(
+          returnValue: null,
+          errorObject: Exception("Something went wrong."),
+        );
+
+        // Upload the image
+        bool localCacheFileExists = TFC_DiskController.fileExists(key, fileLocation: FileLocation.SYNC_CACHE);
+        if (localCacheFileExists) {
+          fulfillmentResults = await fulfillRequest(
+            key,
+            _valueFromString(TFC_DiskController.readFileAsString(
+              key,
+              fileLocation: FileLocation.SYNC_CACHE,
+            )!),
+          );
+        }
+
+        // Clean up
+        if (fulfillmentResults.succeeded || !localCacheFileExists) {
+          TFC_DiskController.deleteFile(key, fileLocation: FileLocation.SYNC_CACHE);
+          _requestKeys.remove(key);
+        }
+      }
+
+      // Sleep for a little bit
+      await Future.delayed(Duration(milliseconds: 500));
     }
   }
 }

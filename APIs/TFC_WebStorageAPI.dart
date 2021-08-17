@@ -111,12 +111,16 @@ class TFC_WebStorageAPI extends TFC_IDeviceStorageAPI {
 
   String _getFileLocationPrefix(FileLocation fileLocation) {
     String fileLocationAsString;
-    if (fileLocation == FileLocation.LOCAL) {
-      fileLocationAsString = "local";
-    } else if (fileLocation == FileLocation.EXPORT) {
-      fileLocationAsString = "export";
-    } else {
-      throw ("TFC_WebStorageAPI._getFileLocationPrefix() does not support $fileLocation!");
+    switch (fileLocation) {
+      case FileLocation.LOCAL:
+        fileLocationAsString = "local";
+        break;
+      case FileLocation.EXPORT:
+        fileLocationAsString = "export";
+        break;
+      case FileLocation.SYNC_CACHE:
+        fileLocationAsString = "syncCache";
+        break;
     }
     return fileLocationAsString + "/";
   }

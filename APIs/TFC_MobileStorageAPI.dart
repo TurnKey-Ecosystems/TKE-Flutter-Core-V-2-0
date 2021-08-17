@@ -12,13 +12,16 @@ import '../AppManagment/TFC_FlutterApp.dart';
 class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
   static const _IOS_LOCAL_DIRECTORY_NAME = "local";
   static const _IOS_EXPORT_DIRECTORY_NAME = "export";
+  static const _SYNC_CACHE_SUB_DIRECTORY_NAME = "syncCache";
   Map<FileLocation, Directory> _directories = Map();
   Map<FileLocation, String> get _directoryPaths {
     String _localDirectoryPath = _directories[FileLocation.LOCAL]!.path + "/";
     String _exportDirectoryPath = _directories[FileLocation.EXPORT]!.path + "/";
+    String _syncCachetDirectoryPath = _directories[FileLocation.SYNC_CACHE]!.path + "/";
     return {
       FileLocation.LOCAL: _localDirectoryPath,
-      FileLocation.EXPORT: _exportDirectoryPath
+      FileLocation.EXPORT: _exportDirectoryPath,
+      FileLocation.SYNC_CACHE: _syncCachetDirectoryPath,
     };
   }
 
@@ -50,6 +53,16 @@ class TFC_MobileStorageAPI extends TFC_IDeviceStorageAPI {
     } else {
       throw ("TFC_MobileStorageAPI.setup() does not handle this platform!");
     }
+
+    // Setup the sync cache subdirectory
+    Directory syncCahceDirectory = Directory(
+        _directories[FileLocation.LOCAL]!.path + "/" + _SYNC_CACHE_SUB_DIRECTORY_NAME);
+    if (syncCahceDirectory.existsSync() != true) {
+      syncCahceDirectory.createSync();
+    }
+    _directories[FileLocation.SYNC_CACHE] = syncCahceDirectory;
+
+    // Clean up exported files
     await _cleanUpExportedFiles();
   }
 

@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-enum FileLocation { LOCAL, EXPORT }
+enum FileLocation { LOCAL, EXPORT, SYNC_CACHE }
 
 abstract class TFC_IDeviceStorageAPI {
   // Setup Functions
