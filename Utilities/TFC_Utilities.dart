@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/APIs/TFC_Failable.dart';
-
+import '../APIs/TFC_Failable.dart';
 import '../UI/PrebuiltWidgets/TFC_InputFields.dart';
 import '../AppManagment/TFC_FlutterApp.dart';
 import 'package:flutter/material.dart';

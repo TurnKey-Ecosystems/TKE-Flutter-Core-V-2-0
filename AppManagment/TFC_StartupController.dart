@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 //import 'dart:io';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/StartupWidgets/TFC_SplashScreen.dart';
+import '../UI/StartupWidgets/TFC_SplashScreen.dart';
 
 import '../APIs/TFC_ICloudSyncInterface.dart';
 import '../DataStructures/TFC_AllItemsManager.dart';

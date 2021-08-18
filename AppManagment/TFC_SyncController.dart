@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/APIs/TFC_Failable.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/APIs/TFC_IDeviceStorageAPI.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/AppManagment/TFC_DiskController.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/Utilities/TFC_Utilities.dart';
+import '../APIs/TFC_Failable.dart';
+import '../APIs/TFC_IDeviceStorageAPI.dart';
+import '../AppManagment/TFC_DiskController.dart';
+import '../Utilities/TFC_Utilities.dart';
 
 import '../DataStructures/TFC_AllItemsManager.dart';
 import '../DataStructures/TFC_SyncDepth.dart';

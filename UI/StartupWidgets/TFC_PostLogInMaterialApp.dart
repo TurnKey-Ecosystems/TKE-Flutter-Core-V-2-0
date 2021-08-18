@@ -1,6 +1,6 @@
 //import 'TFC_LoadingPage.dart';
 import 'package:flutter/material.dart';
-import 'package:tke_dev_time_tracker_flutter_tryw/TKE-Flutter-Core/UI/StartupWidgets/TFC_SplashScreen.dart';
+import '../../UI/StartupWidgets/TFC_SplashScreen.dart';
 import '../FoundationalElements/TFC_AppStyle.dart';
 import '../../APIs/TFC_PlatformAPI.dart';
 
