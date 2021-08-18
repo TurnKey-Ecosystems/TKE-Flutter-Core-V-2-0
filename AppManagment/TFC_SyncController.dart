@@ -259,8 +259,7 @@ class TFC_SyncController {
 class TFC_AsyncQueueManager<ReturnType> {
   final TFC_AutoSavingSet<String> _requestKeys;
   final Future<TFC_Failable<ReturnType?>> Function(String) fulfillRequest;
-  final Map<int, ReturnType> _returnedValues = Map();
-  int _nextRequestIndex = 0;
+  final Map<String, ReturnType?> _returnedValues = Map();
     
   TFC_AsyncQueueManager({
     required String queueSaveName,
@@ -272,14 +271,12 @@ class TFC_AsyncQueueManager<ReturnType> {
         elementFromJson: (dynamic json) => json,
       );
   
-  Future<ReturnType> makeRequest({required String key}) async {
-    int requestIndex = _nextRequestIndex;
-    _nextRequestIndex++;
+  Future<ReturnType?> makeRequest({required String key}) async {
     _requestKeys.add(key);
     return Future(() async {
-      await TFC_Utilities.when(() => _returnedValues.containsKey(requestIndex));
-      ReturnType returnedValue = _returnedValues[requestIndex]!;
-      _returnedValues.remove(requestIndex);
+      await TFC_Utilities.when(() => _returnedValues.containsKey(key));
+      ReturnType? returnedValue = _returnedValues[key];
+      _returnedValues.remove(key);
       return returnedValue;
     });
   }
@@ -300,6 +297,7 @@ class TFC_AsyncQueueManager<ReturnType> {
 
         // Clean up
         if (fulfillmentResults.succeeded) {
+          _returnedValues[key] = fulfillmentResults.returnValue;
           TFC_DiskController.deleteFile(key, fileLocation: FileLocation.SYNC_CACHE);
           _requestKeys.remove(key);
         }
@@ -316,8 +314,7 @@ class TFC_AsyncQueueManagerWithLargeFile<ReturnType, ParamValueType> {
   final String Function(ParamValueType) _valueToString;
   final ParamValueType Function(String) _valueFromString;
   final Future<TFC_Failable<ReturnType?>> Function(String, ParamValueType) fulfillRequest;
-  final Map<int, ReturnType> _returnedValues = Map();
-  int _nextRequestIndex = 0;
+  final Map<String, ReturnType?> _returnedValues = Map();
     
   TFC_AsyncQueueManagerWithLargeFile({
     required String queueSaveName,
@@ -333,9 +330,7 @@ class TFC_AsyncQueueManagerWithLargeFile<ReturnType, ParamValueType> {
       _valueToString = valueToString,
       _valueFromString = valueFromString;
   
-  Future<ReturnType> makeRequest({required String key, required ParamValueType value}) async {
-    int requestIndex = _nextRequestIndex;
-    _nextRequestIndex++;
+  Future<ReturnType?> makeRequest({required String key, required ParamValueType value}) async {
     TFC_DiskController.writeFileAsString(
       key,
       _valueToString(value),
@@ -343,9 +338,9 @@ class TFC_AsyncQueueManagerWithLargeFile<ReturnType, ParamValueType> {
     );
     _requestKeys.add(key);
     return Future(() async {
-      await TFC_Utilities.when(() => _returnedValues.containsKey(requestIndex));
-      ReturnType returnedValue = _returnedValues[requestIndex]!;
-      _returnedValues.remove(requestIndex);
+      await TFC_Utilities.when(() => _returnedValues.containsKey(key));
+      ReturnType? returnedValue = _returnedValues[key];
+      _returnedValues.remove(key);
       return returnedValue;
     });
   }
@@ -375,6 +370,7 @@ class TFC_AsyncQueueManagerWithLargeFile<ReturnType, ParamValueType> {
 
         // Clean up
         if (fulfillmentResults.succeeded || !localCacheFileExists) {
+          _returnedValues[key] = fulfillmentResults.returnValue;
           TFC_DiskController.deleteFile(key, fileLocation: FileLocation.SYNC_CACHE);
           _requestKeys.remove(key);
         }

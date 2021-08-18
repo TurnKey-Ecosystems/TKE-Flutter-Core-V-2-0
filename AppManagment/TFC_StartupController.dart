@@ -158,16 +158,6 @@ class TFC_StartupController {
       onAfterStartUpComplete: onAfterStartUpComplete,
     ));
 
-    // TODO: Delete later
-    ByteData byteData = await rootBundle.load('assets/tap-add-app.jpg');
-    TFC_SyncController.imageUploader.makeRequest(
-      key: "tap-add-app.jpg",
-      value: byteData.buffer.asUint8List(),
-    );
-    TFC_SyncController.imageDeleter.makeRequest(
-      key: "test.jpg",
-    );
-
     onTFCStartupComplete.trigger();
   }
 }
