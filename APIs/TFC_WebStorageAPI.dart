@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:html' as DartHTML;
-import 'package:idb_shim/idb.dart';
-import 'package:idb_shim/idb_io.dart';
 import '../Utilities/TFC_Utilities.dart';
 import '../AppManagment/TFC_FlutterApp.dart';
 import '../APIs/TFC_IDeviceStorageAPI.dart';
