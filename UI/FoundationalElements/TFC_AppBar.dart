@@ -59,8 +59,8 @@ class TFC_AppBar extends StatelessWidget {
     const double sideButtonSize_tu = 8.25;
     // On mobile devices, leave some space for the notch and indicators
     double notchAreaHeight_tu = (kIsWeb) ? 0 : 7.35;
-    final double height_fu = _requestedHeight_fu
-      ?? TU.toFU(sideButtonSize_tu) + TU.toFU(notchAreaHeight_tu);
+    final double height_fu = (_requestedHeight_fu ?? TU.toFU(sideButtonSize_tu)) 
+      + TU.toFU(notchAreaHeight_tu);
 
     // Determine what widget to make the title widget.
     Widget? titleWidget;
@@ -69,13 +69,18 @@ class TFC_AppBar extends StatelessWidget {
         width: AxisSize.shrinkToFitContents(),
         height: AxisSize.fu(height_fu),
         children: [
-          Image(image: image!),
+          Box(
+            height: AxisSize.fu(height_fu - TU.toFU(5)),
+            children: [
+              Image(image: image!),
+            ],
+          ),
           Box(height: AxisSize.tu(5)),
         ],
       );
     } else if (this.text != null) {
       titleWidget = TFC_Text.subheading(
-        this.text!,
+        () => this.text!,
         color: TFC_AppStyle.COLOR_BACKGROUND,
       );
     }

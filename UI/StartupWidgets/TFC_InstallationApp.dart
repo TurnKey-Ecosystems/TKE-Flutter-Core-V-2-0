@@ -56,7 +56,7 @@ class _TFC_InstallationScaffold extends TFC_SelfReloadingWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TFC_Text.subheading(TFC_FlutterApp.appName),
+                  TFC_Text.subheading(() => TFC_FlutterApp.appName),
                   Container(
                     height: 1.0 * TFC_AppStyle.instance.lineHeight,
                   ),
@@ -88,31 +88,31 @@ class _TFC_InstallationScaffold extends TFC_SelfReloadingWidget {
                   Container(
                     height: 2.0 * TFC_AppStyle.instance.lineHeight,
                   ),
-                  TFC_Text.subheading("Step 1"),
+                  TFC_Text.subheading(() => "Step 1"),
                   TFC_Text.body(
-                    "Install the app.",
+                    () => "Install the app.",
                     textAlign: TextAlign.center,
                   ),
                   TFC_Button.solid(
                       onTap: TFC_PlatformAPI.platformAPI.showInstallPrompt,
                       child: TFC_Text.body(
-                        "Install",
+                        () => "Install",
                         color: TFC_AppStyle.COLOR_BACKGROUND,
                       )),
                   Container(
                     height: TFC_AppStyle.instance.lineHeight,
                   ),
-                  TFC_Text.subheading("Step 2"),
+                  TFC_Text.subheading(() => "Step 2"),
                   TFC_Text.body(
-                    "Wait for the app to install. (This may take up to 60 seconds. After that, if the app is not on your home screen, then check your app drawer.)",
+                    () => "Wait for the app to install. (This may take up to 60 seconds. After that, if the app is not on your home screen, then check your app drawer.)",
                     textAlign: TextAlign.center,
                   ),
                   Container(
                     height: TFC_AppStyle.instance.lineHeight,
                   ),
-                  TFC_Text.subheading("Step 3"),
+                  TFC_Text.subheading(() => "Step 3"),
                   TFC_Text.body(
-                    "Open the app and enter the passcode.",
+                    () => "Open the app and enter the passcode.",
                     textAlign: TextAlign.center,
                   ),
                   Container(
@@ -130,7 +130,7 @@ class _TFC_InstallationScaffold extends TFC_SelfReloadingWidget {
                         WidgetSpan(
                           child: GestureDetector(
                             child: TFC_Text.body(
-                              "continue",
+                              () => "continue",
                               isUnderlined: true,
                               color: TFC_AppStyle.COLOR_HINT,
                             ),
@@ -162,7 +162,7 @@ class _TFC_InstallationScaffold extends TFC_SelfReloadingWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TFC_Text.subheading(TFC_FlutterApp.appName),
+                  TFC_Text.subheading(() => TFC_FlutterApp.appName),
                   Container(
                     height: 1.0 * TFC_AppStyle.instance.lineHeight,
                   ),
@@ -194,7 +194,7 @@ class _TFC_InstallationScaffold extends TFC_SelfReloadingWidget {
                   Container(
                     height: 2.0 * TFC_AppStyle.instance.lineHeight,
                   ),
-                  TFC_Text.subheading("Step 1"),
+                  TFC_Text.subheading(() => "Step 1"),
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
@@ -245,9 +245,9 @@ class _TFC_InstallationScaffold extends TFC_SelfReloadingWidget {
                   Container(
                     height: 1.5 * TFC_AppStyle.instance.lineHeight,
                   ),
-                  TFC_Text.subheading("Step 2"),
+                  TFC_Text.subheading(() => "Step 2"),
                   TFC_Text.body(
-                    "Scroll down and tap \"Add to Home Screen\".",
+                    () => "Scroll down and tap \"Add to Home Screen\".",
                     textAlign: TextAlign.center,
                   ),
                   Container(
@@ -282,9 +282,9 @@ class _TFC_InstallationScaffold extends TFC_SelfReloadingWidget {
                   Container(
                     height: 1.5 * TFC_AppStyle.instance.lineHeight,
                   ),
-                  TFC_Text.subheading("Step 3"),
+                  TFC_Text.subheading(() => "Step 3"),
                   TFC_Text.body(
-                    "Wait for a few seconds to let the app icon load, and then tap \"Add\".",
+                    () => "Wait for a few seconds to let the app icon load, and then tap \"Add\".",
                     textAlign: TextAlign.center,
                   ),
                   Container(
@@ -319,9 +319,9 @@ class _TFC_InstallationScaffold extends TFC_SelfReloadingWidget {
                   Container(
                     height: 1.5 * TFC_AppStyle.instance.lineHeight,
                   ),
-                  TFC_Text.subheading("Step 4"),
+                  TFC_Text.subheading(() => "Step 4"),
                   TFC_Text.body(
-                    "Open the app and enter the passcode.",
+                    () => "Open the app and enter the passcode.",
                     textAlign: TextAlign.center,
                   ),
                   Container(
@@ -368,7 +368,7 @@ class _TFC_InstallationScaffold extends TFC_SelfReloadingWidget {
                         WidgetSpan(
                           child: GestureDetector(
                             child: TFC_Text.body(
-                              "continue",
+                              () => "continue",
                               isUnderlined: true,
                               color: TFC_AppStyle.COLOR_HINT,
                             ),

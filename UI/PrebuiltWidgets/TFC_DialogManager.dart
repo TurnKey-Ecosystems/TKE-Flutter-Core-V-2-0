@@ -20,7 +20,7 @@ class TFC_DialogManager {
       context: context,
       contents: [
         TFC_Text.body(
-          description,
+          () => description,
           color: TFC_AppStyle.COLOR_TEXT_HEADING,
         ),
       ],
@@ -56,7 +56,7 @@ class TFC_DialogManager {
         children: [
           TFC_Button.outlined(
             child: TFC_Text.body(
-              button1Text,
+              () => button1Text,
               color: TFC_AppStyle.colorPrimary,
             ),
             borderColor: TFC_AppStyle.colorPrimary,
@@ -65,7 +65,7 @@ class TFC_DialogManager {
           ),
           TFC_Button.solid(
             child: TFC_Text.body(
-              button2Text,
+              () => button2Text,
               color: TFC_AppStyle.COLOR_BACKGROUND,
             ),
             color: TFC_AppStyle.colorPrimary,
@@ -113,7 +113,7 @@ class TFC_DialogManager {
               children: [
                 Container(
                   height: 1.75 * TFC_AppStyle.instance.lineHeight,
-                  child: TFC_Text.body(loadingMessage),
+                  child: TFC_Text.body(() => loadingMessage),
                 ),
                 Container(
                   height: 3.0 * TFC_AppStyle.instance.lineHeight,

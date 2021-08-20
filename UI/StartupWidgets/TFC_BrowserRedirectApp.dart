@@ -74,12 +74,12 @@ class _TFC_BrowserRedirectScaffold extends TFC_SelfReloadingWidget {
                     .browserAndOSTestResults.isCorrectBrowserForOS
                     .toString()),
             TFC_Text.body("User Agent: " + html.window.navigator.userAgent),*/
-            TFC_Text.heading("Double check your browser."),
+            TFC_Text.heading(() => "Double check your browser."),
             Container(
               height: TFC_AppStyle.instance.lineHeight,
             ),
             TFC_Text.body(
-              TFC_BrowserRedirectApp.unkownOSInstructions,
+              () => TFC_BrowserRedirectApp.unkownOSInstructions,
               textAlign: TextAlign.center,
             ),
             Container(
@@ -90,7 +90,7 @@ class _TFC_BrowserRedirectScaffold extends TFC_SelfReloadingWidget {
                 TFC_BrowserRedirectApp.shouldContinuePastThisPage = true;
               },
               child: TFC_Text.body(
-                "Continue",
+                () => "Continue",
                 color: TFC_AppStyle.COLOR_BACKGROUND,
               ),
             ),
@@ -127,13 +127,13 @@ class _TFC_BrowserRedirectScaffold extends TFC_SelfReloadingWidget {
                         .toString()),
                 TFC_Text.body("User Agent: " + html.window.navigator.userAgent),*/
                 TFC_Text.heading(
-                    "You'll need to use a different browser to install this app."),
+                    () => "You'll need to use a different browser to install this app."),
                 Container(
                   height: 2.0 * TFC_AppStyle.instance.lineHeight,
                 ),
-                TFC_Text.subheading("Step 1"),
+                TFC_Text.subheading(() => "Step 1"),
                 TFC_Text.body(
-                  "Copy this website's URL:",
+                  () => "Copy this website's URL:",
                   textAlign: TextAlign.center,
                 ),
                 //TFC_Text.body(TFC_WebExclusiveAPI.getCurrentURL()),
@@ -143,15 +143,15 @@ class _TFC_BrowserRedirectScaffold extends TFC_SelfReloadingWidget {
                           TFC_PlatformAPI.platformAPI.getCurrentURL());
                     },
                     child: TFC_Text.body(
-                      "Copy URL",
+                      () => "Copy URL",
                       color: TFC_AppStyle.COLOR_BACKGROUND,
                     )),
                 Container(
                   height: TFC_AppStyle.instance.lineHeight,
                 ),
-                TFC_Text.subheading("Step 2"),
+                TFC_Text.subheading(() => "Step 2"),
                 TFC_Text.body(
-                  step2Instructions,
+                  () => step2Instructions,
                   textAlign: TextAlign.center,
                 ),
               ],

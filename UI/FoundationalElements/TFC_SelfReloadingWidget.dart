@@ -11,7 +11,10 @@ abstract class TFC_SelfReloadingWidget extends StatefulWidget {
     return newKey;
   }
   // Props
-  final List<TFC_Event?> reloadTriggers;
+  /** Add another event that will cause this elment to reload. */
+  void addReloadTrigger(void Function(void Function()) addListennerToEvent) {
+    addListennerToEvent(reload);
+  }
 
   //_TFC_ReloadableWidgetState _state;
   final bool Function()? _mayReload;
@@ -23,7 +26,7 @@ abstract class TFC_SelfReloadingWidget extends StatefulWidget {
     }
   }
 
-  TFC_SelfReloadingWidget({Key? key, bool Function()? mayReload, required this.reloadTriggers})
+  TFC_SelfReloadingWidget({Key? key, bool Function()? mayReload, required List<TFC_Event?> reloadTriggers})
       : _mayReload = mayReload,
         super(key: key ?? _getNewKey()) {
     for (TFC_Event? event in reloadTriggers) {

@@ -114,7 +114,7 @@ class TFC_SplashScreen extends TFC_SelfReloadingWidget {
                 color: TFC_AppStyle.COLOR_BACKGROUND,
               ),
               TFC_Text.body(
-                " Check your internet!",
+                () => " Check your internet!",
                 color: TFC_AppStyle.COLOR_BACKGROUND,
               ),
             ],

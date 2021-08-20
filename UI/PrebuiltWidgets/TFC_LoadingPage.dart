@@ -41,7 +41,7 @@ class TFC_LoadingPage extends StatelessWidget {
             ),
             Container(
               child: TFC_Text.body(
-                _loadingText,
+                () => _loadingText,
                 color: _color,
               ),
             ),

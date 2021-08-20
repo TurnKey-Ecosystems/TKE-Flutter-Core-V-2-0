@@ -23,7 +23,7 @@ class TFC_StandardAppBar extends StatelessWidget {
           height: preferredHeight,
           alignment: Alignment.center,
           child: TFC_Text.subheading(
-            _titleText,
+            () => _titleText,
             color: TFC_AppStyle.COLOR_BACKGROUND,
           ),
         ),

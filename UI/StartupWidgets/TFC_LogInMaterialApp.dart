@@ -131,7 +131,7 @@ class _TFC_LogInScaffold extends TFC_SelfReloadingWidget {
                         reload();
                       },
                       child: TFC_Text.body(
-                        "Submit Code",
+                        () => "Submit Code",
                         color: TFC_AppStyle.COLOR_BACKGROUND,
                       ),
                     ),

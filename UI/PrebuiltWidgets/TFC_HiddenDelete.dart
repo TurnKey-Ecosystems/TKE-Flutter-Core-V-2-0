@@ -51,7 +51,7 @@ class TFC_HiddenDelete extends StatelessWidget {
                   ),
                   Container(
                     child: TFC_Text.body(
-                      " " + choice.title,
+                      () => (" " + choice.title),
                       color: (choice.title == "Delete")
                           ? TFC_AppStyle.COLOR_ERROR
                           : TFC_AppStyle.textColors[TFC_TextType.BODY],

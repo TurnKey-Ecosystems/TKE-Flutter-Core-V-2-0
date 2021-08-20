@@ -18,14 +18,14 @@ class TFC_Tab extends Tab {
 
 // Text widget factory
 class TFC_Text extends TFC_SelfReloadingWidget {
-  final String text;
+  final String Function() getText;
   final TFC_TextType textType;
   final TextAlign? textAlign;
   final Color? color;
   final bool isUnderlined;
 
   TFC_Text(
-    this.text,
+    this.getText,
     this.textType, {
     Key? key,
     this.textAlign,
@@ -35,7 +35,7 @@ class TFC_Text extends TFC_SelfReloadingWidget {
   }) : super(key: key, reloadTriggers: reloadTriggers);
 
   TFC_Text.heading(
-    this.text, {
+    this.getText, {
     Key? key,
     this.textAlign,
     this.color,
@@ -46,7 +46,7 @@ class TFC_Text extends TFC_SelfReloadingWidget {
 
 
   TFC_Text.subheading(
-    this.text, {
+    this.getText, {
     Key? key,
     this.textAlign,
     this.color,
@@ -57,7 +57,7 @@ class TFC_Text extends TFC_SelfReloadingWidget {
 
 
   TFC_Text.title(
-    this.text, {
+    this.getText, {
     Key? key,
     this.textAlign,
     this.color,
@@ -68,7 +68,7 @@ class TFC_Text extends TFC_SelfReloadingWidget {
 
 
   TFC_Text.body(
-    this.text, {
+    this.getText, {
     Key? key,
     this.textAlign,
     this.color,
@@ -80,7 +80,7 @@ class TFC_Text extends TFC_SelfReloadingWidget {
   @override
   Widget buildWidget(BuildContext context) {
     return Text(
-      text,
+      getText(),
       key: key,
       textAlign: (textAlign != null)
           ? textAlign
